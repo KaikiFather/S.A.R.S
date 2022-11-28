@@ -130,6 +130,7 @@
             this.btnCopy.Text = "Copy Info";
             this.btnCopy.UseSelectable = true;
             this.btnCopy.UseStyleColors = true;
+            this.btnCopy.Click += new System.EventHandler(this.btnCopy_Click);
             // 
             // Avatar_Info
             // 

@@ -3,10 +3,7 @@ using SARS.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SARS.Modules
 {
@@ -23,7 +20,8 @@ namespace SARS.Modules
             if (apiKey != "")
             {
                 this.apiKey = apiKey;
-            } else
+            }
+            else
             {
                 baseUrl = "https://api.ares-mod.com/records/";
             }
@@ -84,7 +82,7 @@ namespace SARS.Modules
         }
 
         /// <summary>
-        /// Searches for avatars by author name 
+        /// Searches for avatars by author name
         /// </summary>
         /// <param name="publicAvatars"></param>
         /// <param name="privateAvatars"></param>
@@ -111,7 +109,7 @@ namespace SARS.Modules
         }
 
         /// <summary>
-        /// Searches for avatars by author name 
+        /// Searches for avatars by author name
         /// </summary>
         /// <param name="authorName"></param>
         /// <param name="containsSearch"></param>

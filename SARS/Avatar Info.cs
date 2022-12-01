@@ -1,5 +1,4 @@
-﻿using MetroFramework;
-using MetroFramework.Forms;
+﻿using MetroFramework.Forms;
 using SARS.Models;
 using System;
 using System.Windows.Forms;

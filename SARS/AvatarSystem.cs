@@ -1,20 +1,14 @@
-﻿using MetroFramework.Components;
-using MetroFramework.Forms;
+﻿using MetroFramework.Forms;
 using SARS.Models;
 using SARS.Modules;
 using SARS.Properties;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
 using System.Drawing;
-using System.IO;
 using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace SARS
@@ -23,6 +17,7 @@ namespace SARS
     {
         private ShrekApi shrekApi;
         private List<Avatar> avatars;
+
         public AvatarSystem()
         {
             InitializeComponent();
@@ -52,29 +47,27 @@ namespace SARS
             {
                 avatars = shrekApi.blankSearch(!chkPublic.Checked, !chkPrivate.Checked, chkQuest.Checked, chkPC.Checked, Convert.ToInt32(limit));
             }
-            else if(cbSearchTerm.Text == "Avatar Name")
+            else if (cbSearchTerm.Text == "Avatar Name")
             {
-
+                avatars = shrekApi.avatarNameSearch(txtSearchTerm.Text, chkContains.Checked, !chkPublic.Checked, !chkPrivate.Checked, chkQuest.Checked, chkPC.Checked, Convert.ToInt32(limit));
             }
             else if (cbSearchTerm.Text == "Author Name")
             {
-
+                avatars = shrekApi.authorNameSearch(txtSearchTerm.Text, chkContains.Checked, !chkPublic.Checked, !chkPrivate.Checked, chkQuest.Checked, chkPC.Checked, Convert.ToInt32(limit));
             }
             else if (cbSearchTerm.Text == "Avatar ID")
             {
-
+                avatars = shrekApi.avatarIdSearch(txtSearchTerm.Text, !chkPublic.Checked, !chkPrivate.Checked, chkQuest.Checked, chkPC.Checked);
             }
             else if (cbSearchTerm.Text == "Author ID")
             {
-
+                avatars = shrekApi.authorIdSearch(txtSearchTerm.Text, !chkPublic.Checked, !chkPrivate.Checked, chkQuest.Checked, chkPC.Checked, Convert.ToInt32(limit));
             }
             else if (cbSearchTerm.Text == "World Name")
             {
-
             }
             else if (cbSearchTerm.Text == "World ID")
             {
-
             }
             avatarGrid.Rows.Clear();
             LoadData();
@@ -97,7 +90,6 @@ namespace SARS
             avatarGrid.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             for (int i = 0; i < avatars.Count; i++)
             {
-
                 try
                 {
                     DataGridViewRow row = (DataGridViewRow)avatarGrid.Rows[0].Clone();
@@ -205,6 +197,11 @@ namespace SARS
                 GenerateHtml.GenerateHtmlPage(avatars);
                 Process.Start("avatars.html");
             }
+        }
+
+        private void metroTabPage2_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

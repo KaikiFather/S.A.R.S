@@ -64,6 +64,10 @@ namespace SARS.Properties {
         ///   Looks up a localized string similar to Developers:
         ///ShrekamusChrist
         ///
+        ///Special Thanks:
+        ///LargestBoi (Originally teaching me the ropes)
+        ///Godlike (Beta Testing and feature suggesting)
+        ///
         ///FACS01 for FACS Utilities:
         /// -https://github.com/FACS01-01/FACS_Utilities
         ///Jeremy for Asset Ripper:

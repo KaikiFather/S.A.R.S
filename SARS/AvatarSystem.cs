@@ -33,6 +33,8 @@ namespace SARS
         {
             shrekApi = new ShrekApi("9519694b-5938-44d6-904f-19477a0331cb");
             txtAbout.Text = Resources.About;
+            cbSearchTerm.SelectedIndex = 0;
+            cbLimit.SelectedIndex = 3;
         }
 
         private void btnSearch_Click(object sender, EventArgs e)
@@ -46,7 +48,34 @@ namespace SARS
             {
                 limit = "500";
             }
-            avatars = shrekApi.blankSearch(amount: Convert.ToInt32(limit));
+            if (string.IsNullOrEmpty(txtSearchTerm.Text))
+            {
+                avatars = shrekApi.blankSearch(!chkPublic.Checked, !chkPrivate.Checked, chkQuest.Checked, chkPC.Checked, Convert.ToInt32(limit));
+            }
+            else if(cbSearchTerm.Text == "Avatar Name")
+            {
+
+            }
+            else if (cbSearchTerm.Text == "Author Name")
+            {
+
+            }
+            else if (cbSearchTerm.Text == "Avatar ID")
+            {
+
+            }
+            else if (cbSearchTerm.Text == "Author ID")
+            {
+
+            }
+            else if (cbSearchTerm.Text == "World Name")
+            {
+
+            }
+            else if (cbSearchTerm.Text == "World ID")
+            {
+
+            }
             avatarGrid.Rows.Clear();
             LoadData();
             LoadImages();
@@ -152,8 +181,20 @@ namespace SARS
 
         public string SetAvatarInfo(Avatar avatar)
         {
-            string avatarString =
-                $"Time Detected: {avatar.Created} {Environment.NewLine}Avatar Pin: {avatar.PinCode} {Environment.NewLine}Avatar ID: {avatar.AvatarID} {Environment.NewLine}Avatar Name: {avatar.AvatarName} {Environment.NewLine}Avatar Description {avatar.AvatarDescription} {Environment.NewLine}Author ID: {avatar.AuthorID} {Environment.NewLine}Author Name: {avatar.AuthorName} {Environment.NewLine}PC Asset URL: {avatar.PCAssetURL} {Environment.NewLine}Quest Asset URL: {avatar.QUESTAssetURL} {Environment.NewLine}Image URL: {avatar.ImageURL} {Environment.NewLine}Thumbnail URL: {avatar.ThumbnailURL} {Environment.NewLine}Unity Version: {avatar.UnityVersion} {Environment.NewLine}Release Status: {avatar.Releasestatus} {Environment.NewLine}Tags: {avatar.Tags}";
+            string avatarString = $"Time Detected: {avatar.Created} {Environment.NewLine}" +
+                $"Avatar Pin: {avatar.PinCode} {Environment.NewLine}" +
+                $"Avatar ID: {avatar.AvatarID} {Environment.NewLine}" +
+                $"Avatar Name: {avatar.AvatarName} {Environment.NewLine}" +
+                $"Avatar Description {avatar.AvatarDescription} {Environment.NewLine}" +
+                $"Author ID: {avatar.AuthorID} {Environment.NewLine}" +
+                $"Author Name: {avatar.AuthorName} {Environment.NewLine}" +
+                $"PC Asset URL: {avatar.PCAssetURL} {Environment.NewLine}" +
+                $"Quest Asset URL: {avatar.QUESTAssetURL} {Environment.NewLine}" +
+                $"Image URL: {avatar.ImageURL} {Environment.NewLine}" +
+                $"Thumbnail URL: {avatar.ThumbnailURL} {Environment.NewLine}" +
+                $"Unity Version: {avatar.UnityVersion} {Environment.NewLine}" +
+                $"Release Status: {avatar.Releasestatus} {Environment.NewLine}" +
+                $"Tags: {avatar.Tags}";
             return avatarString;
         }
 

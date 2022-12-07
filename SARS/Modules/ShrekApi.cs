@@ -46,7 +46,7 @@ namespace SARS.Modules
             return jsonString;
         }
 
-        private string urlBuilder(string url, bool publicAvatars, bool privateAvatars, bool questAvatars, bool pcAvatars, int amount)
+        private string urlBuilder(string url, bool publicAvatars, bool privateAvatars, bool questAvatars, bool pcAvatars, int amount, DateTime? dateLessThan, DateTime? dateGreaterThan)
         {
             string buildUrl = url;
 
@@ -76,6 +76,14 @@ namespace SARS.Modules
             {
                 amount = maxSearch;
             }
+            if (dateGreaterThan.HasValue)
+            {
+                buildUrl += $"&filter=Created,ge,{dateGreaterThan.Value.ToString("yyyy-MM-dd")}";
+            }
+            else if (dateLessThan.HasValue)
+            {
+                buildUrl += $"&filter=Created,le,{dateLessThan.Value.ToString("yyyy-MM-dd")}";
+            }
             buildUrl += $"&size={amount}";
 
             return buildUrl;
@@ -91,7 +99,7 @@ namespace SARS.Modules
         /// <param name="amount"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public List<Avatar> blankSearch(bool publicAvatars = false, bool privateAvatars = false, bool questAvatars = false, bool pcAvatars = true, int amount = 10000)
+        public List<Avatar> blankSearch(bool publicAvatars = false, bool privateAvatars = false, bool questAvatars = false, bool pcAvatars = true, int amount = 10000, DateTime? before = null, DateTime? after = null)
         {
             if (apiKey == null)
             {
@@ -100,7 +108,7 @@ namespace SARS.Modules
 
             string builtUrl = apiUrl;
 
-            builtUrl = urlBuilder(builtUrl, publicAvatars, privateAvatars, questAvatars, pcAvatars, amount);
+            builtUrl = urlBuilder(builtUrl, publicAvatars, privateAvatars, questAvatars, pcAvatars, amount, before, after);
 
             string jsonString = webRequest(builtUrl);
 
@@ -120,7 +128,7 @@ namespace SARS.Modules
         /// <param name="amount"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public List<Avatar> authorNameSearch(string authorName, bool containsSearch = true, bool publicAvatars = false, bool privateAvatars = false, bool questAvatars = false, bool pcAvatars = true, int amount = 10000)
+        public List<Avatar> authorNameSearch(string authorName, bool containsSearch = true, bool publicAvatars = false, bool privateAvatars = false, bool questAvatars = false, bool pcAvatars = true, int amount = 10000, DateTime? before = null, DateTime? after = null)
         {
             if (apiKey == null)
             {
@@ -136,7 +144,7 @@ namespace SARS.Modules
             }
 
             builtUrl += $"&filter=AuthorName,{contains},{authorName}";
-            builtUrl = urlBuilder(builtUrl, publicAvatars, privateAvatars, questAvatars, pcAvatars, amount);
+            builtUrl = urlBuilder(builtUrl, publicAvatars, privateAvatars, questAvatars, pcAvatars, amount, before, after);
 
             string jsonString = webRequest(builtUrl);
 
@@ -156,7 +164,7 @@ namespace SARS.Modules
         /// <param name="amount"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public List<Avatar> avatarNameSearch(string avatarName, bool containsSearch = true, bool publicAvatars = false, bool privateAvatars = false, bool questAvatars = false, bool pcAvatars = true, int amount = 10000)
+        public List<Avatar> avatarNameSearch(string avatarName, bool containsSearch = true, bool publicAvatars = false, bool privateAvatars = false, bool questAvatars = false, bool pcAvatars = true, int amount = 10000, DateTime? before = null, DateTime? after = null)
         {
             if (apiKey == null)
             {
@@ -172,7 +180,7 @@ namespace SARS.Modules
             }
 
             builtUrl += $"&filter=AvatarName,{contains},{avatarName}";
-            builtUrl = urlBuilder(builtUrl, publicAvatars, privateAvatars, questAvatars, pcAvatars, amount);
+            builtUrl = urlBuilder(builtUrl, publicAvatars, privateAvatars, questAvatars, pcAvatars, amount, before, after);
 
             string jsonString = webRequest(builtUrl);
 
@@ -191,7 +199,7 @@ namespace SARS.Modules
         /// <param name="amount"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public List<Avatar> authorIdSearch(string authorId, bool publicAvatars = false, bool privateAvatars = false, bool questAvatars = false, bool pcAvatars = true, int amount = 10000)
+        public List<Avatar> authorIdSearch(string authorId, bool publicAvatars = false, bool privateAvatars = false, bool questAvatars = false, bool pcAvatars = true, int amount = 10000, DateTime? before = null, DateTime? after = null)
         {
             if (apiKey == null)
             {
@@ -201,7 +209,7 @@ namespace SARS.Modules
             string builtUrl = apiUrl;
 
             builtUrl += $"&filter=AvatarName,eq,{authorId}";
-            builtUrl = urlBuilder(builtUrl, publicAvatars, privateAvatars, questAvatars, pcAvatars, amount);
+            builtUrl = urlBuilder(builtUrl, publicAvatars, privateAvatars, questAvatars, pcAvatars, amount, before, after);
 
             string jsonString = webRequest(builtUrl);
 
@@ -229,7 +237,7 @@ namespace SARS.Modules
             string builtUrl = apiUrl;
 
             builtUrl += $"&filter=AvatarName,eq,{avatarId}";
-            builtUrl = urlBuilder(builtUrl, publicAvatars, privateAvatars, questAvatars, pcAvatars, 1);
+            builtUrl = urlBuilder(builtUrl, publicAvatars, privateAvatars, questAvatars, pcAvatars, 1, null, null);
 
             string jsonString = webRequest(builtUrl);
 

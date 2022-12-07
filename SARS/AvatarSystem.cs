@@ -35,6 +35,8 @@ namespace SARS
         private void btnSearch_Click(object sender, EventArgs e)
         {
             string limit = cbLimit.Text;
+            DateTime? before = null;
+            DateTime? after = null;
             if (limit == "Max")
             {
                 limit = "10000";
@@ -43,17 +45,25 @@ namespace SARS
             {
                 limit = "500";
             }
+            if (chkBefore.Checked)
+            {
+                before = dtBefore.Value;
+            }
+            if (chkAfter.Checked)
+            {
+                after = dtAfter.Value;
+            }
             if (string.IsNullOrEmpty(txtSearchTerm.Text))
             {
-                avatars = shrekApi.blankSearch(!chkPublic.Checked, !chkPrivate.Checked, chkQuest.Checked, chkPC.Checked, Convert.ToInt32(limit));
+                avatars = shrekApi.blankSearch(!chkPublic.Checked, !chkPrivate.Checked, chkQuest.Checked, chkPC.Checked, Convert.ToInt32(limit), before, after);
             }
             else if (cbSearchTerm.Text == "Avatar Name")
             {
-                avatars = shrekApi.avatarNameSearch(txtSearchTerm.Text, chkContains.Checked, !chkPublic.Checked, !chkPrivate.Checked, chkQuest.Checked, chkPC.Checked, Convert.ToInt32(limit));
+                avatars = shrekApi.avatarNameSearch(txtSearchTerm.Text, chkContains.Checked, !chkPublic.Checked, !chkPrivate.Checked, chkQuest.Checked, chkPC.Checked, Convert.ToInt32(limit), before, after);
             }
             else if (cbSearchTerm.Text == "Author Name")
             {
-                avatars = shrekApi.authorNameSearch(txtSearchTerm.Text, chkContains.Checked, !chkPublic.Checked, !chkPrivate.Checked, chkQuest.Checked, chkPC.Checked, Convert.ToInt32(limit));
+                avatars = shrekApi.authorNameSearch(txtSearchTerm.Text, chkContains.Checked, !chkPublic.Checked, !chkPrivate.Checked, chkQuest.Checked, chkPC.Checked, Convert.ToInt32(limit), before, after);
             }
             else if (cbSearchTerm.Text == "Avatar ID")
             {
@@ -61,7 +71,7 @@ namespace SARS
             }
             else if (cbSearchTerm.Text == "Author ID")
             {
-                avatars = shrekApi.authorIdSearch(txtSearchTerm.Text, !chkPublic.Checked, !chkPrivate.Checked, chkQuest.Checked, chkPC.Checked, Convert.ToInt32(limit));
+                avatars = shrekApi.authorIdSearch(txtSearchTerm.Text, !chkPublic.Checked, !chkPrivate.Checked, chkQuest.Checked, chkPC.Checked, Convert.ToInt32(limit), before, after);
             }
             else if (cbSearchTerm.Text == "World Name")
             {

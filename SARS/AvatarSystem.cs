@@ -1,4 +1,6 @@
-﻿using MetroFramework.Forms;
+﻿using MetroFramework.Components;
+using MetroFramework;
+using MetroFramework.Forms;
 using SARS.Models;
 using SARS.Modules;
 using SARS.Properties;
@@ -19,6 +21,7 @@ namespace SARS
         private List<Avatar> avatars;
         private List<string> rippedList;
         private List<string> favList;
+        private ConfigSave<Config> configSave;
         private string userAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.5112.79 Safari/537.36";
 
         public AvatarSystem()
@@ -29,12 +32,60 @@ namespace SARS
 
         private void AvatarSystem_Load(object sender, EventArgs e)
         {
-            shrekApi = new ShrekApi("9519694b-5938-44d6-904f-19477a0331cb");
+            
             txtAbout.Text = Resources.About;
             cbSearchTerm.SelectedIndex = 0;
             cbLimit.SelectedIndex = 3;
             rippedList = new List<string>();
             favList = new List<string>();
+            configSave = new ConfigSave<Config>("config.cfg");
+            LoadSettings();
+            if (string.IsNullOrEmpty(configSave.Config.HotSwapName))
+            {
+                int randomAmount = RandomFunctions.random.Next(12);
+                configSave.Config.HotSwapName = RandomFunctions.RandomString(randomAmount);
+                configSave.Save();
+            }
+            if (!string.IsNullOrEmpty(configSave.Config.ApiKey))
+            {
+                shrekApi = new ShrekApi(configSave.Config.ApiKey);
+            } else
+            {
+                shrekApi = new ShrekApi("");
+            }            
+        }
+
+        private void GetClientVersion()
+        {
+            System.Net.WebClient wc = new System.Net.WebClient();
+            byte[] raw = wc.DownloadData("https://ares-mod.com/Version.txt");
+
+            txtClientVersion.Text = System.Text.Encoding.UTF8.GetString(raw);
+            configSave.Config.ClientVersion = txtClientVersion.Text;
+
+            raw = wc.DownloadData("https://ares-mod.com/VersionUpdated.txt");
+
+            configSave.Config.ClientVersionLastUpdated = Convert.ToDateTime(System.Text.Encoding.UTF8.GetString(raw));
+            configSave.Save();
+        }
+
+        private void LoadSettings()
+        {
+            txtApiKey.Text = configSave.Config.ApiKey;
+            cbThemeColour.Text = configSave.Config.ThemeColor;
+            if (configSave.Config.LightMode)
+            {
+                metroStyleManager1.Theme = MetroThemeStyle.Light;
+            }
+            if (configSave.Config.FavoriteAvatars != null)
+            {
+                favList = configSave.Config.FavoriteAvatars;
+            }
+            if (configSave.Config.RippedAvatars != null)
+            {
+                rippedList = configSave.Config.RippedAvatars;
+            }
+            GetClientVersion();
         }
 
         private void btnSearch_Click(object sender, EventArgs e)
@@ -265,11 +316,140 @@ namespace SARS
                     Console.WriteLine("Some error" + ex.Message);
                 }
             }
+
+            configSave.Config.FavoriteAvatars = favList;
+            configSave.Save();
         }
 
         private void avatarGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
+        }
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            configSave.Config.ApiKey = txtApiKey.Text.Trim();
+            configSave.Save();
+            shrekApi = new ShrekApi(configSave.Config.ApiKey);
+            if (configSave.Config.ApiKey != "")
+            {
+                shrekApi.checkLogin();
+            }
+        }
+
+        private void btnLight_Click(object sender, EventArgs e)
+        {
+            metroStyleManager1.Theme = MetroThemeStyle.Light;
+            configSave.Config.LightMode = true;
+            configSave.Save();
+        }
+
+        private void btnDark_Click(object sender, EventArgs e)
+        {
+            metroStyleManager1.Theme = MetroThemeStyle.Dark;
+            configSave.Config.LightMode = false;
+            configSave.Save();
+        }
+
+        private void LoadStyle(string style)
+        {
+            switch (style)
+            {
+                case "Black":
+                    metroStyleManager1.Style = MetroColorStyle.Black;
+                    configSave.Config.ThemeColor = style;
+                    configSave.Save();
+                    break;
+
+                case "White":
+                    metroStyleManager1.Style = MetroColorStyle.White;
+                    configSave.Config.ThemeColor = style;
+                    configSave.Save();
+                    break;
+
+                case "Silver":
+                    metroStyleManager1.Style = MetroColorStyle.Silver;
+                    configSave.Config.ThemeColor = style;
+                    configSave.Save();
+                    break;
+
+                case "Green":
+                    metroStyleManager1.Style = MetroColorStyle.Green;
+                    configSave.Config.ThemeColor = style;
+                    configSave.Save();
+                    break;
+
+                case "Blue":
+                    metroStyleManager1.Style = MetroColorStyle.Blue;
+                    configSave.Config.ThemeColor = style;
+                    configSave.Save();
+                    break;
+
+                case "Lime":
+                    metroStyleManager1.Style = MetroColorStyle.Lime;
+                    configSave.Config.ThemeColor = style;
+                    configSave.Save();
+                    break;
+
+                case "Teal":
+                    metroStyleManager1.Style = MetroColorStyle.Teal;
+                    configSave.Config.ThemeColor = style;
+                    configSave.Save();
+                    break;
+
+                case "Orange":
+                    metroStyleManager1.Style = MetroColorStyle.Orange;
+                    configSave.Config.ThemeColor = style;
+                    configSave.Save();
+                    break;
+
+                case "Brown":
+                    metroStyleManager1.Style = MetroColorStyle.Brown;
+                    configSave.Config.ThemeColor = style;
+                    configSave.Save();
+                    break;
+
+                case "Pink":
+                    metroStyleManager1.Style = MetroColorStyle.Pink;
+                    configSave.Config.ThemeColor = style;
+                    configSave.Save();
+                    break;
+
+                case "Magenta":
+                    metroStyleManager1.Style = MetroColorStyle.Magenta;
+                    configSave.Config.ThemeColor = style;
+                    configSave.Save();
+                    break;
+
+                case "Purple":
+                    metroStyleManager1.Style = MetroColorStyle.Purple;
+                    configSave.Config.ThemeColor = style;
+                    configSave.Save();
+                    break;
+
+                case "Red":
+                    metroStyleManager1.Style = MetroColorStyle.Red;
+                    configSave.Config.ThemeColor = style;
+                    configSave.Save();
+                    break;
+
+                case "Yellow":
+                    metroStyleManager1.Style = MetroColorStyle.Yellow;
+                    configSave.Config.ThemeColor = style;
+                    configSave.Save();
+                    break;
+
+                default:
+                    metroStyleManager1.Style = MetroColorStyle.Default;
+                    configSave.Config.ThemeColor = "Default";
+                    configSave.Save();
+                    break;
+            }
+        }
+
+        private void cbThemeColour_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            LoadStyle(cbThemeColour.Text);
         }
     }
 }

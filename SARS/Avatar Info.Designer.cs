@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Avatar_Info));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.txtAvatarInfo = new MetroFramework.Controls.MetroTextBox();
             this.cbCopy = new MetroFramework.Controls.MetroComboBox();
@@ -57,9 +58,9 @@
             // 
             // 
             this.txtAvatarInfo.CustomButton.Image = null;
-            this.txtAvatarInfo.CustomButton.Location = new System.Drawing.Point(-62, 2);
+            this.txtAvatarInfo.CustomButton.Location = new System.Drawing.Point(-338, 2);
             this.txtAvatarInfo.CustomButton.Name = "";
-            this.txtAvatarInfo.CustomButton.Size = new System.Drawing.Size(317, 317);
+            this.txtAvatarInfo.CustomButton.Size = new System.Drawing.Size(593, 593);
             this.txtAvatarInfo.CustomButton.Style = MetroFramework.MetroColorStyle.Blue;
             this.txtAvatarInfo.CustomButton.TabIndex = 1;
             this.txtAvatarInfo.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light;
@@ -138,6 +139,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(305, 750);
             this.Controls.Add(this.groupBox1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Avatar_Info";
             this.Text = "Avatar Info";
             this.Load += new System.EventHandler(this.Avatar_Info_Load);

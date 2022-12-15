@@ -29,17 +29,26 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AvatarSystem));
             this.tabControl = new MetroFramework.Controls.MetroTabControl();
             this.metroTabPage1 = new MetroFramework.Controls.MetroTabPage();
             this.avatarGrid = new System.Windows.Forms.DataGridView();
+            this.picture = new System.Windows.Forms.DataGridViewImageColumn();
+            this.AvatarName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Author = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.AvatarId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Logged = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ImageURL = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Ripped = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.Favorited = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.metroTabPage2 = new MetroFramework.Controls.MetroTabPage();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.metroLabel15 = new MetroFramework.Controls.MetroLabel();
             this.txtApiKey = new MetroFramework.Controls.MetroTextBox();
-            this.metroButton1 = new MetroFramework.Controls.MetroButton();
+            this.btnSave = new MetroFramework.Controls.MetroButton();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.btnSaveVRC = new MetroFramework.Controls.MetroButton();
             this.metroLabel1 = new MetroFramework.Controls.MetroLabel();
@@ -103,14 +112,6 @@
             this.dtAfter = new MetroFramework.Controls.MetroDateTime();
             this.metroLabel5 = new MetroFramework.Controls.MetroLabel();
             this.metroLabel6 = new MetroFramework.Controls.MetroLabel();
-            this.picture = new System.Windows.Forms.DataGridViewImageColumn();
-            this.AvatarName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Author = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.AvatarId = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Logged = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ImageURL = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Ripped = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.Favorited = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.tabControl.SuspendLayout();
             this.metroTabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.avatarGrid)).BeginInit();
@@ -169,14 +170,14 @@
             this.avatarGrid.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.avatarGrid.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
             this.avatarGrid.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(219)))), ((int)(((byte)(0)))), ((int)(((byte)(60)))));
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(219)))), ((int)(((byte)(0)))), ((int)(((byte)(60)))));
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(219)))), ((int)(((byte)(0)))), ((int)(((byte)(60)))));
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.avatarGrid.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(219)))), ((int)(((byte)(0)))), ((int)(((byte)(60)))));
+            dataGridViewCellStyle7.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            dataGridViewCellStyle7.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(219)))), ((int)(((byte)(0)))), ((int)(((byte)(60)))));
+            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(219)))), ((int)(((byte)(0)))), ((int)(((byte)(60)))));
+            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.avatarGrid.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
             this.avatarGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.avatarGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.picture,
@@ -187,28 +188,28 @@
             this.ImageURL,
             this.Ripped,
             this.Favorited});
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(136)))), ((int)(((byte)(136)))), ((int)(((byte)(136)))));
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(198)))), ((int)(((byte)(247)))));
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.avatarGrid.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            dataGridViewCellStyle8.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            dataGridViewCellStyle8.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(136)))), ((int)(((byte)(136)))), ((int)(((byte)(136)))));
+            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(198)))), ((int)(((byte)(247)))));
+            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.avatarGrid.DefaultCellStyle = dataGridViewCellStyle8;
             this.avatarGrid.EnableHeadersVisualStyles = false;
             this.avatarGrid.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.avatarGrid.GridColor = System.Drawing.Color.Silver;
             this.avatarGrid.Location = new System.Drawing.Point(0, 0);
             this.avatarGrid.Name = "avatarGrid";
             this.avatarGrid.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(174)))), ((int)(((byte)(219)))));
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(198)))), ((int)(((byte)(247)))));
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.avatarGrid.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle9.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(174)))), ((int)(((byte)(219)))));
+            dataGridViewCellStyle9.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            dataGridViewCellStyle9.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(198)))), ((int)(((byte)(247)))));
+            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.avatarGrid.RowHeadersDefaultCellStyle = dataGridViewCellStyle9;
             this.avatarGrid.RowHeadersVisible = false;
             this.avatarGrid.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             this.avatarGrid.RowTemplate.Height = 200;
@@ -219,6 +220,61 @@
             this.avatarGrid.Size = new System.Drawing.Size(840, 414);
             this.avatarGrid.TabIndex = 2;
             this.avatarGrid.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.avatarGrid_CellContentClick);
+            // 
+            // picture
+            // 
+            this.picture.FillWeight = 50.72543F;
+            this.picture.HeaderText = "Picture";
+            this.picture.Name = "picture";
+            // 
+            // AvatarName
+            // 
+            this.AvatarName.FillWeight = 16.92115F;
+            this.AvatarName.HeaderText = "Name";
+            this.AvatarName.Name = "AvatarName";
+            // 
+            // Author
+            // 
+            this.Author.FillWeight = 16.92115F;
+            this.Author.HeaderText = "Author Name";
+            this.Author.Name = "Author";
+            // 
+            // AvatarId
+            // 
+            this.AvatarId.FillWeight = 16.92115F;
+            this.AvatarId.HeaderText = "Avatar ID";
+            this.AvatarId.Name = "AvatarId";
+            // 
+            // Logged
+            // 
+            this.Logged.FillWeight = 16.92115F;
+            this.Logged.HeaderText = "Date Logged";
+            this.Logged.Name = "Logged";
+            // 
+            // ImageURL
+            // 
+            this.ImageURL.HeaderText = "ImageURL";
+            this.ImageURL.Name = "ImageURL";
+            this.ImageURL.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.ImageURL.Visible = false;
+            // 
+            // Ripped
+            // 
+            this.Ripped.FalseValue = "false";
+            this.Ripped.FillWeight = 12.1729F;
+            this.Ripped.HeaderText = "Ripped";
+            this.Ripped.Name = "Ripped";
+            this.Ripped.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Ripped.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.Ripped.TrueValue = "true";
+            // 
+            // Favorited
+            // 
+            this.Favorited.FalseValue = "false";
+            this.Favorited.FillWeight = 12.1729F;
+            this.Favorited.HeaderText = "Favorited";
+            this.Favorited.Name = "Favorited";
+            this.Favorited.TrueValue = "true";
             // 
             // metroTabPage2
             // 
@@ -244,7 +300,7 @@
             this.groupBox4.BackColor = System.Drawing.Color.Transparent;
             this.groupBox4.Controls.Add(this.metroLabel15);
             this.groupBox4.Controls.Add(this.txtApiKey);
-            this.groupBox4.Controls.Add(this.metroButton1);
+            this.groupBox4.Controls.Add(this.btnSave);
             this.groupBox4.Location = new System.Drawing.Point(210, 3);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(596, 108);
@@ -299,17 +355,18 @@
             this.txtApiKey.WaterMarkColor = System.Drawing.Color.FromArgb(((int)(((byte)(109)))), ((int)(((byte)(109)))), ((int)(((byte)(109)))));
             this.txtApiKey.WaterMarkFont = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             // 
-            // metroButton1
+            // btnSave
             // 
-            this.metroButton1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.metroButton1.FontSize = MetroFramework.MetroButtonSize.Tall;
-            this.metroButton1.Location = new System.Drawing.Point(449, 60);
-            this.metroButton1.Name = "metroButton1";
-            this.metroButton1.Size = new System.Drawing.Size(141, 35);
-            this.metroButton1.TabIndex = 95;
-            this.metroButton1.Text = "Save";
-            this.metroButton1.UseSelectable = true;
-            this.metroButton1.UseStyleColors = true;
+            this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSave.FontSize = MetroFramework.MetroButtonSize.Tall;
+            this.btnSave.Location = new System.Drawing.Point(449, 60);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(141, 35);
+            this.btnSave.TabIndex = 95;
+            this.btnSave.Text = "Save";
+            this.btnSave.UseSelectable = true;
+            this.btnSave.UseStyleColors = true;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // groupBox3
             // 
@@ -468,7 +525,7 @@
             this.txtClientVersion.FontSize = MetroFramework.MetroTextBoxSize.Medium;
             this.txtClientVersion.FontWeight = MetroFramework.MetroTextBoxWeight.Bold;
             this.txtClientVersion.Lines = new string[] {
-        "2022.4.1p3-1263--Release"};
+        "2022.4.2p1-1275--Release"};
             this.txtClientVersion.Location = new System.Drawing.Point(217, 107);
             this.txtClientVersion.MaxLength = 1000;
             this.txtClientVersion.Name = "txtClientVersion";
@@ -480,7 +537,7 @@
             this.txtClientVersion.ShortcutsEnabled = true;
             this.txtClientVersion.Size = new System.Drawing.Size(368, 32);
             this.txtClientVersion.TabIndex = 88;
-            this.txtClientVersion.Text = "2022.4.1p3-1263--Release";
+            this.txtClientVersion.Text = "2022.4.2p1-1275--Release";
             this.txtClientVersion.UseSelectable = true;
             this.txtClientVersion.UseStyleColors = true;
             this.txtClientVersion.WaterMarkColor = System.Drawing.Color.FromArgb(((int)(((byte)(109)))), ((int)(((byte)(109)))), ((int)(((byte)(109)))));
@@ -547,6 +604,7 @@
             this.btnLight.Text = "Light";
             this.btnLight.UseSelectable = true;
             this.btnLight.UseStyleColors = true;
+            this.btnLight.Click += new System.EventHandler(this.btnLight_Click);
             // 
             // btnDark
             // 
@@ -559,6 +617,7 @@
             this.btnDark.Text = "Dark";
             this.btnDark.UseSelectable = true;
             this.btnDark.UseStyleColors = true;
+            this.btnDark.Click += new System.EventHandler(this.btnDark_Click);
             // 
             // cbThemeColour
             // 
@@ -586,6 +645,7 @@
             this.cbThemeColour.Size = new System.Drawing.Size(183, 29);
             this.cbThemeColour.TabIndex = 86;
             this.cbThemeColour.UseSelectable = true;
+            this.cbThemeColour.SelectedIndexChanged += new System.EventHandler(this.cbThemeColour_SelectedIndexChanged);
             // 
             // metroLabel12
             // 
@@ -1227,61 +1287,6 @@
             this.metroLabel6.Text = "After";
             this.metroLabel6.UseStyleColors = true;
             // 
-            // picture
-            // 
-            this.picture.FillWeight = 50.72543F;
-            this.picture.HeaderText = "Picture";
-            this.picture.Name = "picture";
-            // 
-            // AvatarName
-            // 
-            this.AvatarName.FillWeight = 16.92115F;
-            this.AvatarName.HeaderText = "Name";
-            this.AvatarName.Name = "AvatarName";
-            // 
-            // Author
-            // 
-            this.Author.FillWeight = 16.92115F;
-            this.Author.HeaderText = "Author Name";
-            this.Author.Name = "Author";
-            // 
-            // AvatarId
-            // 
-            this.AvatarId.FillWeight = 16.92115F;
-            this.AvatarId.HeaderText = "Avatar ID";
-            this.AvatarId.Name = "AvatarId";
-            // 
-            // Logged
-            // 
-            this.Logged.FillWeight = 16.92115F;
-            this.Logged.HeaderText = "Date Logged";
-            this.Logged.Name = "Logged";
-            // 
-            // ImageURL
-            // 
-            this.ImageURL.HeaderText = "ImageURL";
-            this.ImageURL.Name = "ImageURL";
-            this.ImageURL.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.ImageURL.Visible = false;
-            // 
-            // Ripped
-            // 
-            this.Ripped.FalseValue = "false";
-            this.Ripped.FillWeight = 12.1729F;
-            this.Ripped.HeaderText = "Ripped";
-            this.Ripped.Name = "Ripped";
-            this.Ripped.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.Ripped.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.Ripped.TrueValue = "true";
-            // 
-            // Favorited
-            // 
-            this.Favorited.FalseValue = "false";
-            this.Favorited.FillWeight = 12.1729F;
-            this.Favorited.HeaderText = "Favorited";
-            this.Favorited.Name = "Favorited";
-            this.Favorited.TrueValue = "true";
-            // 
             // AvatarSystem
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1324,6 +1329,7 @@
             this.Controls.Add(this.lblSearchType);
             this.Controls.Add(this.lblSearchTerm);
             this.Controls.Add(this.tabControl);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "AvatarSystem";
             this.Style = MetroFramework.MetroColorStyle.Default;
             this.Text = "Shrek Avatar Recovery System (S.A.R.S)";
@@ -1413,7 +1419,7 @@
         private MetroFramework.Controls.MetroLabel metroLabel12;
         private MetroFramework.Controls.MetroLabel metroLabel15;
         public MetroFramework.Controls.MetroTextBox txtApiKey;
-        public MetroFramework.Controls.MetroButton metroButton1;
+        public MetroFramework.Controls.MetroButton btnSave;
         public MetroFramework.Controls.MetroCheckBox chkContains;
         private MetroFramework.Components.MetroToolTip metroToolTip1;
         private System.Windows.Forms.GroupBox groupBox4;

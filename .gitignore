@@ -361,3 +361,5 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/SARS/AssetRipperConsole_win64/2018DLL
+/SARS/AssetRipperConsole_win64/2019DLL

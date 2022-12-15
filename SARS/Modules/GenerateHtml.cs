@@ -18,7 +18,7 @@ namespace SARS.Modules
                                                         <link rel='icon' href='' />
                                                         <meta name='viewport' content='width=device-width,initial-scale=1' />
 
-                                                        <title>A.R.E.S Results</title>
+                                                        <title>S.A.R.S Results</title>
                                                         <link rel='stylesheet' href='css/intlTelInput.css'>
                                                         <link rel='stylesheet' href='css/bootstrap.min.css' />
                                                         <link rel='stylesheet' href='css/site_2.css' />
@@ -70,7 +70,7 @@ namespace SARS.Modules
                                                     <header>
                                                         <nav class='navbar navbar-expand-sm navbar-toggleable-sm navbar-dark box-shadow mb-3'>
                                                             <div class='container'>
-                                                                <a class='navbar-brand' href='/'>A.R.E.S Results</a>
+                                                                <a class='navbar-brand' href='/'>S.A.R.S Results</a>
                                                                 <button class='button-color' onclick='showadvanced()'>Show Advanced view</button>
                                                                 <button class='button-color' onclick='hideadvanced()'>Hide Advanced view</button>
                                                             </div>
@@ -224,7 +224,7 @@ namespace SARS.Modules
 
                     <footer class='footer text-muted'>
                         <div class='container-fluid margined' style='color: lightgray;'>
-                            &copy; A.R.E.S BiG PEEN <span style='float: right; color: #ef00ff;'
+                            &copy; S.A.R.S BiG PEEN <span style='float: right; color: #ef00ff;'
                                                                                            id='cn-ct'></span>
                         </div>
                     </footer>

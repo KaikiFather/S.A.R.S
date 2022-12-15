@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Windows.Forms;
 
 namespace SARS.Modules
 {
@@ -25,6 +26,27 @@ namespace SARS.Modules
             else
             {
                 baseUrl = "https://api.ares-mod.com/records/";
+            }
+        }
+
+        public void checkLogin()
+        {
+            HttpWebRequest webReq = (HttpWebRequest)WebRequest.Create(apiUrl + "&size=1");
+            webReq.UserAgent = $"SARS V" + coreApiVersion;
+            webReq.Method = "GET";
+            webReq.Headers.Add("X-API-Key: " + apiKey);
+            HttpWebResponse webResp = null;
+            try
+            {
+                webResp = (HttpWebResponse)webReq.GetResponse();
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains("403"))
+                {
+                    MessageBox.Show("API Key Invalid");
+                }
+                return;
             }
         }
 
@@ -98,14 +120,14 @@ namespace SARS.Modules
         /// <returns></returns>
         public List<Avatar> GetList(List<string> ripped)
         {
-            AvatarList avatarList = new AvatarList {  records = new List<Avatar>() };
+            AvatarList avatarList = new AvatarList { records = new List<Avatar>() };
 
             if (ripped != null)
             {
                 foreach (var item in ripped.Distinct().ToList())
                 {
                     string url = $"{apiUrl}&filter=AvatarID,eq,{item}";
-                  
+
                     string jsonString = webRequest(url);
 
                     AvatarList items = JsonConvert.DeserializeObject<AvatarList>(jsonString);

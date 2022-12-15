@@ -3,6 +3,7 @@ using SARS.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 
 namespace SARS.Modules
@@ -87,6 +88,33 @@ namespace SARS.Modules
             buildUrl += $"&size={amount}";
 
             return buildUrl;
+        }
+
+        /// <summary>
+        /// Gets a list of already ripped avatars
+        /// </summary>
+        /// <param name="ripped"></param>
+        /// <param name="version"></param>
+        /// <returns></returns>
+        public List<Avatar> GetList(List<string> ripped)
+        {
+            AvatarList avatarList = new AvatarList {  records = new List<Avatar>() };
+
+            if (ripped != null)
+            {
+                foreach (var item in ripped.Distinct().ToList())
+                {
+                    string url = $"{apiUrl}&filter=AvatarID,eq,{item}";
+                  
+                    string jsonString = webRequest(url);
+
+                    AvatarList items = JsonConvert.DeserializeObject<AvatarList>(jsonString);
+
+                    avatarList.records = avatarList.records.Concat(items.records).ToList();
+                }
+                return avatarList.records;
+            }
+            return null;
         }
 
         /// <summary>

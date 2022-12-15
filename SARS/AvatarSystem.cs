@@ -17,6 +17,9 @@ namespace SARS
     {
         private ShrekApi shrekApi;
         private List<Avatar> avatars;
+        private List<string> rippedList;
+        private List<string> favList;
+        private string userAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.5112.79 Safari/537.36";
 
         public AvatarSystem()
         {
@@ -30,6 +33,8 @@ namespace SARS
             txtAbout.Text = Resources.About;
             cbSearchTerm.SelectedIndex = 0;
             cbLimit.SelectedIndex = 3;
+            rippedList = new List<string>();
+            favList = new List<string>();
         }
 
         private void btnSearch_Click(object sender, EventArgs e)
@@ -110,6 +115,14 @@ namespace SARS
                     row.Cells[3].Value = avatars[i].AvatarID;
                     row.Cells[4].Value = avatars[i].Created;
                     row.Cells[5].Value = avatars[i].ThumbnailURL;
+                    if (rippedList.Contains(avatars[i].AvatarID))
+                    {
+                        row.Cells[6].Value = true;
+                    }
+                    if (favList.Contains(avatars[i].AvatarID))
+                    {
+                        row.Cells[7].Value = true;
+                    }
                     avatarGrid.Rows.Add(row);
                 }
                 catch { }
@@ -140,7 +153,7 @@ namespace SARS
                                     {
                                         HttpWebRequest myRequest = (HttpWebRequest)WebRequest.Create(avatarGrid.Rows[i].Cells[5].Value.ToString());
                                         myRequest.Method = "GET";
-                                        myRequest.UserAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.5112.79 Safari/537.36";
+                                        myRequest.UserAgent = userAgent;
                                         HttpWebResponse myResponse = (HttpWebResponse)myRequest.GetResponse();
                                         System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(myResponse.GetResponseStream());
                                         myResponse.Close();
@@ -152,7 +165,7 @@ namespace SARS
                                         {
                                             HttpWebRequest myRequest = (HttpWebRequest)WebRequest.Create("https://ares-mod.com/avatars/Image_not_available.png");
                                             myRequest.Method = "GET";
-                                            myRequest.UserAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.5112.79 Safari/537.36";
+                                            myRequest.UserAgent = userAgent;
                                             HttpWebResponse myResponse = (HttpWebResponse)myRequest.GetResponse();
                                             System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(myResponse.GetResponseStream());
                                             myResponse.Close();
@@ -210,6 +223,51 @@ namespace SARS
         }
 
         private void metroTabPage2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnRipped_Click(object sender, EventArgs e)
+        {
+            avatars = shrekApi.GetList(rippedList);
+            avatarGrid.Rows.Clear();
+            LoadData();
+            LoadImages();
+        }
+
+        private void btnSearchFavorites_Click(object sender, EventArgs e)
+        {
+            avatars = shrekApi.GetList(favList);
+            avatarGrid.Rows.Clear();
+            LoadData();
+            LoadImages();
+        }
+
+        private void btnToggleFavorite_Click(object sender, EventArgs e)
+        {
+            foreach (DataGridViewRow row in avatarGrid.SelectedRows)
+            {
+                try
+                {
+                    if (!favList.Contains(row.Cells[3].Value.ToString()))
+                    {
+                        favList.Add(row.Cells[3].Value.ToString());
+                        row.Cells[7].Value = "true";
+                    }
+                    else
+                    {
+                        favList.Remove(row.Cells[3].Value.ToString());
+                        row.Cells[7].Value = "false";
+
+                    }
+                } catch (Exception ex)
+                {
+                    Console.WriteLine("Some error" + ex.Message);
+                }
+            }
+        }
+
+        private void avatarGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
         }

@@ -13,7 +13,7 @@ namespace SARS.Modules
 {
     public static class HotSwap
     {
-        public static void HotswapProcess(HotswapConsole hotSwapConsole, AvatarSystem avatarSystem)
+        public static void HotswapProcess(HotswapConsole hotSwapConsole, AvatarSystem avatarSystem, string avatarFile)
         {
             var filePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             var fileDecompressed = filePath + @"\decompressed.vrca";
@@ -59,7 +59,7 @@ namespace SARS.Modules
             catch (Exception ex)
             {
                 //CoreFunctions.WriteLog(string.Format("{0}", ex.Message), this);
-                MessageBox.Show("Error decompressing VRCA file", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Error decompressing VRCA file" + ex.Message, "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 if (hotSwapConsole.InvokeRequired)
                     hotSwapConsole.Invoke((MethodInvoker)delegate { hotSwapConsole.Close(); });
                 return;
@@ -70,12 +70,12 @@ namespace SARS.Modules
 
             try
             {
-                DecompressToFileStr(filePath + @"\custom.vrca", fileDecompressed2, hotSwapConsole);
+                DecompressToFileStr(avatarFile, fileDecompressed2, hotSwapConsole);
             }
             catch (Exception ex)
             {
                 //CoreFunctions.WriteLog(string.Format("{0}", ex.Message), this);
-                MessageBox.Show("Error decompressing VRCA file", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Error decompressing VRCA file" + ex.Message, "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 if (hotSwapConsole.InvokeRequired)
                     hotSwapConsole.Invoke((MethodInvoker)delegate { hotSwapConsole.Close(); });
                 return;

@@ -78,7 +78,6 @@ namespace SARS.Modules
                 publicAvatars = false;
                 privateAvatars = false;
             }
-
             if (publicAvatars)
             {
                 buildUrl += $"&filter=Releasestatus,eq,public";
@@ -89,11 +88,11 @@ namespace SARS.Modules
             }
             if (questAvatars)
             {
-                buildUrl += $"&filter=QUESTAssetURL,cs,https://";
+                buildUrl += $"&filter=QUESTAssetURL,sw,https://";
             }
             if (pcAvatars)
             {
-                buildUrl += $"&filter=PCAssetURL,cs,https://";
+                buildUrl += $"&filter=PCAssetURL,sw,https://";
             }
             if (amount > maxSearch)
             {

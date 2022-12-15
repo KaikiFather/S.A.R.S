@@ -12,9 +12,11 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Mail;
 using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
+using VRChatAPI;
 
 namespace SARS
 {
@@ -28,8 +30,10 @@ namespace SARS
         private HotswapConsole hotSwapConsole;
         private Thread _vrcaThread;
         private string userAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.5112.79 Safari/537.36";
-        private int _rowMaxHeight = 0;
-        private int _rowDefaultHeight = 0;
+        private string vrcaLocation = "";
+        private VRChatApiClient VrChat;
+        private string AuthKey;
+        private string SystemName;
 
         public AvatarSystem()
         {
@@ -39,6 +43,10 @@ namespace SARS
 
         private void AvatarSystem_Load(object sender, EventArgs e)
         {
+            var assembly = Assembly.GetExecutingAssembly();
+            var fileVersionInfo = FileVersionInfo.GetVersionInfo(assembly.Location);
+            SystemName = "Shrek Avatar Recovery System (S.A.R.S) V" + fileVersionInfo.ProductVersion;
+            this.Text = SystemName;
             txtAbout.Text = Resources.About;
             cbSearchTerm.SelectedIndex = 0;
             cbLimit.SelectedIndex = 3;
@@ -97,6 +105,21 @@ namespace SARS
             if (string.IsNullOrEmpty(configSave.Config.UnityLocation))
             {
                 UnitySetup();
+            }
+
+            VrChat = new VRChatApiClient(15, configSave.Config.MacAddress);
+            if (txtVRCUsername.Text != "" && txtVRCPassword.Text != "" && configSave.Config.MacAddress != "")
+            {
+                VrChat.CustomApiUser.Login(txtVRCUsername.Text, txtVRCPassword.Text);
+                Thread.Sleep(1000);
+                if (!File.Exists("auth.txt"))
+                {
+                    MessageBox.Show("Login Failed");
+                }
+                else
+                {
+                    AuthKey = File.ReadAllLines("auth.txt")[1];
+                }
             }
         }
 
@@ -412,6 +435,10 @@ namespace SARS
 
         private void avatarGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
+            vrcaLocation = "";
+            this.Text = SystemName;
+            this.Update();
+            this.Refresh();
         }
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -542,21 +569,42 @@ namespace SARS
 
         private void btnHotswap_Click(object sender, EventArgs e)
         {
-            if(avatarGrid.SelectedRows.Count > 1)
+            if (!_vrcaThread.IsAlive)
             {
-                MessageBox.Show("Please only select 1 row at a time for hotswapping.");
-                return;
+                string fileLocation = "";
+                if (vrcaLocation == "")
+                {
+                    if (avatarGrid.SelectedRows.Count > 1)
+                    {
+                        MessageBox.Show("Please only select 1 row at a time for hotswapping.");
+                        return;
+                    }
+                    bool downloaded = false;
+                    Avatar avatar = null;
+                    foreach (DataGridViewRow row in avatarGrid.SelectedRows)
+                    {
+                        Image myImg = (row.Cells[0].Value as Image);
+                        myImg.Save(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) +
+                                    $"\\{configSave.Config.HotSwapName}\\Assets\\Shrek SMART\\Resources\\shrekLogo.png", ImageFormat.Png);
+                        avatar = avatars.FirstOrDefault(x => x.AvatarID == row.Cells[3].Value);
+                        downloaded = RandomFunctions.DownloadVrca(avatar, VrChat, AuthKey, false, nmPcVersion.Value, nmQuestVersion.Value);
+                    }
+                    fileLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + $"\\{avatar.AvatarID}.vrca";
+                }
+                else
+                {
+                    fileLocation = vrcaLocation;
+                }
+                hotSwapConsole = new HotswapConsole();
+                hotSwapConsole.Show();
+
+                _vrcaThread = new Thread(() => HotSwap.HotswapProcess(hotSwapConsole, this, fileLocation));
+                _vrcaThread.Start();
             }
-            foreach (DataGridViewRow row in avatarGrid.SelectedRows)
+            else
             {
-                Image myImg = (row.Cells[0].Value as Image);
-                myImg.Save(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) +
-                            $"\\{configSave.Config.HotSwapName}\\Assets\\Shrek SMART\\Resources\\shrekLogo.png", ImageFormat.Png);
+                MessageBox.Show("VRCA Still hotswapping please try again later");
             }
-            hotSwapConsole = new HotswapConsole();
-            hotSwapConsole.Show();
-            //_vrcaThread = new Thread(HotSwap.HotswapProcess);
-            //_vrcaThread.Start();
         }
 
         private void btnUnity_Click(object sender, EventArgs e)
@@ -594,7 +642,7 @@ namespace SARS
 
             if (avatarGrid.Columns[e.ColumnIndex].AutoSizeMode != DataGridViewAutoSizeColumnMode.None)
             {
-                
+
                 //throw new InvalidOperationException(Format("dataGridView1 {0} AutoSizeMode <> 'None'", dataGridView1.Columns[e.ColumnIndex].Name));
             }
 
@@ -620,6 +668,58 @@ namespace SARS
         private void btnResetScene_Click(object sender, EventArgs e)
         {
             CopyFiles();
+        }
+
+        private void btnHsbClean_Click(object sender, EventArgs e)
+        {
+            CleanHsb();
+        }
+
+        private void CleanHsb()
+        {
+            var programLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            RandomFunctions.KillProcess("Unity Hub.exe");
+            RandomFunctions.KillProcess("Unity.exe");
+            RandomFunctions.tryDeleteDirectory(programLocation + $"\\{configSave.Config.HotSwapName}");
+            RandomFunctions.tryDeleteDirectory(@"C:\Users\" + Environment.UserName + $"\\AppData\\Local\\Temp\\DefaultCompany\\{configSave.Config.HotSwapName}");
+            RandomFunctions.tryDeleteDirectory(@"C:\Users\" + Environment.UserName + $"\\AppData\\LocalLow\\DefaultCompany\\{configSave.Config.HotSwapName}");
+        }
+
+        private void btnLoadVRCA_Click(object sender, EventArgs e)
+        {
+            vrcaLocation = SelectFileVrca();
+        }
+
+        private string SelectFileVrca()
+        {
+            var fileContent = string.Empty;
+            var filePath = string.Empty;
+
+            using (var openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.InitialDirectory = "c:\\";
+                openFileDialog.Filter = "vrc* files (*.vrc*)|*.vrc*";
+                openFileDialog.RestoreDirectory = true;
+
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    //Get the path of specified file
+                    filePath = openFileDialog.FileName;
+                    this.Text = SystemName + " | VRCA FILE LOADED";
+                    this.Update();
+                    this.Refresh();
+                }
+            }
+
+            return filePath;
+        }
+
+        private void avatarGrid_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            vrcaLocation = "";
+            this.Text = SystemName;
+            this.Update();
+            this.Refresh();
         }
     }
 }

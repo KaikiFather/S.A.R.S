@@ -15,6 +15,7 @@ namespace SARS.Models
         public bool LightMode { get; set; }
         public string ThemeColor { get; set; }
         public string HotSwapName { get; set; }
+        public string MacAddress { get; set; }
         public List<string> FavoriteAvatars { get; set; }
         public List<string> RippedAvatars { get; set; }
     }

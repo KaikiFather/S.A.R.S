@@ -1,6 +1,6 @@
-﻿using MetroFramework.Components;
-using MetroFramework;
+﻿using MetroFramework;
 using MetroFramework.Forms;
+using Microsoft.Win32;
 using SARS.Models;
 using SARS.Modules;
 using SARS.Properties;
@@ -8,8 +8,11 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -19,9 +22,11 @@ namespace SARS
     {
         private ShrekApi shrekApi;
         private List<Avatar> avatars;
-        private List<string> rippedList;
+        public List<string> rippedList;
         private List<string> favList;
-        private ConfigSave<Config> configSave;
+        public ConfigSave<Config> configSave;
+        private HotswapConsole hotSwapConsole;
+        private Thread _vrcaThread;
         private string userAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.5112.79 Safari/537.36";
 
         public AvatarSystem()
@@ -32,7 +37,6 @@ namespace SARS
 
         private void AvatarSystem_Load(object sender, EventArgs e)
         {
-            
             txtAbout.Text = Resources.About;
             cbSearchTerm.SelectedIndex = 0;
             cbLimit.SelectedIndex = 3;
@@ -49,10 +53,11 @@ namespace SARS
             if (!string.IsNullOrEmpty(configSave.Config.ApiKey))
             {
                 shrekApi = new ShrekApi(configSave.Config.ApiKey);
-            } else
+            }
+            else
             {
                 shrekApi = new ShrekApi("");
-            }            
+            }
         }
 
         private void GetClientVersion()
@@ -86,6 +91,89 @@ namespace SARS
                 rippedList = configSave.Config.RippedAvatars;
             }
             GetClientVersion();
+
+            if (string.IsNullOrEmpty(configSave.Config.UnityLocation))
+            {
+                UnitySetup();
+            }
+        }
+
+        private void UnitySetup()
+        {
+            var unityPath = UnityRegistry();
+            if (unityPath != null)
+            {
+                var dlgResult =
+                    MessageBox.Show(
+                        $"Possible unity path found, Location: '{unityPath + @"\Editor\Unity.exe"}' is this correct?",
+                        "Unity", MessageBoxButtons.YesNo);
+                if (dlgResult == DialogResult.Yes)
+                {
+                    if (File.Exists(unityPath + @"\Editor\Unity.exe"))
+                    {
+                        configSave.Config.UnityLocation = unityPath + @"\Editor\Unity.exe";
+                        configSave.Save();
+                        MessageBox.Show(
+                            "Leave the command window open it will close by itself after the unity setup is complete");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Someone didn't check because that file doesn't exist!");
+                        SelectFile();
+                    }
+                }
+                else
+                {
+                    MessageBox.Show(
+                        "Please select unity.exe, after doing this leave the command window open it will close by itself after setup is complete");
+                    SelectFile();
+                }
+            }
+            else
+            {
+                MessageBox.Show(
+                    "Please select unity.exe, after doing this leave the command window open it will close by itself after setup is complete");
+                SelectFile();
+            }
+        }
+
+        private void SelectFile()
+        {
+            var filePath = string.Empty;
+
+            using (var openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.InitialDirectory = "c:\\";
+                openFileDialog.Filter = "Unity (Unity.exe)|Unity.exe";
+                openFileDialog.RestoreDirectory = true;
+                openFileDialog.Title = "Select Unity exe";
+
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                    //Get the path of specified file
+                    filePath = openFileDialog.FileName;
+            }
+
+            configSave.Config.UnityLocation = filePath;
+            configSave.Save();
+        }
+
+        private string UnityRegistry()
+        {
+            try
+            {
+                using (var key = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Unity Technologies\Installer\Unity"))
+                {
+                    if (key == null) return null;
+                    var o = key.GetValue("Location x64");
+                    if (o != null) return o.ToString();
+                }
+
+                return null;
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         private void btnSearch_Click(object sender, EventArgs e)
@@ -275,7 +363,6 @@ namespace SARS
 
         private void metroTabPage2_Click(object sender, EventArgs e)
         {
-
         }
 
         private void btnRipped_Click(object sender, EventArgs e)
@@ -309,9 +396,9 @@ namespace SARS
                     {
                         favList.Remove(row.Cells[3].Value.ToString());
                         row.Cells[7].Value = "false";
-
                     }
-                } catch (Exception ex)
+                }
+                catch (Exception ex)
                 {
                     Console.WriteLine("Some error" + ex.Message);
                 }
@@ -323,7 +410,6 @@ namespace SARS
 
         private void avatarGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-
         }
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -450,6 +536,53 @@ namespace SARS
         private void cbThemeColour_SelectedIndexChanged(object sender, EventArgs e)
         {
             LoadStyle(cbThemeColour.Text);
+        }
+
+        private void btnHotswap_Click(object sender, EventArgs e)
+        {
+            if(avatarGrid.SelectedRows.Count > 1)
+            {
+                MessageBox.Show("Please only select 1 row at a time for hotswapping.");
+                return;
+            }
+            foreach (DataGridViewRow row in avatarGrid.SelectedRows)
+            {
+                Image myImg = (row.Cells[0].Value as Image);
+                myImg.Save(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) +
+                            $"\\{configSave.Config.HotSwapName}\\Assets\\Shrek SMART\\Resources\\shrekLogo.png", ImageFormat.Png);
+            }
+            hotSwapConsole = new HotswapConsole();
+            hotSwapConsole.Show();
+            //_vrcaThread = new Thread(HotSwap.HotswapProcess);
+            //_vrcaThread.Start();
+        }
+
+        private void btnUnity_Click(object sender, EventArgs e)
+        {
+            var tempFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)
+                .Replace("\\Roaming", "");
+            var unityTemp = $"\\Local\\Temp\\DefaultCompany\\{configSave.Config.HotSwapName}";
+            var unityTemp2 = $"\\LocalLow\\Temp\\DefaultCompany\\{configSave.Config.HotSwapName}";
+
+            RandomFunctions.tryDeleteDirectory(tempFolder + unityTemp, false);
+            RandomFunctions.tryDeleteDirectory(tempFolder + unityTemp2, false);
+
+            RandomFunctions.ExtractHSB(configSave.Config.HotSwapName);
+            CopyFiles();
+            RandomFunctions.OpenUnity(configSave.Config.UnityLocation, configSave.Config.HotSwapName);
+
+            btnHotswap.Enabled = true;
+        }
+
+        private void CopyFiles()
+        {
+            try
+            {
+                var programLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                File.Copy(programLocation + @"\Template\SampleScene.unity", programLocation + $"\\{configSave.Config.HotSwapName}\\Assets\\Scenes\\SampleScene.unity", true);
+                File.Copy(programLocation + @"\Template\shrekLogo.png", programLocation + $"\\{configSave.Config.HotSwapName}\\Assets\\Shrek SMART\\Resources\\shrekLogo.png", true);
+            }
+            catch { }
         }
     }
 }

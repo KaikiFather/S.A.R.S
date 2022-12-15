@@ -28,6 +28,8 @@ namespace SARS
         private HotswapConsole hotSwapConsole;
         private Thread _vrcaThread;
         private string userAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.5112.79 Safari/537.36";
+        private int _rowMaxHeight = 0;
+        private int _rowDefaultHeight = 0;
 
         public AvatarSystem()
         {
@@ -583,6 +585,41 @@ namespace SARS
                 File.Copy(programLocation + @"\Template\shrekLogo.png", programLocation + $"\\{configSave.Config.HotSwapName}\\Assets\\Shrek SMART\\Resources\\shrekLogo.png", true);
             }
             catch { }
+        }
+
+        private void avatarGrid_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
+        {
+            if (e.Value == null || e.RowIndex == -1)
+                return;
+
+            if (avatarGrid.Columns[e.ColumnIndex].AutoSizeMode != DataGridViewAutoSizeColumnMode.None)
+            {
+                
+                //throw new InvalidOperationException(Format("dataGridView1 {0} AutoSizeMode <> 'None'", dataGridView1.Columns[e.ColumnIndex].Name));
+            }
+
+            var s = e.Graphics.MeasureString(e.Value.ToString(), new Font("Segoe UI", 11, FontStyle.Regular, GraphicsUnit.Pixel));
+            if (e.Value.ToString().Length / (double)avatarGrid.Columns[e.ColumnIndex].Width >= .189)
+            {
+                SolidBrush backColorBrush;
+                if (avatarGrid.SelectedRows[0].Index == e.RowIndex)
+                    backColorBrush = new SolidBrush(e.CellStyle.SelectionBackColor);
+                else
+                    backColorBrush = new SolidBrush(e.CellStyle.BackColor);
+
+                using (backColorBrush)
+                {
+                    e.Graphics.FillRectangle(backColorBrush, e.CellBounds);
+                    e.Graphics.DrawString(e.Value.ToString(), avatarGrid.Font, Brushes.Black, e.CellBounds, StringFormat.GenericDefault);
+                    //avatarGrid.Rows[e.RowIndex].Height = System.Convert.ToInt32((s.Height * Math.Ceiling(s.Width / (double)avatarGrid.Columns[e.ColumnIndex].Width)));
+                    e.Handled = true;
+                }
+            }
+        }
+
+        private void btnResetScene_Click(object sender, EventArgs e)
+        {
+            CopyFiles();
         }
     }
 }

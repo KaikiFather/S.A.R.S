@@ -69,6 +69,12 @@ namespace SARS.Modules
             if (!Directory.Exists(filePath + $"\\{hotSwapName}\\"))
             {
                 ZipFile.ExtractToDirectory(filePath + @"\SARS.zip", filePath + $"\\{hotSwapName}");
+                try
+                {
+                    string text = File.ReadAllText(filePath + $"\\{hotSwapName}\\ProjectSettings\\ProjectSettings.asset");
+                    text = text.Replace("ARES", hotSwapName);
+                    File.WriteAllText(filePath + $"\\{hotSwapName}\\ProjectSettings\\ProjectSettings.asset", text);
+                } catch { }
             }
         }
 

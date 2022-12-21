@@ -76,7 +76,7 @@ namespace SARS.Modules
                 try
                 {
                     string text = File.ReadAllText(filePath + $"\\{hotSwapName}\\ProjectSettings\\ProjectSettings.asset");
-                    text = text.Replace("ARES", hotSwapName);
+                    text = text.Replace("SARS", hotSwapName);
                     File.WriteAllText(filePath + $"\\{hotSwapName}\\ProjectSettings\\ProjectSettings.asset", text);
                 }
                 catch { }
@@ -94,7 +94,7 @@ namespace SARS.Modules
             catch { }
         }
 
-        public static bool DownloadVrca(Avatar avatar, VRChatApiClient VrChat, string AuthKey, bool mutliSelected, decimal pcVersion, decimal questVersion)
+        public static bool DownloadVrca(Avatar avatar, VRChatApiClient VrChat, string AuthKey, decimal pcVersion, decimal questVersion)
         {
             var filePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + $"\\{avatar.AvatarID}.vrca";
             if (AuthKey == "")

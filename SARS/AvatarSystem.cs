@@ -17,6 +17,7 @@ using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
 using VRChatAPI;
+using VRChatAPI.Models;
 
 namespace SARS
 {
@@ -106,6 +107,7 @@ namespace SARS
             {
                 UnitySetup();
             }
+
 
             VrChat = new VRChatApiClient(15, configSave.Config.MacAddress);
             if (txtVRCUsername.Text != "" && txtVRCPassword.Text != "" && configSave.Config.MacAddress != "")
@@ -587,7 +589,7 @@ namespace SARS
                         myImg.Save(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) +
                                     $"\\{configSave.Config.HotSwapName}\\Assets\\Shrek SMART\\Resources\\shrekLogo.png", ImageFormat.Png);
                         avatar = avatars.FirstOrDefault(x => x.AvatarID == row.Cells[3].Value);
-                        downloaded = RandomFunctions.DownloadVrca(avatar, VrChat, AuthKey, false, nmPcVersion.Value, nmQuestVersion.Value);
+                        downloaded = RandomFunctions.DownloadVrca(avatar, VrChat, AuthKey, nmPcVersion.Value, nmQuestVersion.Value);
                     }
                     fileLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + $"\\{avatar.AvatarID}.vrca";
                 }
@@ -720,6 +722,63 @@ namespace SARS
             this.Text = SystemName;
             this.Update();
             this.Refresh();
+        }
+
+        private void btnSaveVRC_Click(object sender, EventArgs e)
+        {
+            //IniFile.Write("VRCUsername", txtVRCUsername.Text);
+            //IniFile.Write("VRCPassword", txtVRCPassword.Text);
+            // Authentication credentials
+            if (txtVRCUsername.Text != "" && txtVRCPassword.Text != "" && txtTwoFactor.Text != "")
+            {
+                VrChat.TwoFactorCode = txtTwoFactor.Text;
+                VrChat.CustomApiUser.Login(txtVRCUsername.Text, txtVRCPassword.Text, CustomApiUser.VerifyTwoFactorAuthCode);
+                if (!File.Exists("auth.txt"))
+                {
+                    MessageBox.Show("Login Failed");
+                }
+                else
+                {
+                    AuthKey = File.ReadAllLines("auth.txt")[1];
+                }
+            }
+        }
+
+        private void btnDownload_Click(object sender, EventArgs e)
+        {
+            if (avatarGrid.SelectedRows.Count > 1)
+            {
+                bool downloaded = false;
+                Avatar avatar = null;
+                foreach (DataGridViewRow row in avatarGrid.SelectedRows)
+                {
+                    Image myImg = (row.Cells[0].Value as Image);
+                    myImg.Save(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) +
+                                $"\\{configSave.Config.HotSwapName}\\Assets\\Shrek SMART\\Resources\\shrekLogo.png", ImageFormat.Png);
+                    avatar = avatars.FirstOrDefault(x => x.AvatarID == row.Cells[3].Value);
+                    downloaded = RandomFunctions.DownloadVrca(avatar, VrChat, AuthKey, 0, 0);
+                }
+                string fileLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + $"\\{avatar.AvatarID}.vrca";
+
+            } else
+            {
+                bool downloaded = false;
+                Avatar avatar = null;
+                foreach (DataGridViewRow row in avatarGrid.SelectedRows)
+                {
+                    Image myImg = (row.Cells[0].Value as Image);
+                    myImg.Save(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) +
+                                $"\\{configSave.Config.HotSwapName}\\Assets\\Shrek SMART\\Resources\\shrekLogo.png", ImageFormat.Png);
+                    avatar = avatars.FirstOrDefault(x => x.AvatarID == row.Cells[3].Value);
+                    downloaded = RandomFunctions.DownloadVrca(avatar, VrChat, AuthKey, nmPcVersion.Value, nmQuestVersion.Value);
+                }
+                string fileLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + $"\\{avatar.AvatarID}.vrca";
+            }
+        }
+
+        private void btnExtractVRCA_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

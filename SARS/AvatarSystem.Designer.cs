@@ -57,6 +57,8 @@
             this.txtApiKey = new MetroFramework.Controls.MetroTextBox();
             this.btnSave = new MetroFramework.Controls.MetroButton();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.metroLabel7 = new MetroFramework.Controls.MetroLabel();
+            this.txtTwoFactor = new MetroFramework.Controls.MetroTextBox();
             this.btnSaveVRC = new MetroFramework.Controls.MetroButton();
             this.metroLabel1 = new MetroFramework.Controls.MetroLabel();
             this.metroLabel4 = new MetroFramework.Controls.MetroLabel();
@@ -160,7 +162,7 @@
             this.tabControl.FontWeight = MetroFramework.MetroTabControlWeight.Bold;
             this.tabControl.Location = new System.Drawing.Point(28, 232);
             this.tabControl.Name = "tabControl";
-            this.tabControl.SelectedIndex = 0;
+            this.tabControl.SelectedIndex = 2;
             this.tabControl.Size = new System.Drawing.Size(848, 456);
             this.tabControl.TabIndex = 0;
             this.tabControl.UseSelectable = true;
@@ -419,6 +421,8 @@
             this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox3.BackColor = System.Drawing.Color.Transparent;
+            this.groupBox3.Controls.Add(this.metroLabel7);
+            this.groupBox3.Controls.Add(this.txtTwoFactor);
             this.groupBox3.Controls.Add(this.btnSaveVRC);
             this.groupBox3.Controls.Add(this.metroLabel1);
             this.groupBox3.Controls.Add(this.metroLabel4);
@@ -429,22 +433,70 @@
             this.groupBox3.ForeColor = System.Drawing.SystemColors.Control;
             this.groupBox3.Location = new System.Drawing.Point(210, 117);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(596, 202);
+            this.groupBox3.Size = new System.Drawing.Size(596, 243);
             this.groupBox3.TabIndex = 92;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "VRChat Credientials (Really recommended to use a throw away account)";
+            // 
+            // metroLabel7
+            // 
+            this.metroLabel7.AutoSize = true;
+            this.metroLabel7.FontSize = MetroFramework.MetroLabelSize.Tall;
+            this.metroLabel7.FontWeight = MetroFramework.MetroLabelWeight.Bold;
+            this.metroLabel7.Location = new System.Drawing.Point(15, 112);
+            this.metroLabel7.Name = "metroLabel7";
+            this.metroLabel7.Size = new System.Drawing.Size(91, 25);
+            this.metroLabel7.TabIndex = 96;
+            this.metroLabel7.Text = "2FA Code";
+            this.metroLabel7.UseStyleColors = true;
+            // 
+            // txtTwoFactor
+            // 
+            this.txtTwoFactor.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            // 
+            // 
+            // 
+            this.txtTwoFactor.CustomButton.Image = null;
+            this.txtTwoFactor.CustomButton.Location = new System.Drawing.Point(369, 2);
+            this.txtTwoFactor.CustomButton.Name = "";
+            this.txtTwoFactor.CustomButton.Size = new System.Drawing.Size(27, 27);
+            this.txtTwoFactor.CustomButton.Style = MetroFramework.MetroColorStyle.Blue;
+            this.txtTwoFactor.CustomButton.TabIndex = 1;
+            this.txtTwoFactor.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light;
+            this.txtTwoFactor.CustomButton.UseSelectable = true;
+            this.txtTwoFactor.CustomButton.Visible = false;
+            this.txtTwoFactor.FontSize = MetroFramework.MetroTextBoxSize.Medium;
+            this.txtTwoFactor.FontWeight = MetroFramework.MetroTextBoxWeight.Bold;
+            this.txtTwoFactor.Lines = new string[0];
+            this.txtTwoFactor.Location = new System.Drawing.Point(186, 105);
+            this.txtTwoFactor.MaxLength = 1000;
+            this.txtTwoFactor.Name = "txtTwoFactor";
+            this.txtTwoFactor.PasswordChar = '\0';
+            this.txtTwoFactor.ScrollBars = System.Windows.Forms.ScrollBars.None;
+            this.txtTwoFactor.SelectedText = "";
+            this.txtTwoFactor.SelectionLength = 0;
+            this.txtTwoFactor.SelectionStart = 0;
+            this.txtTwoFactor.ShortcutsEnabled = true;
+            this.txtTwoFactor.Size = new System.Drawing.Size(399, 32);
+            this.txtTwoFactor.TabIndex = 95;
+            this.txtTwoFactor.UseSelectable = true;
+            this.txtTwoFactor.UseStyleColors = true;
+            this.txtTwoFactor.WaterMarkColor = System.Drawing.Color.FromArgb(((int)(((byte)(109)))), ((int)(((byte)(109)))), ((int)(((byte)(109)))));
+            this.txtTwoFactor.WaterMarkFont = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             // 
             // btnSaveVRC
             // 
             this.btnSaveVRC.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSaveVRC.FontSize = MetroFramework.MetroButtonSize.Tall;
-            this.btnSaveVRC.Location = new System.Drawing.Point(444, 155);
+            this.btnSaveVRC.Location = new System.Drawing.Point(444, 197);
             this.btnSaveVRC.Name = "btnSaveVRC";
             this.btnSaveVRC.Size = new System.Drawing.Size(141, 35);
             this.btnSaveVRC.TabIndex = 90;
             this.btnSaveVRC.Text = "Save";
             this.btnSaveVRC.UseSelectable = true;
             this.btnSaveVRC.UseStyleColors = true;
+            this.btnSaveVRC.Click += new System.EventHandler(this.btnSaveVRC_Click);
             // 
             // metroLabel1
             // 
@@ -545,7 +597,7 @@
             this.metroLabel3.AutoSize = true;
             this.metroLabel3.FontSize = MetroFramework.MetroLabelSize.Tall;
             this.metroLabel3.FontWeight = MetroFramework.MetroLabelWeight.Bold;
-            this.metroLabel3.Location = new System.Drawing.Point(14, 114);
+            this.metroLabel3.Location = new System.Drawing.Point(14, 156);
             this.metroLabel3.Name = "metroLabel3";
             this.metroLabel3.Size = new System.Drawing.Size(197, 25);
             this.metroLabel3.TabIndex = 89;
@@ -572,7 +624,7 @@
             this.txtClientVersion.FontWeight = MetroFramework.MetroTextBoxWeight.Bold;
             this.txtClientVersion.Lines = new string[] {
         "2022.4.2p1-1275--Release"};
-            this.txtClientVersion.Location = new System.Drawing.Point(217, 107);
+            this.txtClientVersion.Location = new System.Drawing.Point(217, 149);
             this.txtClientVersion.MaxLength = 1000;
             this.txtClientVersion.Name = "txtClientVersion";
             this.txtClientVersion.PasswordChar = '\0';
@@ -925,6 +977,7 @@
             this.btnExtractVRCA.Text = "Extract VRCA/VRCW";
             this.btnExtractVRCA.UseSelectable = true;
             this.btnExtractVRCA.UseStyleColors = true;
+            this.btnExtractVRCA.Click += new System.EventHandler(this.btnExtractVRCA_Click);
             // 
             // btnLoadVRCA
             // 
@@ -1355,6 +1408,7 @@
             this.btnDownload.Text = "Download VRCA / VRCW";
             this.btnDownload.UseSelectable = true;
             this.btnDownload.UseStyleColors = true;
+            this.btnDownload.Click += new System.EventHandler(this.btnDownload_Click);
             // 
             // btnResetScene
             // 
@@ -1734,6 +1788,8 @@
         private MetroFramework.Controls.MetroButton btnVrcaSearch;
         private MetroFramework.Controls.MetroButton btnExtractVRCA;
         private MetroFramework.Controls.MetroButton btnLoadVRCA;
+        private MetroFramework.Controls.MetroLabel metroLabel7;
+        public MetroFramework.Controls.MetroTextBox txtTwoFactor;
     }
 }
 

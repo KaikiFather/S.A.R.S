@@ -108,6 +108,12 @@ namespace SARS
                 UnitySetup();
             }
 
+            if (string.IsNullOrEmpty(configSave.Config.MacAddress))
+            {
+                Random rnd = new Random();
+                configSave.Config.MacAddress = EasyHash.GetSHA1String(new byte[] { (byte)rnd.Next(254), (byte)rnd.Next(254), (byte)rnd.Next(254), (byte)rnd.Next(254), (byte)rnd.Next(254) });
+                configSave.Save();
+            }
 
             VrChat = new VRChatApiClient(15, configSave.Config.MacAddress);
             if (txtVRCUsername.Text != "" && txtVRCPassword.Text != "" && configSave.Config.MacAddress != "")

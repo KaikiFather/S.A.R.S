@@ -578,43 +578,46 @@ namespace SARS
 
         private void btnHotswap_Click(object sender, EventArgs e)
         {
-            if (!_vrcaThread.IsAlive)
+            if (_vrcaThread != null)
             {
-                string fileLocation = "";
-                if (vrcaLocation == "")
+                if (_vrcaThread.IsAlive)
                 {
-                    if (avatarGrid.SelectedRows.Count > 1)
-                    {
-                        MessageBox.Show("Please only select 1 row at a time for hotswapping.");
-                        return;
-                    }
-                    bool downloaded = false;
-                    Avatar avatar = null;
-                    foreach (DataGridViewRow row in avatarGrid.SelectedRows)
-                    {
-                        Image myImg = (row.Cells[0].Value as Image);
-                        myImg.Save(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) +
-                                    $"\\{configSave.Config.HotSwapName}\\Assets\\Shrek SMART\\Resources\\shrekLogo.png", ImageFormat.Png);
-                        avatar = avatars.FirstOrDefault(x => x.AvatarID == row.Cells[3].Value);
-                        downloaded = AvatarFunctions.DownloadVrca(avatar, VrChat, AuthKey, nmPcVersion.Value, nmQuestVersion.Value);
-                    }
-                    fileLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + $"\\{avatar.AvatarID}.vrca";
+                    MessageBox.Show("VRCA Still hotswapping please try again later");
+                    return;
                 }
-                else
-                {
-                    fileLocation = vrcaLocation;
-                }
-                hotSwapConsole = new HotswapConsole();
-                hotSwapConsole.Show();
+            }
 
-                _vrcaThread = new Thread(() => HotSwap.HotswapProcess(hotSwapConsole, this, fileLocation));
-                _vrcaThread.Start();
+            string fileLocation = "";
+            if (vrcaLocation == "")
+            {
+                if (avatarGrid.SelectedRows.Count > 1)
+                {
+                    MessageBox.Show("Please only select 1 row at a time for hotswapping.");
+                    return;
+                }
+                bool downloaded = false;
+                Avatar avatar = null;
+                foreach (DataGridViewRow row in avatarGrid.SelectedRows)
+                {
+                    Image myImg = (row.Cells[0].Value as Image);
+                    myImg.Save(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) +
+                                $"\\{configSave.Config.HotSwapName}\\Assets\\Shrek SMART\\Resources\\shrekLogo.png", ImageFormat.Png);
+                    avatar = avatars.FirstOrDefault(x => x.AvatarID == row.Cells[3].Value);
+                    downloaded = AvatarFunctions.DownloadVrca(avatar, VrChat, AuthKey, nmPcVersion.Value, nmQuestVersion.Value);
+                }
+                fileLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + $"\\{avatar.AvatarID}.vrca";
             }
             else
             {
-                MessageBox.Show("VRCA Still hotswapping please try again later");
+                fileLocation = vrcaLocation;
             }
+            hotSwapConsole = new HotswapConsole();
+            hotSwapConsole.Show();
+
+            _vrcaThread = new Thread(() => HotSwap.HotswapProcess(hotSwapConsole, this, fileLocation));
+            _vrcaThread.Start();
         }
+
 
         private void btnUnity_Click(object sender, EventArgs e)
         {
@@ -830,7 +833,8 @@ namespace SARS
                     avatar = avatars.FirstOrDefault(x => x.AvatarID == avatarGrid.SelectedRows[0].Cells[3].Value);
                     if (!AvatarFunctions.DownloadVrca(avatar, VrChat, AuthKey, nmPcVersion.Value, nmQuestVersion.Value)) return;
                     avatarFile = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + $"\\{avatar.AvatarID}.vrca";
-                } else
+                }
+                else
                 {
                     avatarFile = vrcaLocation;
                 }

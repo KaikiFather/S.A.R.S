@@ -14,6 +14,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Mail;
 using System.Reflection;
+using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 using VRChatAPI;
@@ -595,7 +596,7 @@ namespace SARS
                         myImg.Save(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) +
                                     $"\\{configSave.Config.HotSwapName}\\Assets\\Shrek SMART\\Resources\\shrekLogo.png", ImageFormat.Png);
                         avatar = avatars.FirstOrDefault(x => x.AvatarID == row.Cells[3].Value);
-                        downloaded = RandomFunctions.DownloadVrca(avatar, VrChat, AuthKey, nmPcVersion.Value, nmQuestVersion.Value);
+                        downloaded = AvatarFunctions.DownloadVrca(avatar, VrChat, AuthKey, nmPcVersion.Value, nmQuestVersion.Value);
                     }
                     fileLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + $"\\{avatar.AvatarID}.vrca";
                 }
@@ -625,7 +626,7 @@ namespace SARS
             RandomFunctions.tryDeleteDirectory(tempFolder + unityTemp, false);
             RandomFunctions.tryDeleteDirectory(tempFolder + unityTemp2, false);
 
-            RandomFunctions.ExtractHSB(configSave.Config.HotSwapName);
+            AvatarFunctions.ExtractHSB(configSave.Config.HotSwapName);
             CopyFiles();
             RandomFunctions.OpenUnity(configSave.Config.UnityLocation, configSave.Config.HotSwapName);
 
@@ -700,13 +701,12 @@ namespace SARS
 
         private string SelectFileVrca()
         {
-            var fileContent = string.Empty;
             var filePath = string.Empty;
 
             using (var openFileDialog = new OpenFileDialog())
             {
                 openFileDialog.InitialDirectory = "c:\\";
-                openFileDialog.Filter = "vrc* files (*.vrc*)|*.vrc*";
+                openFileDialog.Filter = "vrca files (*.vrca)|*.vrca";
                 openFileDialog.RestoreDirectory = true;
 
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
@@ -732,13 +732,20 @@ namespace SARS
 
         private void btnSaveVRC_Click(object sender, EventArgs e)
         {
-            //IniFile.Write("VRCUsername", txtVRCUsername.Text);
-            //IniFile.Write("VRCPassword", txtVRCPassword.Text);
-            // Authentication credentials
             if (txtVRCUsername.Text != "" && txtVRCPassword.Text != "" && txtTwoFactor.Text != "")
             {
                 VrChat.TwoFactorCode = txtTwoFactor.Text;
-                VrChat.CustomApiUser.Login(txtVRCUsername.Text, txtVRCPassword.Text, CustomApiUser.VerifyTwoFactorAuthCode);
+                try
+                {
+                    VrChat.CustomApiUser.Login(txtVRCUsername.Text, txtVRCPassword.Text, CustomApiUser.VerifyTwoFactorAuthCode);
+                }
+                catch (Exception ex)
+                {
+                    if (ex.Message == "Couldn't verify 2FA code")
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
+                }
                 if (!File.Exists("auth.txt"))
                 {
                     MessageBox.Show("Login Failed");
@@ -746,6 +753,35 @@ namespace SARS
                 else
                 {
                     AuthKey = File.ReadAllLines("auth.txt")[1];
+                    configSave.Config.Username = txtVRCUsername.Text;
+                    configSave.Config.Password = txtVRCPassword.Text;
+                    configSave.Save();
+                }
+            }
+            else if (txtVRCUsername.Text != "" && txtVRCPassword.Text != "" && txtTwoFactor.Text == "")
+            {
+                VrChat.TwoFactorCode = null;
+                try
+                {
+                    VrChat.CustomApiUser.Login(txtVRCUsername.Text, txtVRCPassword.Text, null);
+                }
+                catch (Exception ex)
+                {
+                    if (ex.Message == "Couldn't verify 2FA code")
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
+                }
+                if (!File.Exists("auth.txt"))
+                {
+                    MessageBox.Show("Login Failed");
+                }
+                else
+                {
+                    AuthKey = File.ReadAllLines("auth.txt")[1];
+                    configSave.Config.Username = txtVRCUsername.Text;
+                    configSave.Config.Password = txtVRCPassword.Text;
+                    configSave.Save();
                 }
             }
         }
@@ -762,11 +798,12 @@ namespace SARS
                     myImg.Save(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) +
                                 $"\\{configSave.Config.HotSwapName}\\Assets\\Shrek SMART\\Resources\\shrekLogo.png", ImageFormat.Png);
                     avatar = avatars.FirstOrDefault(x => x.AvatarID == row.Cells[3].Value);
-                    downloaded = RandomFunctions.DownloadVrca(avatar, VrChat, AuthKey, 0, 0);
+                    downloaded = AvatarFunctions.DownloadVrca(avatar, VrChat, AuthKey, 0, 0);
                 }
                 string fileLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + $"\\{avatar.AvatarID}.vrca";
 
-            } else
+            }
+            else
             {
                 bool downloaded = false;
                 Avatar avatar = null;
@@ -776,7 +813,7 @@ namespace SARS
                     myImg.Save(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) +
                                 $"\\{configSave.Config.HotSwapName}\\Assets\\Shrek SMART\\Resources\\shrekLogo.png", ImageFormat.Png);
                     avatar = avatars.FirstOrDefault(x => x.AvatarID == row.Cells[3].Value);
-                    downloaded = RandomFunctions.DownloadVrca(avatar, VrChat, AuthKey, nmPcVersion.Value, nmQuestVersion.Value);
+                    downloaded = AvatarFunctions.DownloadVrca(avatar, VrChat, AuthKey, nmPcVersion.Value, nmQuestVersion.Value);
                 }
                 string fileLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + $"\\{avatar.AvatarID}.vrca";
             }
@@ -784,7 +821,100 @@ namespace SARS
 
         private void btnExtractVRCA_Click(object sender, EventArgs e)
         {
+            if (avatarGrid.SelectedRows.Count == 1 || vrcaLocation != "")
+            {
+                string avatarFile;
+                Avatar avatar = null;
+                if (vrcaLocation == "")
+                {
+                    avatar = avatars.FirstOrDefault(x => x.AvatarID == avatarGrid.SelectedRows[0].Cells[3].Value);
+                    if (!AvatarFunctions.DownloadVrca(avatar, VrChat, AuthKey, nmPcVersion.Value, nmQuestVersion.Value)) return;
+                    avatarFile = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + $"\\{avatar.AvatarID}.vrca";
+                } else
+                {
+                    avatarFile = vrcaLocation;
+                }
 
+                var folderDlg = new FolderBrowserDialog
+                {
+                    ShowNewFolderButton = true
+                };
+                // Show the FolderBrowserDialog.
+                var result = DialogResult.OK;
+                if (!toggleAvatar.Checked || txtAvatarOutput.Text == "")
+                    result = folderDlg.ShowDialog();
+                else
+                    folderDlg.SelectedPath = txtAvatarOutput.Text;
+                if (result == DialogResult.OK || toggleAvatar.Checked && txtAvatarOutput.Text != "")
+                {
+                    var filePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                    var invalidFileNameChars = Path.GetInvalidFileNameChars();
+                    var folderExtractLocation = folderDlg.SelectedPath + @"\" + Path.GetFileNameWithoutExtension(avatarFile);
+                    if (!Directory.Exists(folderExtractLocation)) Directory.CreateDirectory(folderExtractLocation);
+                    var commands =
+                        string.Format(
+                            "/C AssetRipper.exe \"{1}\" -o \"{0}\" -q ",
+                             folderExtractLocation, avatarFile);
+
+                    var p = new Process();
+                    var psi = new ProcessStartInfo
+                    {
+                        FileName = "CMD.EXE",
+                        Arguments = commands,
+                        WorkingDirectory = filePath + @"\AssetRipperConsole_win64"
+                    };
+                    p.StartInfo = psi;
+                    p.Start();
+                    p.WaitForExit();
+
+                    RandomFunctions.tryDeleteDirectory(folderExtractLocation + @"\AssetRipper\GameAssemblies", false);
+                    RandomFunctions.tryDeleteDirectory(folderExtractLocation + @"\Assets\Scripts", false);
+                    try
+                    {
+                        Directory.Move(folderExtractLocation + @"\Assets\Shader",
+                            folderExtractLocation + @"\Assets\.Shader");
+                    }
+                    catch
+                    {
+                    }
+
+                    RandomFunctions.tryDeleteDirectory(folderExtractLocation + @"\AuxiliaryFiles", false);
+                    RandomFunctions.tryDeleteDirectory(folderExtractLocation + @"\ExportedProject\Assets\Scripts", false);
+                    RandomFunctions.tryDeleteDirectory(folderExtractLocation + @"\ExportedProject\AssetRipper", false);
+                    RandomFunctions.tryDeleteDirectory(folderExtractLocation + @"\ExportedProject\ProjectSettings", false);
+                    try
+                    {
+                        Directory.Move(folderExtractLocation + @"\ExportedProject\Assets\Shader",
+                            folderExtractLocation + @"\ExportedProject\Assets\.Shader");
+                        Directory.Move(folderExtractLocation + @"\ExportedProject\Assets\MonoScript",
+                            folderExtractLocation + @"\ExportedProject\Assets\.MonoScript");
+
+                    }
+                    catch
+                    {
+                    }
+
+                    if (vrcaLocation == "")
+                    {
+                        rippedList.Add(avatar.AvatarID);
+                    }
+                }
+            }
+            else
+            {
+                MetroMessageBox.Show(this, "Please select an avatar or world first.", "ERROR", MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnUnityLoc_Click(object sender, EventArgs e)
+        {
+            SelectFile();
+        }
+
+        private void btnPreview_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("EARLY PREVIEW (NOT READY)");
         }
     }
 }

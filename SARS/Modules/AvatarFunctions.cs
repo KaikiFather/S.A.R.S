@@ -30,7 +30,7 @@ namespace SARS.Modules
             }
         }
 
-        public static bool DownloadVrca(Avatar avatar, VRChatApiClient VrChat, string AuthKey, decimal pcVersion, decimal questVersion)
+        public static bool DownloadVrca(Avatar avatar, VRChatApiClient VrChat, string AuthKey, decimal pcVersion, decimal questVersion, string TwoFactor)
         {
             var filePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + $"\\{avatar.AvatarID}.vrca";
             if (AuthKey == "")

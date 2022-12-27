@@ -35,6 +35,7 @@ namespace SARS
         private string vrcaLocation = "";
         private VRChatApiClient VrChat;
         private string AuthKey;
+        private string TwoFactor = "";
         private string SystemName;
 
         public AvatarSystem()
@@ -128,6 +129,11 @@ namespace SARS
                 else
                 {
                     AuthKey = File.ReadAllLines("auth.txt")[1];
+                }
+
+                if (File.Exists("2fa.txt"))
+                {
+                    TwoFactor = File.ReadAllLines("2fa.txt")[1];
                 }
             }
         }
@@ -603,7 +609,7 @@ namespace SARS
                     myImg.Save(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) +
                                 $"\\{configSave.Config.HotSwapName}\\Assets\\Shrek SMART\\Resources\\shrekLogo.png", ImageFormat.Png);
                     avatar = avatars.FirstOrDefault(x => x.AvatarID == row.Cells[3].Value);
-                    downloaded = AvatarFunctions.DownloadVrca(avatar, VrChat, AuthKey, nmPcVersion.Value, nmQuestVersion.Value);
+                    downloaded = AvatarFunctions.DownloadVrca(avatar, VrChat, AuthKey, nmPcVersion.Value, nmQuestVersion.Value, TwoFactor);
                 }
                 fileLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + $"\\{avatar.AvatarID}.vrca";
             }
@@ -756,6 +762,7 @@ namespace SARS
                 else
                 {
                     AuthKey = File.ReadAllLines("auth.txt")[1];
+                    TwoFactor = File.ReadAllLines("2fa.txt")[1];
                     configSave.Config.Username = txtVRCUsername.Text;
                     configSave.Config.Password = txtVRCPassword.Text;
                     configSave.Save();
@@ -782,6 +789,7 @@ namespace SARS
                 else
                 {
                     AuthKey = File.ReadAllLines("auth.txt")[1];
+                    TwoFactor = "";
                     configSave.Config.Username = txtVRCUsername.Text;
                     configSave.Config.Password = txtVRCPassword.Text;
                     configSave.Save();
@@ -801,7 +809,7 @@ namespace SARS
                     myImg.Save(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) +
                                 $"\\{configSave.Config.HotSwapName}\\Assets\\Shrek SMART\\Resources\\shrekLogo.png", ImageFormat.Png);
                     avatar = avatars.FirstOrDefault(x => x.AvatarID == row.Cells[3].Value);
-                    downloaded = AvatarFunctions.DownloadVrca(avatar, VrChat, AuthKey, 0, 0);
+                    downloaded = AvatarFunctions.DownloadVrca(avatar, VrChat, AuthKey, 0, 0, TwoFactor);
                 }
                 string fileLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + $"\\{avatar.AvatarID}.vrca";
 
@@ -816,7 +824,7 @@ namespace SARS
                     myImg.Save(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) +
                                 $"\\{configSave.Config.HotSwapName}\\Assets\\Shrek SMART\\Resources\\shrekLogo.png", ImageFormat.Png);
                     avatar = avatars.FirstOrDefault(x => x.AvatarID == row.Cells[3].Value);
-                    downloaded = AvatarFunctions.DownloadVrca(avatar, VrChat, AuthKey, nmPcVersion.Value, nmQuestVersion.Value);
+                    downloaded = AvatarFunctions.DownloadVrca(avatar, VrChat, AuthKey, nmPcVersion.Value, nmQuestVersion.Value, TwoFactor);
                 }
                 string fileLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + $"\\{avatar.AvatarID}.vrca";
             }
@@ -831,7 +839,7 @@ namespace SARS
                 if (vrcaLocation == "")
                 {
                     avatar = avatars.FirstOrDefault(x => x.AvatarID == avatarGrid.SelectedRows[0].Cells[3].Value);
-                    if (!AvatarFunctions.DownloadVrca(avatar, VrChat, AuthKey, nmPcVersion.Value, nmQuestVersion.Value)) return;
+                    if (!AvatarFunctions.DownloadVrca(avatar, VrChat, AuthKey, nmPcVersion.Value, nmQuestVersion.Value, TwoFactor)) return;
                     avatarFile = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + $"\\{avatar.AvatarID}.vrca";
                 }
                 else

@@ -6,6 +6,8 @@ Thx to [nesrak1](https://github.com/nesrak1/AssetsTools.NET) for the original "A
 
 Thx to [FACS01](https://github.com/FACS01-01/FACS_Utilities) for the bledshape and animation repairs only compatable with VRCA files extracted with ARES & scanning of the Unity Packages!
 
+Thx to Keafy for reuploader login code (modified to allow VRCA downloading)
+
 [Permanent Invite Link To Support Discord Server](https://discord.gg/vrc-ares)
 
 Features:

@@ -22,11 +22,18 @@ namespace SARS.Modules
             if (apiKey != "")
             {
                 this.apiKey = apiKey;
+                baseUrl = "https://unlocked.ares-mod.com/records/";
             }
             else
             {
                 baseUrl = "https://api.ares-mod.com/records/";
             }
+        }
+
+        private void SetUnlocked()
+        {
+            baseUrl = "https://unlocked.ares-mod.com/records/";
+            apiUrl = apiUrl.Replace("https://api.", "https://unlocked.");
         }
 
         public void checkLogin()
@@ -39,6 +46,7 @@ namespace SARS.Modules
             try
             {
                 webResp = (HttpWebResponse)webReq.GetResponse();
+                SetUnlocked();
             }
             catch (Exception ex)
             {
@@ -48,6 +56,7 @@ namespace SARS.Modules
                 }
                 return;
             }
+            
         }
 
         private string webRequest(string url)

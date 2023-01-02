@@ -98,6 +98,7 @@
     <Compile Include="Modules\ConfigSave.cs" />
     <Compile Include="Modules\GenerateHtml.cs" />
     <Compile Include="Modules\HotSwap.cs" />
+    <Compile Include="Modules\MessageBoxManager.cs" />
     <Compile Include="Modules\ProgressBar.cs" />
     <Compile Include="Modules\RandomFunctions.cs" />
     <Compile Include="Modules\ShrekApi.cs" />

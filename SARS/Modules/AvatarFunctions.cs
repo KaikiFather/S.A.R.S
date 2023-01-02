@@ -54,9 +54,9 @@ namespace SARS.Modules
                             {
                                 version[7] = questVersion.ToString();
                             }
-                            VrChat.DownloadFile(string.Join("/", version), AuthKey, filePath);
+                            VrChat.DownloadFile(string.Join("/", version), AuthKey, TwoFactor, filePath);
                         }
-                        catch { VrChat.DownloadFile(avatar.QUESTAssetURL, AuthKey, filePath); }
+                        catch { VrChat.DownloadFile(avatar.QUESTAssetURL, AuthKey, TwoFactor, filePath); }
                     }
                     else
                     {
@@ -76,9 +76,9 @@ namespace SARS.Modules
                             {
                                 version[7] = pcVersion.ToString();
                             }
-                            VrChat.DownloadFile(string.Join("/", version), AuthKey, filePath);
+                            VrChat.DownloadFile(string.Join("/", version), AuthKey, TwoFactor, filePath);
                         }
-                        catch { VrChat.DownloadFile(avatar.PCAssetURL, AuthKey, filePath); }
+                        catch { VrChat.DownloadFile(avatar.PCAssetURL, AuthKey, TwoFactor, filePath); }
                     }
                     else
                     {
@@ -101,9 +101,9 @@ namespace SARS.Modules
                     {
                         version[7] = pcVersion.ToString();
                     }
-                    VrChat.DownloadFile(string.Join("/", version), AuthKey, filePath);
+                    VrChat.DownloadFile(string.Join("/", version), AuthKey, TwoFactor, filePath);
                 }
-                catch { VrChat.DownloadFile(avatar.PCAssetURL, AuthKey, filePath); }
+                catch { VrChat.DownloadFile(avatar.PCAssetURL, AuthKey, TwoFactor, filePath); }
             }
             else if (avatar.QUESTAssetURL.ToLower() != "none" && avatar.QUESTAssetURL != null)
             {
@@ -114,15 +114,60 @@ namespace SARS.Modules
                     {
                         version[7] = questVersion.ToString();
                     }
-                    VrChat.DownloadFile(string.Join("/", version), AuthKey, filePath);
+                    VrChat.DownloadFile(string.Join("/", version), AuthKey, TwoFactor, filePath);
                 }
-                catch { VrChat.DownloadFile(avatar.QUESTAssetURL, AuthKey, filePath); }
+                catch { VrChat.DownloadFile(avatar.QUESTAssetURL, AuthKey, TwoFactor, filePath); }
             }
             else
             {
                 return false;
             }
             return true;
+        }
+
+        public static Tuple<int, int> GetVersion(string pcUrl, string questUrl, string authKey, string twoFactor, VRChatApiClient vrChat)
+        {
+            int pcVersion;
+            int questVersion;
+            if (!string.IsNullOrEmpty(pcUrl) && authKey != "")
+            {
+                try
+                {
+                    var version = pcUrl.Split('/');
+                    var urlCheck = pcUrl.Replace(version[6] + "/" + version[7] + "/file", version[6]);
+                    var versionList = vrChat.GetVersions(urlCheck, authKey, twoFactor);
+                    pcVersion = Convert.ToInt32(versionList.versions.LastOrDefault().version);
+                }
+                catch
+                {
+                    pcVersion = 1;
+                }
+            }
+            else
+            {
+                pcVersion = 0;
+            }
+
+            if (!string.IsNullOrEmpty(questUrl) && authKey != "")
+            {
+                try
+                {
+                    var version = questUrl.Split('/');
+                    var urlCheck = questUrl.Replace(version[6] + "/" + version[7] + "/file", version[6]);
+                    var versionList = vrChat.GetVersions(urlCheck, authKey, twoFactor);
+                    questVersion = Convert.ToInt32(versionList.versions.LastOrDefault().version);
+                }
+                catch
+                {
+                    questVersion = 1;
+                }
+            }
+            else
+            {
+                questVersion = 0;
+            }
+
+            return Tuple.Create(pcVersion, questVersion);
         }
     }
 }

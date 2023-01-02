@@ -225,9 +225,6 @@
     <Content Include="AssetRipperConsole_win64\AssetRipper.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="AssetRipperConsole_win64\AssetRipper.IO.Endian.pdb">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="AssetRipperConsole_win64\capstone.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

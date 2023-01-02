@@ -5,8 +5,9 @@ namespace SARS.Models
 {
     public class Config
     {
-        public string Username { get; set; }
-        public string Password { get; set; }
+        public string UserId { get; set; }
+        public string AuthKey { get; set; }
+        public string TwoFactor { get; set; }
         public string ApiKey { get; set; }
         public string UnityLocation { get; set; }
         public string ClientVersion { get; set; }

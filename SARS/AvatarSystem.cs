@@ -19,6 +19,7 @@ using System.Threading;
 using System.Windows.Forms;
 using VRChatAPI;
 using VRChatAPI.Models;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace SARS
 {
@@ -56,6 +57,7 @@ namespace SARS
             rippedList = new List<string>();
             favList = new List<string>();
             configSave = new ConfigSave<Config>("config.cfg");
+            tabControl.SelectedIndex = 0;
             LoadSettings();
             if (string.IsNullOrEmpty(configSave.Config.HotSwapName))
             {
@@ -116,26 +118,8 @@ namespace SARS
                 configSave.Config.MacAddress = EasyHash.GetSHA1String(new byte[] { (byte)rnd.Next(254), (byte)rnd.Next(254), (byte)rnd.Next(254), (byte)rnd.Next(254), (byte)rnd.Next(254) });
                 configSave.Save();
             }
-
             VrChat = new VRChatApiClient(15, configSave.Config.MacAddress);
-            if (txtVRCUsername.Text != "" && txtVRCPassword.Text != "" && configSave.Config.MacAddress != "")
-            {
-                VrChat.CustomApiUser.Login(txtVRCUsername.Text, txtVRCPassword.Text);
-                Thread.Sleep(1000);
-                if (!File.Exists("auth.txt"))
-                {
-                    MessageBox.Show("Login Failed");
-                }
-                else
-                {
-                    AuthKey = File.ReadAllLines("auth.txt")[1];
-                }
-
-                if (File.Exists("2fa.txt"))
-                {
-                    TwoFactor = File.ReadAllLines("2fa.txt")[1];
-                }
-            }
+            VrChat.CustomApiUser.LoginWithExistingSession(configSave.Config.UserId, configSave.Config.AuthKey, configSave.Config.TwoFactor);
         }
 
         private void UnitySetup()
@@ -454,6 +438,13 @@ namespace SARS
             this.Text = SystemName;
             this.Update();
             this.Refresh();
+            if(avatarGrid.SelectedRows.Count == 1)
+            {
+                Avatar info = avatars.FirstOrDefault(x => x.AvatarID == avatarGrid.SelectedRows[0].Cells[3].Value.ToString());
+                var versions = AvatarFunctions.GetVersion(info.PCAssetURL, info.QUESTAssetURL, configSave.Config.AuthKey, configSave.Config.TwoFactor, VrChat);
+                nmPcVersion.Value = versions.Item1;
+                nmQuestVersion.Value = versions.Item2;
+            }
         }
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -761,11 +752,11 @@ namespace SARS
                 }
                 else
                 {
-                    AuthKey = File.ReadAllLines("auth.txt")[1];
-                    TwoFactor = File.ReadAllLines("2fa.txt")[1];
-                    configSave.Config.Username = txtVRCUsername.Text;
-                    configSave.Config.Password = txtVRCPassword.Text;
+                    configSave.Config.UserId = File.ReadAllLines("auth.txt")[0];
+                    configSave.Config.AuthKey = File.ReadAllLines("auth.txt")[1];
+                    configSave.Config.TwoFactor = File.ReadAllLines("2fa.txt")[1];
                     configSave.Save();
+                    MessageBox.Show("Login Successful");
                 }
             }
             else if (txtVRCUsername.Text != "" && txtVRCPassword.Text != "" && txtTwoFactor.Text == "")
@@ -788,11 +779,11 @@ namespace SARS
                 }
                 else
                 {
-                    AuthKey = File.ReadAllLines("auth.txt")[1];
-                    TwoFactor = "";
-                    configSave.Config.Username = txtVRCUsername.Text;
-                    configSave.Config.Password = txtVRCPassword.Text;
+                    configSave.Config.UserId = File.ReadAllLines("auth.txt")[0];
+                    configSave.Config.AuthKey = File.ReadAllLines("auth.txt")[1];
+                    configSave.Config.TwoFactor = "";
                     configSave.Save();
+                    MessageBox.Show("Login Successful");
                 }
             }
         }

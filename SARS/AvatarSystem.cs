@@ -598,10 +598,13 @@ namespace SARS
                 Avatar avatar = null;
                 foreach (DataGridViewRow row in avatarGrid.SelectedRows)
                 {
-                    Image myImg = (row.Cells[0].Value as Image);
-                    myImg.Save(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) +
-                                $"\\{configSave.Config.HotSwapName}\\Assets\\Shrek SMART\\Resources\\shrekLogo.png", ImageFormat.Png);
-                    avatar = avatars.FirstOrDefault(x => x.AvatarID == row.Cells[3].Value);
+                    try
+                    {
+                        Image myImg = (row.Cells[0].Value as Image);
+                        myImg.Save(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) +
+                                    $"\\{configSave.Config.HotSwapName}\\Assets\\Shrek SMART\\Resources\\shrekLogo.png", ImageFormat.Png);
+                        avatar = avatars.FirstOrDefault(x => x.AvatarID == row.Cells[3].Value);
+                    } catch { }
                     downloaded = AvatarFunctions.DownloadVrca(avatar, VrChat, configSave.Config.AuthKey, nmPcVersion.Value, nmQuestVersion.Value, configSave.Config.TwoFactor);
                 }
                 fileLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + $"\\{avatar.AvatarID}.vrca";
@@ -805,9 +808,6 @@ namespace SARS
                 Avatar avatar = null;
                 foreach (DataGridViewRow row in avatarGrid.SelectedRows)
                 {
-                    Image myImg = (row.Cells[0].Value as Image);
-                    myImg.Save(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) +
-                                $"\\{configSave.Config.HotSwapName}\\Assets\\Shrek SMART\\Resources\\shrekLogo.png", ImageFormat.Png);
                     avatar = avatars.FirstOrDefault(x => x.AvatarID == row.Cells[3].Value);
                     downloaded = AvatarFunctions.DownloadVrca(avatar, VrChat, configSave.Config.AuthKey, 0, 0, configSave.Config.TwoFactor);
                 }
@@ -820,9 +820,6 @@ namespace SARS
                 Avatar avatar = null;
                 foreach (DataGridViewRow row in avatarGrid.SelectedRows)
                 {
-                    Image myImg = (row.Cells[0].Value as Image);
-                    myImg.Save(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) +
-                                $"\\{configSave.Config.HotSwapName}\\Assets\\Shrek SMART\\Resources\\shrekLogo.png", ImageFormat.Png);
                     avatar = avatars.FirstOrDefault(x => x.AvatarID == row.Cells[3].Value);
                     downloaded = AvatarFunctions.DownloadVrca(avatar, VrChat, configSave.Config.AuthKey, nmPcVersion.Value, nmQuestVersion.Value, configSave.Config.TwoFactor);
                 }

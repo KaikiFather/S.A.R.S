@@ -121,7 +121,7 @@ namespace SARS
                 configSave.Save();
             }
             VrChat = new VRChatApiClient(15, configSave.Config.MacAddress);
-            VrChat.CustomApiUser.LoginWithExistingSession(configSave.Config.UserId, configSave.Config.AuthKey, configSave.Config.TwoFactor);
+            //VrChat.CustomApiUser.LoginWithExistingSession(configSave.Config.UserId, configSave.Config.AuthKey, configSave.Config.TwoFactor);
         }
 
         private void UnitySetup()
@@ -739,7 +739,7 @@ namespace SARS
         {
             try
             {
-                VrChat.CustomApiUser.Logout();
+               _ =  VrChat.CustomApiUser.Logout().Result;
             } catch
             {
 
@@ -749,7 +749,7 @@ namespace SARS
                 VrChat.TwoFactorCode = txtTwoFactor.Text;
                 try
                 {
-                    VrChat.CustomApiUser.Login(txtVRCUsername.Text, txtVRCPassword.Text, CustomApiUser.VerifyTwoFactorAuthCode);
+                    _ = VrChat.CustomApiUser.Login(txtVRCUsername.Text, txtVRCPassword.Text, CustomApiUser.VerifyTwoFactorAuthCode).Result;
                 }
                 catch (Exception ex)
                 {
@@ -776,7 +776,7 @@ namespace SARS
                 VrChat.TwoFactorCode = null;
                 try
                 {
-                    VrChat.CustomApiUser.Login(txtVRCUsername.Text, txtVRCPassword.Text, null);
+                    _ = VrChat.CustomApiUser.Login(txtVRCUsername.Text, txtVRCPassword.Text, null).Result;
                 }
                 catch (Exception ex)
                 {

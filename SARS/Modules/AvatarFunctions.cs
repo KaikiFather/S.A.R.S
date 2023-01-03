@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
@@ -129,14 +130,21 @@ namespace SARS.Modules
         {
             int pcVersion;
             int questVersion;
-            if (!string.IsNullOrEmpty(pcUrl) && authKey != "")
+            if (!string.IsNullOrEmpty(pcUrl) && pcUrl.ToLower() != "none" && authKey != "")
             {
                 try
                 {
                     var version = pcUrl.Split('/');
                     var urlCheck = pcUrl.Replace(version[6] + "/" + version[7] + "/file", version[6]);
                     var versionList = vrChat.GetVersions(urlCheck, authKey, twoFactor);
-                    pcVersion = Convert.ToInt32(versionList.versions.LastOrDefault().version);
+                    if (versionList != null)
+                    {
+                        pcVersion = Convert.ToInt32(versionList.versions.LastOrDefault().version);
+                    }
+                    else
+                    {
+                        pcVersion = 1;
+                    }
                 }
                 catch
                 {
@@ -148,14 +156,20 @@ namespace SARS.Modules
                 pcVersion = 0;
             }
 
-            if (!string.IsNullOrEmpty(questUrl) && authKey != "")
+            if (!string.IsNullOrEmpty(questUrl) && questUrl.ToLower() != "none" && authKey != "")
             {
                 try
                 {
                     var version = questUrl.Split('/');
                     var urlCheck = questUrl.Replace(version[6] + "/" + version[7] + "/file", version[6]);
                     var versionList = vrChat.GetVersions(urlCheck, authKey, twoFactor);
-                    questVersion = Convert.ToInt32(versionList.versions.LastOrDefault().version);
+                    if (versionList != null)
+                    {
+                        questVersion = Convert.ToInt32(versionList.versions.LastOrDefault().version);
+                    } else
+                    {
+                        questVersion = 0;
+                    }
                 }
                 catch
                 {

@@ -54,7 +54,7 @@ namespace SARS
             cbLimit.SelectedIndex = 3;
             rippedList = new List<string>();
             favList = new List<string>();
-            configSave = new ConfigSave<Config>("config.cfg");
+            configSave = new ConfigSave<Config>(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\config.cfg");
             tabControl.SelectedIndex = 0;
             LoadSettings();
             if (string.IsNullOrEmpty(configSave.Config.HotSwapName))

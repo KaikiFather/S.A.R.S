@@ -266,7 +266,7 @@ namespace SARS.Modules
 
             string builtUrl = apiUrl;
 
-            builtUrl += $"&filter=AvatarName,eq,{authorId}";
+            builtUrl += $"&filter=AuthorID,eq,{authorId}";
             builtUrl = urlBuilder(builtUrl, publicAvatars, privateAvatars, questAvatars, pcAvatars, amount, before, after);
 
             string jsonString = webRequest(builtUrl);
@@ -294,7 +294,7 @@ namespace SARS.Modules
 
             string builtUrl = apiUrl;
 
-            builtUrl += $"&filter=AvatarName,eq,{avatarId}";
+            builtUrl += $"&filter=AvatarID,eq,{avatarId}";
             builtUrl = urlBuilder(builtUrl, publicAvatars, privateAvatars, questAvatars, pcAvatars, 1, null, null);
 
             string jsonString = webRequest(builtUrl);

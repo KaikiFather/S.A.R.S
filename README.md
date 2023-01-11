@@ -8,7 +8,7 @@ Thx to [FACS01](https://github.com/FACS01-01/FACS_Utilities) for the bledshape a
 
 Thx to Keafy for reuploader login code (modified to allow VRCA downloading)
 
-[Permanent Invite Link To Support Discord Server](https://discord.gg/vrc-ares)
+[Permanent Invite Link To Support Discord Server](https://discord.gg/avatarrecovery)
 
 Features:
 

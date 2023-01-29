@@ -44,9 +44,7 @@ namespace SARS
 
         private void AvatarSystem_Load(object sender, EventArgs e)
         {
-            MessageBoxManager.Yes = "PC";
-            MessageBoxManager.No = "Quest";
-            MessageBoxManager.Register();
+            
             var assembly = Assembly.GetExecutingAssembly();
             var fileVersionInfo = FileVersionInfo.GetVersionInfo(assembly.Location);
             SystemName = "Shrek Avatar Recovery System (S.A.R.S) V" + fileVersionInfo.ProductVersion;
@@ -80,7 +78,9 @@ namespace SARS
                 shrekApi = new ShrekApi("");
             }
 
-            
+            MessageBoxManager.Yes = "PC";
+            MessageBoxManager.No = "Quest";
+            MessageBoxManager.Register();
         }
 
         private void GetLatestVersion()

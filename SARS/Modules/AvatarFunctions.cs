@@ -34,13 +34,12 @@ namespace SARS.Modules
         public static bool pcDownload = true;
         public static async Task<bool> DownloadVrcaAsync(Avatar avatar, VRChatApiClient VrChat, string AuthKey, decimal pcVersion, decimal questVersion, string TwoFactor, Download download)
         {
-            if (firstDownload)
+            try
             {
                 MessageBoxManager.Yes = "PC";
                 MessageBoxManager.No = "Quest";
                 MessageBoxManager.Register();
-                firstDownload = false;
-            }
+            } catch { }
             var filePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + $"\\VRCA\\{avatar.AvatarID}.vrca";
             if (AuthKey == "")
             {
@@ -76,7 +75,7 @@ namespace SARS.Modules
                             {
                                 version[7] = questVersion.ToString();
                             }
-                            await Task.Run(() => VrChat.DownloadFile(string.Join("/", version), AuthKey, TwoFactor, filePath.Replace(".vrca", "_quest.vrca"),download.downloadProgress));
+                            await Task.Run(() => VrChat.DownloadFile(string.Join("/", version), AuthKey, TwoFactor, filePath.Replace(".vrca", "_quest.vrca"), download.downloadProgress));
                         }
                         catch { await Task.Run(() => VrChat.DownloadFile(avatar.QUESTAssetURL, AuthKey, TwoFactor, filePath.Replace(".vrca", "_quest.vrca"), download.downloadProgress)); }
                         pcDownload = false;
@@ -195,7 +194,8 @@ namespace SARS.Modules
                     if (versionList != null)
                     {
                         questVersion = Convert.ToInt32(versionList.versions.LastOrDefault().version);
-                    } else
+                    }
+                    else
                     {
                         questVersion = 0;
                     }

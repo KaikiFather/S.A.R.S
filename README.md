@@ -4,11 +4,13 @@ S.A.R.S is an avatar recovery tool! It is only for educational uses! We do not c
 
 Thx to [nesrak1](https://github.com/nesrak1/AssetsTools.NET) for the original "AssetTools.NET.dll" file that was edited by FACS01 and then packed into our HOTSWAP allowing for VRCA files to be compressed and decompressed!
 
-Thx to [FACS01](https://github.com/FACS01-01/FACS_Utilities) for the bledshape and animation repairs only compatable with VRCA files extracted with ARES & scanning of the Unity Packages!
+Thx to [FACS01](https://github.com/FACS01-01/FACS_Utilities) for the bledshape and animation repairs only compatable with VRCA files extracted with S.A.R.S & scanning of the Unity Packages!
 
 Thx to Keafy for reuploader login code (modified to allow VRCA downloading)
 
-[Permanent Invite Link To Support Discord Server](https://discord.gg/vrc-ares)
+Original developer behind A.R.E.S [LargestBoi] (https://github.com/LargestBoi)
+
+[Permanent Invite Link To Support Discord Server](https://discord.gg/avatarrecovery)
 
 Features:
 

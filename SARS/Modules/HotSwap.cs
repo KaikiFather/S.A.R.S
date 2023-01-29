@@ -4,6 +4,7 @@ using SARS.Models;
 using System;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -162,9 +163,8 @@ namespace SARS.Modules
                 MessageBoxButtons.OK, MessageBoxIcon.Information);
             ;
             File.AppendAllText(filePath + @"\Ripped.txt", matchModelOld.AvatarId + "\n");
-            avatarSystem.rippedList.Add(matchModelOld.AvatarId);
-            avatarSystem.configSave.Config.RippedAvatars = avatarSystem.rippedList;
-            avatarSystem.configSave.Save();
+            avatarSystem.rippedList.Config.Add(avatarSystem.avatars.FirstOrDefault(x=>x.AvatarID ==matchModelOld.AvatarId));
+            avatarSystem.rippedList.Save();
         }
 
         private static string getFileString(string file, string searchRegexString)

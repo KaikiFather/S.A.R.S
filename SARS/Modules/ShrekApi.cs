@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Windows.Forms;
 
 namespace SARS.Modules
@@ -13,7 +14,7 @@ namespace SARS.Modules
     {
         private int maxSearch = 10000;
         private string apiKey { get; set; }
-        private string coreApiVersion = "1.0 Alpha";
+        private string coreApiVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
         private static string baseUrl = "https://unlocked.ares-mod.com/records/";
         private string apiUrl = $"{baseUrl}Avatars?include=Created,TimeDetected,AvatarID,AvatarName,AvatarDescription,AuthorID,AuthorName,PCAssetURL,QUESTAssetURL,ImageURL,ThumbnailURL,UnityVersion,Releasestatus,Tags,Pin,PinCode&order=Created,desc";
 

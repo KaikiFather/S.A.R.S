@@ -67,6 +67,7 @@
             this.metroLabel3 = new MetroFramework.Controls.MetroLabel();
             this.txtClientVersion = new MetroFramework.Controls.MetroTextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.btnCheck = new MetroFramework.Controls.MetroButton();
             this.btnHsbClean = new MetroFramework.Controls.MetroButton();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.btnLight = new MetroFramework.Controls.MetroButton();
@@ -161,10 +162,11 @@
             this.tabControl.FontWeight = MetroFramework.MetroTabControlWeight.Bold;
             this.tabControl.Location = new System.Drawing.Point(28, 232);
             this.tabControl.Name = "tabControl";
-            this.tabControl.SelectedIndex = 1;
+            this.tabControl.SelectedIndex = 2;
             this.tabControl.Size = new System.Drawing.Size(848, 456);
             this.tabControl.TabIndex = 0;
             this.tabControl.UseSelectable = true;
+            this.tabControl.SelectedIndexChanged += new System.EventHandler(this.tabControl_SelectedIndexChanged);
             // 
             // metroTabPage1
             // 
@@ -193,8 +195,9 @@
             this.avatarGrid.BackgroundColor = System.Drawing.Color.DimGray;
             this.avatarGrid.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.avatarGrid.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
-            this.avatarGrid.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            this.avatarGrid.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.Disable;
+            this.avatarGrid.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(219)))), ((int)(((byte)(0)))), ((int)(((byte)(60)))));
             dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             dataGridViewCellStyle1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
@@ -236,12 +239,12 @@
             this.avatarGrid.RowHeadersDefaultCellStyle = dataGridViewCellStyle10;
             this.avatarGrid.RowHeadersVisible = false;
             this.avatarGrid.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            this.avatarGrid.RowTemplate.Height = 200;
+            this.avatarGrid.RowTemplate.Height = 150;
             this.avatarGrid.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.avatarGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.avatarGrid.ShowEditingIcon = false;
             this.avatarGrid.ShowRowErrors = false;
-            this.avatarGrid.Size = new System.Drawing.Size(840, 414);
+            this.avatarGrid.Size = new System.Drawing.Size(840, 366);
             this.avatarGrid.TabIndex = 2;
             this.avatarGrid.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.avatarGrid_CellClick);
             this.avatarGrid.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.avatarGrid_CellContentClick);
@@ -249,19 +252,23 @@
             // 
             // picture
             // 
+            this.picture.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.TopCenter;
             dataGridViewCellStyle2.NullValue = ((object)(resources.GetObject("dataGridViewCellStyle2.NullValue")));
             this.picture.DefaultCellStyle = dataGridViewCellStyle2;
-            this.picture.FillWeight = 50.72543F;
+            this.picture.FillWeight = 45.91548F;
             this.picture.HeaderText = "Picture";
+            this.picture.ImageLayout = System.Windows.Forms.DataGridViewImageCellLayout.Stretch;
             this.picture.Name = "picture";
+            this.picture.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.picture.Width = 258;
             // 
             // AvatarName
             // 
             dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.TopCenter;
             dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.AvatarName.DefaultCellStyle = dataGridViewCellStyle3;
-            this.AvatarName.FillWeight = 16.92115F;
+            this.AvatarName.FillWeight = 19.27644F;
             this.AvatarName.HeaderText = "Name";
             this.AvatarName.Name = "AvatarName";
             // 
@@ -270,7 +277,7 @@
             dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.TopCenter;
             dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.Author.DefaultCellStyle = dataGridViewCellStyle4;
-            this.Author.FillWeight = 16.92115F;
+            this.Author.FillWeight = 19.27644F;
             this.Author.HeaderText = "Author Name";
             this.Author.Name = "Author";
             // 
@@ -279,7 +286,7 @@
             dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.TopCenter;
             dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.AvatarId.DefaultCellStyle = dataGridViewCellStyle5;
-            this.AvatarId.FillWeight = 16.92115F;
+            this.AvatarId.FillWeight = 19.27644F;
             this.AvatarId.HeaderText = "Avatar ID";
             this.AvatarId.Name = "AvatarId";
             // 
@@ -288,7 +295,7 @@
             dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.TopCenter;
             dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.Logged.DefaultCellStyle = dataGridViewCellStyle6;
-            this.Logged.FillWeight = 16.92115F;
+            this.Logged.FillWeight = 19.27644F;
             this.Logged.HeaderText = "Date Logged";
             this.Logged.Name = "Logged";
             // 
@@ -305,7 +312,7 @@
             dataGridViewCellStyle7.NullValue = false;
             this.Ripped.DefaultCellStyle = dataGridViewCellStyle7;
             this.Ripped.FalseValue = "false";
-            this.Ripped.FillWeight = 12.1729F;
+            this.Ripped.FillWeight = 13.86727F;
             this.Ripped.HeaderText = "Ripped";
             this.Ripped.Name = "Ripped";
             this.Ripped.Resizable = System.Windows.Forms.DataGridViewTriState.True;
@@ -318,7 +325,7 @@
             dataGridViewCellStyle8.NullValue = false;
             this.Favorited.DefaultCellStyle = dataGridViewCellStyle8;
             this.Favorited.FalseValue = "false";
-            this.Favorited.FillWeight = 12.1729F;
+            this.Favorited.FillWeight = 13.86727F;
             this.Favorited.HeaderText = "Favorited";
             this.Favorited.Name = "Favorited";
             this.Favorited.TrueValue = "true";
@@ -378,9 +385,9 @@
             this.txtApiKey.CustomButton.Location = new System.Drawing.Point(469, 2);
             this.txtApiKey.CustomButton.Name = "";
             this.txtApiKey.CustomButton.Size = new System.Drawing.Size(27, 27);
-            this.txtApiKey.CustomButton.Style = MetroFramework.MetroColorStyle.Blue;
+            this.txtApiKey.CustomButton.Style = MetroFramework.MetroColorStyle.Green;
             this.txtApiKey.CustomButton.TabIndex = 1;
-            this.txtApiKey.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light;
+            this.txtApiKey.CustomButton.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.txtApiKey.CustomButton.UseSelectable = true;
             this.txtApiKey.CustomButton.Visible = false;
             this.txtApiKey.FontSize = MetroFramework.MetroTextBoxSize.Medium;
@@ -460,9 +467,9 @@
             this.txtTwoFactor.CustomButton.Location = new System.Drawing.Point(369, 2);
             this.txtTwoFactor.CustomButton.Name = "";
             this.txtTwoFactor.CustomButton.Size = new System.Drawing.Size(27, 27);
-            this.txtTwoFactor.CustomButton.Style = MetroFramework.MetroColorStyle.Blue;
+            this.txtTwoFactor.CustomButton.Style = MetroFramework.MetroColorStyle.Green;
             this.txtTwoFactor.CustomButton.TabIndex = 1;
-            this.txtTwoFactor.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light;
+            this.txtTwoFactor.CustomButton.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.txtTwoFactor.CustomButton.UseSelectable = true;
             this.txtTwoFactor.CustomButton.Visible = false;
             this.txtTwoFactor.FontSize = MetroFramework.MetroTextBoxSize.Medium;
@@ -532,9 +539,9 @@
             this.txtVRCPassword.CustomButton.Location = new System.Drawing.Point(369, 2);
             this.txtVRCPassword.CustomButton.Name = "";
             this.txtVRCPassword.CustomButton.Size = new System.Drawing.Size(27, 27);
-            this.txtVRCPassword.CustomButton.Style = MetroFramework.MetroColorStyle.Blue;
+            this.txtVRCPassword.CustomButton.Style = MetroFramework.MetroColorStyle.Green;
             this.txtVRCPassword.CustomButton.TabIndex = 1;
-            this.txtVRCPassword.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light;
+            this.txtVRCPassword.CustomButton.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.txtVRCPassword.CustomButton.UseSelectable = true;
             this.txtVRCPassword.CustomButton.Visible = false;
             this.txtVRCPassword.FontSize = MetroFramework.MetroTextBoxSize.Medium;
@@ -567,9 +574,9 @@
             this.txtVRCUsername.CustomButton.Location = new System.Drawing.Point(369, 2);
             this.txtVRCUsername.CustomButton.Name = "";
             this.txtVRCUsername.CustomButton.Size = new System.Drawing.Size(27, 27);
-            this.txtVRCUsername.CustomButton.Style = MetroFramework.MetroColorStyle.Blue;
+            this.txtVRCUsername.CustomButton.Style = MetroFramework.MetroColorStyle.Green;
             this.txtVRCUsername.CustomButton.TabIndex = 1;
-            this.txtVRCUsername.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light;
+            this.txtVRCUsername.CustomButton.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.txtVRCUsername.CustomButton.UseSelectable = true;
             this.txtVRCUsername.CustomButton.Visible = false;
             this.txtVRCUsername.FontSize = MetroFramework.MetroTextBoxSize.Medium;
@@ -614,9 +621,9 @@
             this.txtClientVersion.CustomButton.Location = new System.Drawing.Point(338, 2);
             this.txtClientVersion.CustomButton.Name = "";
             this.txtClientVersion.CustomButton.Size = new System.Drawing.Size(27, 27);
-            this.txtClientVersion.CustomButton.Style = MetroFramework.MetroColorStyle.Blue;
+            this.txtClientVersion.CustomButton.Style = MetroFramework.MetroColorStyle.Green;
             this.txtClientVersion.CustomButton.TabIndex = 1;
-            this.txtClientVersion.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light;
+            this.txtClientVersion.CustomButton.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.txtClientVersion.CustomButton.UseSelectable = true;
             this.txtClientVersion.CustomButton.Visible = false;
             this.txtClientVersion.FontSize = MetroFramework.MetroTextBoxSize.Medium;
@@ -643,6 +650,7 @@
             // groupBox2
             // 
             this.groupBox2.BackColor = System.Drawing.Color.Transparent;
+            this.groupBox2.Controls.Add(this.btnCheck);
             this.groupBox2.Controls.Add(this.btnHsbClean);
             this.groupBox2.ForeColor = System.Drawing.SystemColors.Control;
             this.groupBox2.Location = new System.Drawing.Point(9, 3);
@@ -651,6 +659,18 @@
             this.groupBox2.TabIndex = 91;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "S.A.R.S Functions";
+            // 
+            // btnCheck
+            // 
+            this.btnCheck.FontSize = MetroFramework.MetroButtonSize.Tall;
+            this.btnCheck.Location = new System.Drawing.Point(6, 60);
+            this.btnCheck.Name = "btnCheck";
+            this.btnCheck.Size = new System.Drawing.Size(183, 35);
+            this.btnCheck.TabIndex = 80;
+            this.btnCheck.Text = "Check Stored Token";
+            this.btnCheck.UseSelectable = true;
+            this.btnCheck.UseStyleColors = true;
+            this.btnCheck.Click += new System.EventHandler(this.btnCheck_Click);
             // 
             // btnHsbClean
             // 
@@ -806,6 +826,7 @@
             this.btnWorldOut.Text = "Select";
             this.btnWorldOut.UseSelectable = true;
             this.btnWorldOut.UseStyleColors = true;
+            this.btnWorldOut.Click += new System.EventHandler(this.btnWorldOut_Click);
             // 
             // txtWorldOutput
             // 
@@ -818,9 +839,9 @@
             this.txtWorldOutput.CustomButton.Location = new System.Drawing.Point(338, 1);
             this.txtWorldOutput.CustomButton.Name = "";
             this.txtWorldOutput.CustomButton.Size = new System.Drawing.Size(33, 33);
-            this.txtWorldOutput.CustomButton.Style = MetroFramework.MetroColorStyle.Blue;
+            this.txtWorldOutput.CustomButton.Style = MetroFramework.MetroColorStyle.Green;
             this.txtWorldOutput.CustomButton.TabIndex = 1;
-            this.txtWorldOutput.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light;
+            this.txtWorldOutput.CustomButton.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.txtWorldOutput.CustomButton.UseSelectable = true;
             this.txtWorldOutput.CustomButton.Visible = false;
             this.txtWorldOutput.FontSize = MetroFramework.MetroTextBoxSize.Tall;
@@ -866,6 +887,7 @@
             this.btnAvatarOut.Text = "Select";
             this.btnAvatarOut.UseSelectable = true;
             this.btnAvatarOut.UseStyleColors = true;
+            this.btnAvatarOut.Click += new System.EventHandler(this.btnAvatarOut_Click);
             // 
             // metroLabel13
             // 
@@ -890,9 +912,9 @@
             this.txtAvatarOutput.CustomButton.Location = new System.Drawing.Point(338, 1);
             this.txtAvatarOutput.CustomButton.Name = "";
             this.txtAvatarOutput.CustomButton.Size = new System.Drawing.Size(33, 33);
-            this.txtAvatarOutput.CustomButton.Style = MetroFramework.MetroColorStyle.Blue;
+            this.txtAvatarOutput.CustomButton.Style = MetroFramework.MetroColorStyle.Green;
             this.txtAvatarOutput.CustomButton.TabIndex = 1;
-            this.txtAvatarOutput.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light;
+            this.txtAvatarOutput.CustomButton.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.txtAvatarOutput.CustomButton.UseSelectable = true;
             this.txtAvatarOutput.CustomButton.Visible = false;
             this.txtAvatarOutput.FontSize = MetroFramework.MetroTextBoxSize.Tall;
@@ -1055,9 +1077,9 @@
             this.txtAbout.CustomButton.Location = new System.Drawing.Point(464, 2);
             this.txtAbout.CustomButton.Name = "";
             this.txtAbout.CustomButton.Size = new System.Drawing.Size(367, 367);
-            this.txtAbout.CustomButton.Style = MetroFramework.MetroColorStyle.Blue;
+            this.txtAbout.CustomButton.Style = MetroFramework.MetroColorStyle.Green;
             this.txtAbout.CustomButton.TabIndex = 1;
-            this.txtAbout.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light;
+            this.txtAbout.CustomButton.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.txtAbout.CustomButton.UseSelectable = true;
             this.txtAbout.CustomButton.Visible = false;
             this.txtAbout.FontSize = MetroFramework.MetroTextBoxSize.Medium;
@@ -1176,9 +1198,9 @@
             this.txtSearchTerm.CustomButton.Location = new System.Drawing.Point(444, 1);
             this.txtSearchTerm.CustomButton.Name = "";
             this.txtSearchTerm.CustomButton.Size = new System.Drawing.Size(27, 27);
-            this.txtSearchTerm.CustomButton.Style = MetroFramework.MetroColorStyle.Blue;
+            this.txtSearchTerm.CustomButton.Style = MetroFramework.MetroColorStyle.Green;
             this.txtSearchTerm.CustomButton.TabIndex = 1;
-            this.txtSearchTerm.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light;
+            this.txtSearchTerm.CustomButton.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.txtSearchTerm.CustomButton.UseSelectable = true;
             this.txtSearchTerm.CustomButton.Visible = false;
             this.txtSearchTerm.FontSize = MetroFramework.MetroTextBoxSize.Medium;
@@ -1651,6 +1673,7 @@
             this.Controls.Add(this.lblSearchTerm);
             this.Controls.Add(this.tabControl);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MinimumSize = new System.Drawing.Size(899, 516);
             this.Name = "AvatarSystem";
             this.Style = MetroFramework.MetroColorStyle.Default;
             this.Text = "Shrek Avatar Recovery System (S.A.R.S)";
@@ -1751,14 +1774,6 @@
         public MetroFramework.Controls.MetroCheckBox chkAfter;
         public MetroFramework.Controls.MetroCheckBox chkBefore;
         public MetroFramework.Controls.MetroLabel metroLabel6;
-        private System.Windows.Forms.DataGridViewImageColumn picture;
-        private System.Windows.Forms.DataGridViewTextBoxColumn AvatarName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Author;
-        private System.Windows.Forms.DataGridViewTextBoxColumn AvatarId;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Logged;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ImageURL;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn Ripped;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn Favorited;
         private MetroFramework.Controls.MetroTabPage metroTabPage4;
         private MetroFramework.Controls.MetroToggle toggleWorld;
         private MetroFramework.Controls.MetroToggle toggleAvatar;
@@ -1775,6 +1790,15 @@
         private MetroFramework.Controls.MetroButton btnLoadVRCA;
         private MetroFramework.Controls.MetroLabel metroLabel7;
         public MetroFramework.Controls.MetroTextBox txtTwoFactor;
+        private System.Windows.Forms.DataGridViewImageColumn picture;
+        private System.Windows.Forms.DataGridViewTextBoxColumn AvatarName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Author;
+        private System.Windows.Forms.DataGridViewTextBoxColumn AvatarId;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Logged;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ImageURL;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn Ripped;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn Favorited;
+        private MetroFramework.Controls.MetroButton btnCheck;
     }
 }
 

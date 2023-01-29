@@ -30,15 +30,36 @@ namespace SARS.Modules
                 catch { }
             }
         }
-
-        public static bool DownloadVrca(Avatar avatar, VRChatApiClient VrChat, string AuthKey, decimal pcVersion, decimal questVersion, string TwoFactor)
+        private static bool firstDownload = true;
+        public static bool pcDownload = true;
+        public static async Task<bool> DownloadVrcaAsync(Avatar avatar, VRChatApiClient VrChat, string AuthKey, decimal pcVersion, decimal questVersion, string TwoFactor, Download download)
         {
-            var filePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + $"\\{avatar.AvatarID}.vrca";
+            if (firstDownload)
+            {
+                MessageBoxManager.Yes = "PC";
+                MessageBoxManager.No = "Quest";
+                MessageBoxManager.Register();
+                firstDownload = false;
+            }
+            var filePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + $"\\VRCA\\{avatar.AvatarID}.vrca";
             if (AuthKey == "")
             {
                 MessageBox.Show("please enter VRC Details on Settings page");
+                download.error = true;
                 return false;
             }
+
+            if (download.InvokeRequired)
+            {
+                // Call this same method but append THREAD2 to the text
+                Action safeWrite = delegate { download.Text = avatar.AvatarID; };
+                download.Invoke(safeWrite);
+            }
+            else
+            {
+                download.Text = avatar.AvatarID;
+            }
+
             if (avatar.PCAssetURL.ToLower() != "none" && avatar.QUESTAssetURL.ToLower() != "none" && avatar.PCAssetURL != null && avatar.QUESTAssetURL != null)
             {
                 var dlgResult = MessageBox.Show("Select which version to download", "VRCA Select",
@@ -55,14 +76,16 @@ namespace SARS.Modules
                             {
                                 version[7] = questVersion.ToString();
                             }
-                            VrChat.DownloadFile(string.Join("/", version), AuthKey, TwoFactor, filePath);
+                            await Task.Run(() => VrChat.DownloadFile(string.Join("/", version), AuthKey, TwoFactor, filePath.Replace(".vrca", "_quest.vrca"),download.downloadProgress));
                         }
-                        catch { VrChat.DownloadFile(avatar.QUESTAssetURL, AuthKey, TwoFactor, filePath); }
+                        catch { await Task.Run(() => VrChat.DownloadFile(avatar.QUESTAssetURL, AuthKey, TwoFactor, filePath.Replace(".vrca", "_quest.vrca"), download.downloadProgress)); }
+                        pcDownload = false;
                     }
                     else
                     {
                         MessageBox.Show("Quest version doesn't exist", "ERROR", MessageBoxButtons.OK,
                             MessageBoxIcon.Error);
+                        download.error = true;
                         return false;
                     }
                 }
@@ -77,19 +100,22 @@ namespace SARS.Modules
                             {
                                 version[7] = pcVersion.ToString();
                             }
-                            VrChat.DownloadFile(string.Join("/", version), AuthKey, TwoFactor, filePath);
+                            await Task.Run(() => VrChat.DownloadFile(string.Join("/", version), AuthKey, TwoFactor, filePath.Replace(".vrca", "_pc.vrca"), download.downloadProgress));
                         }
-                        catch { VrChat.DownloadFile(avatar.PCAssetURL, AuthKey, TwoFactor, filePath); }
+                        catch { await Task.Run(() => VrChat.DownloadFile(avatar.PCAssetURL, AuthKey, TwoFactor, filePath.Replace(".vrca", "_pc.vrca"), download.downloadProgress)); }
+                        pcDownload = true;
                     }
                     else
                     {
                         MessageBox.Show("PC version doesn't exist", "ERROR", MessageBoxButtons.OK,
                             MessageBoxIcon.Error);
+                        download.error = true;
                         return false;
                     }
                 }
                 else
                 {
+                    download.error = true;
                     return false;
                 }
             }
@@ -102,9 +128,10 @@ namespace SARS.Modules
                     {
                         version[7] = pcVersion.ToString();
                     }
-                    VrChat.DownloadFile(string.Join("/", version), AuthKey, TwoFactor, filePath);
+                    await Task.Run(() => VrChat.DownloadFile(string.Join("/", version), AuthKey, TwoFactor, filePath.Replace(".vrca", "_pc.vrca"), download.downloadProgress));
                 }
-                catch { VrChat.DownloadFile(avatar.PCAssetURL, AuthKey, TwoFactor, filePath); }
+                catch { await Task.Run(() => VrChat.DownloadFile(avatar.PCAssetURL, AuthKey, TwoFactor, filePath.Replace(".vrca", "_pc.vrca"), download.downloadProgress)); }
+                pcDownload = true;
             }
             else if (avatar.QUESTAssetURL.ToLower() != "none" && avatar.QUESTAssetURL != null)
             {
@@ -115,12 +142,14 @@ namespace SARS.Modules
                     {
                         version[7] = questVersion.ToString();
                     }
-                    VrChat.DownloadFile(string.Join("/", version), AuthKey, TwoFactor, filePath);
+                    await Task.Run(() => VrChat.DownloadFile(string.Join("/", version), AuthKey, TwoFactor, filePath.Replace(".vrca", "_quest.vrca"), download.downloadProgress));
                 }
-                catch { VrChat.DownloadFile(avatar.QUESTAssetURL, AuthKey, TwoFactor, filePath); }
+                catch { await Task.Run(() => VrChat.DownloadFile(avatar.QUESTAssetURL, AuthKey, TwoFactor, filePath.Replace(".vrca", "_quest.vrca"), download.downloadProgress)); }
+                pcDownload = false;
             }
             else
             {
+                download.error = true;
                 return false;
             }
             return true;

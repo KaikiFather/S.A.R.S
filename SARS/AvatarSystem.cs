@@ -131,13 +131,20 @@ namespace SARS
                 configSave.Config.MacAddress = EasyHash.GetSHA1String(new byte[] { (byte)rnd.Next(254), (byte)rnd.Next(254), (byte)rnd.Next(254), (byte)rnd.Next(254), (byte)rnd.Next(254) });
                 configSave.Save();
             }
+            if(!string.IsNullOrEmpty(configSave.Config.PreSelectedAvatarLocation))
+            {
+                txtAvatarOutput.Text = configSave.Config.PreSelectedAvatarLocation;
+            }
+            if (!string.IsNullOrEmpty(configSave.Config.PreSelectedWorldLocation))
+            {
+                txtAvatarOutput.Text = configSave.Config.PreSelectedWorldLocation;
+            }
             VrChat = new VRChatApiClient(15, configSave.Config.MacAddress);
             var check = VrChat.CustomApiUser.LoginWithExistingSession(configSave.Config.UserId, configSave.Config.AuthKey, configSave.Config.TwoFactor);
             if (check == null)
             {
                 MessageBox.Show("VRChat credentials expired, please relogin");
-                configSave.Config.ApiKey = null;
-                configSave.Config.TwoFactor = null;
+                DeleteLoginInfo();
             }
         }
 
@@ -782,11 +789,32 @@ namespace SARS
             }
         }
 
+        private void DeleteLoginInfo()
+        {
+            configSave.Config.UserId = null;
+            configSave.Config.AuthKey = null;
+            configSave.Config.TwoFactor = null;
+            configSave.Save();
+            try
+            {
+                _ = VrChat.CustomApiUser.Logout().Result;
+            }
+            catch
+            {
+
+            }
+            try
+            {
+                File.Delete("auth.txt");
+                File.Delete("2fa.txt");
+            } catch { }
+        }
+
         private void btnSaveVRC_Click(object sender, EventArgs e)
         {
             try
             {
-                _ = VrChat.CustomApiUser.Logout().Result;
+                DeleteLoginInfo();
             }
             catch
             {
@@ -929,7 +957,6 @@ namespace SARS
                     p.WaitForExit();
 
                     RandomFunctions.tryDeleteDirectory(folderExtractLocation + @"\AssetRipper\GameAssemblies", false);
-                    RandomFunctions.tryDeleteDirectory(folderExtractLocation + @"\Assets\Scripts", false);
                     try
                     {
                         Directory.Move(folderExtractLocation + @"\Assets\Shader",
@@ -938,15 +965,23 @@ namespace SARS
                     catch
                     {
                     }
-
+                    try
+                    {
+                        Directory.Move(folderExtractLocation + @"\Assets\Scripts",
+                            folderExtractLocation + @"\Assets\.Scripts");
+                    }
+                    catch
+                    {
+                    }
                     RandomFunctions.tryDeleteDirectory(folderExtractLocation + @"\AuxiliaryFiles", false);
-                    RandomFunctions.tryDeleteDirectory(folderExtractLocation + @"\ExportedProject\Assets\Scripts", false);
                     RandomFunctions.tryDeleteDirectory(folderExtractLocation + @"\ExportedProject\AssetRipper", false);
                     RandomFunctions.tryDeleteDirectory(folderExtractLocation + @"\ExportedProject\ProjectSettings", false);
                     try
                     {
                         Directory.Move(folderExtractLocation + @"\ExportedProject\Assets\Shader",
                             folderExtractLocation + @"\ExportedProject\Assets\.Shader");
+                        Directory.Move(folderExtractLocation + @"\ExportedProject\Assets\Scripts",
+                            folderExtractLocation + @"\ExportedProject\Assets\.Scripts");
                         Directory.Move(folderExtractLocation + @"\ExportedProject\Assets\MonoScript",
                             folderExtractLocation + @"\ExportedProject\Assets\.MonoScript");
 
@@ -1041,8 +1076,7 @@ namespace SARS
                 if (check == null)
                 {
                     MessageBox.Show("VRChat credentials expired, please relogin");
-                    configSave.Config.ApiKey = null;
-                    configSave.Config.TwoFactor = null;
+                    DeleteLoginInfo();
                 }
                 else
                 {

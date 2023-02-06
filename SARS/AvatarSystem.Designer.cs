@@ -83,8 +83,6 @@
             this.btnAvatarOut = new MetroFramework.Controls.MetroButton();
             this.metroLabel13 = new MetroFramework.Controls.MetroLabel();
             this.txtAvatarOutput = new MetroFramework.Controls.MetroTextBox();
-            this.metroLabel9 = new MetroFramework.Controls.MetroLabel();
-            this.cbVersionUnity = new MetroFramework.Controls.MetroComboBox();
             this.btnVrcaSearch = new MetroFramework.Controls.MetroButton();
             this.btnExtractVRCA = new MetroFramework.Controls.MetroButton();
             this.btnLoadVRCA = new MetroFramework.Controls.MetroButton();
@@ -776,8 +774,6 @@
             this.metroTabPage4.Controls.Add(this.btnAvatarOut);
             this.metroTabPage4.Controls.Add(this.metroLabel13);
             this.metroTabPage4.Controls.Add(this.txtAvatarOutput);
-            this.metroTabPage4.Controls.Add(this.metroLabel9);
-            this.metroTabPage4.Controls.Add(this.cbVersionUnity);
             this.metroTabPage4.Controls.Add(this.btnVrcaSearch);
             this.metroTabPage4.Controls.Add(this.btnExtractVRCA);
             this.metroTabPage4.Controls.Add(this.btnLoadVRCA);
@@ -936,34 +932,6 @@
             this.txtAvatarOutput.UseStyleColors = true;
             this.txtAvatarOutput.WaterMarkColor = System.Drawing.Color.FromArgb(((int)(((byte)(109)))), ((int)(((byte)(109)))), ((int)(((byte)(109)))));
             this.txtAvatarOutput.WaterMarkFont = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Pixel);
-            // 
-            // metroLabel9
-            // 
-            this.metroLabel9.AutoSize = true;
-            this.metroLabel9.FontSize = MetroFramework.MetroLabelSize.Tall;
-            this.metroLabel9.FontWeight = MetroFramework.MetroLabelWeight.Bold;
-            this.metroLabel9.Location = new System.Drawing.Point(223, 17);
-            this.metroLabel9.Name = "metroLabel9";
-            this.metroLabel9.Size = new System.Drawing.Size(126, 25);
-            this.metroLabel9.TabIndex = 39;
-            this.metroLabel9.Text = "Unity Version";
-            this.metroLabel9.UseStyleColors = true;
-            // 
-            // cbVersionUnity
-            // 
-            this.cbVersionUnity.FontSize = MetroFramework.MetroComboBoxSize.Tall;
-            this.cbVersionUnity.FontWeight = MetroFramework.MetroComboBoxWeight.Bold;
-            this.cbVersionUnity.FormattingEnabled = true;
-            this.cbVersionUnity.ItemHeight = 29;
-            this.cbVersionUnity.Items.AddRange(new object[] {
-            "2019",
-            "2018"});
-            this.cbVersionUnity.Location = new System.Drawing.Point(223, 58);
-            this.cbVersionUnity.Name = "cbVersionUnity";
-            this.cbVersionUnity.Size = new System.Drawing.Size(167, 35);
-            this.cbVersionUnity.TabIndex = 38;
-            this.cbVersionUnity.UseSelectable = true;
-            this.cbVersionUnity.UseStyleColors = true;
             // 
             // btnVrcaSearch
             // 
@@ -1783,8 +1751,6 @@
         private MetroFramework.Controls.MetroButton btnAvatarOut;
         private MetroFramework.Controls.MetroLabel metroLabel13;
         private MetroFramework.Controls.MetroTextBox txtAvatarOutput;
-        private MetroFramework.Controls.MetroLabel metroLabel9;
-        private MetroFramework.Controls.MetroComboBox cbVersionUnity;
         private MetroFramework.Controls.MetroButton btnVrcaSearch;
         private MetroFramework.Controls.MetroButton btnExtractVRCA;
         private MetroFramework.Controls.MetroButton btnLoadVRCA;

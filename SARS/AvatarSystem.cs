@@ -44,7 +44,7 @@ namespace SARS
 
         private void AvatarSystem_Load(object sender, EventArgs e)
         {
-            
+
             var assembly = Assembly.GetExecutingAssembly();
             var fileVersionInfo = FileVersionInfo.GetVersionInfo(assembly.Location);
             SystemName = "Shrek Avatar Recovery System (S.A.R.S) V" + fileVersionInfo.ProductVersion;
@@ -58,11 +58,13 @@ namespace SARS
                 rippedList = new ConfigSave<List<Avatar>>(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\ripped.cfg");
                 favList = new ConfigSave<List<Avatar>>(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\fav.cfg");
                 tabControl.SelectedIndex = 0;
-            } catch { Console.WriteLine("Error with config"); }
+            }
+            catch { Console.WriteLine("Error with config"); }
             try
             {
                 LoadSettings();
-            } catch { Console.WriteLine("Error loading settings"); }
+            }
+            catch { Console.WriteLine("Error loading settings"); }
             if (string.IsNullOrEmpty(configSave.Config.HotSwapName))
             {
                 int randomAmount = RandomFunctions.random.Next(12);
@@ -131,7 +133,7 @@ namespace SARS
                 configSave.Config.MacAddress = EasyHash.GetSHA1String(new byte[] { (byte)rnd.Next(254), (byte)rnd.Next(254), (byte)rnd.Next(254), (byte)rnd.Next(254), (byte)rnd.Next(254) });
                 configSave.Save();
             }
-            if(!string.IsNullOrEmpty(configSave.Config.PreSelectedAvatarLocation))
+            if (!string.IsNullOrEmpty(configSave.Config.PreSelectedAvatarLocation))
             {
                 txtAvatarOutput.Text = configSave.Config.PreSelectedAvatarLocation;
             }
@@ -139,6 +141,17 @@ namespace SARS
             {
                 txtAvatarOutput.Text = configSave.Config.PreSelectedWorldLocation;
             }
+
+            if (configSave.Config.PreSelectedAvatarLocationChecked != null)
+            {
+                toggleAvatar.Checked = configSave.Config.PreSelectedAvatarLocationChecked;
+            }
+
+            if (configSave.Config.PreSelectedWorldLocation != null)
+            {
+                toggleWorld.Checked = configSave.Config.PreSelectedWorldLocationChecked;
+            }
+
             VrChat = new VRChatApiClient(15, configSave.Config.MacAddress);
             var check = VrChat.CustomApiUser.LoginWithExistingSession(configSave.Config.UserId, configSave.Config.AuthKey, configSave.Config.TwoFactor);
             if (check == null)
@@ -600,7 +613,7 @@ namespace SARS
 
         private void btnHotswap_Click(object sender, EventArgs e)
         {
-            hotSwap();   
+            hotSwap();
         }
 
         private async Task<bool> hotSwap()
@@ -640,7 +653,8 @@ namespace SARS
                 if (AvatarFunctions.pcDownload)
                 {
                     fileLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + $"\\VRCA\\{avatar.AvatarID}_pc.vrca";
-                } else
+                }
+                else
                 {
                     fileLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + $"\\VRCA\\{avatar.AvatarID}_quest.vrca";
                 }
@@ -806,8 +820,13 @@ namespace SARS
             try
             {
                 File.Delete("auth.txt");
+            }
+            catch { }
+
+            try
+            {
                 File.Delete("2fa.txt");
-            } catch { }
+            } catch {}
         }
 
         private void btnSaveVRC_Click(object sender, EventArgs e)
@@ -849,10 +868,10 @@ namespace SARS
             }
             else if (txtVRCUsername.Text != "" && txtVRCPassword.Text != "" && txtTwoFactor.Text == "")
             {
-                VrChat.TwoFactorCode = null;
                 try
                 {
                     _ = VrChat.CustomApiUser.Login(txtVRCUsername.Text, txtVRCPassword.Text, null).Result;
+                    VrChat.TwoFactorCode = null;
                 }
                 catch (Exception ex)
                 {
@@ -878,6 +897,11 @@ namespace SARS
 
         private void btnDownload_Click(object sender, EventArgs e)
         {
+            if (string.IsNullOrEmpty(configSave.Config.UserId))
+            {
+                MessageBox.Show("Please Login with an alt first.");
+                return;
+            }
             if (avatarGrid.SelectedRows.Count > 1)
             {
                 Download download = new Download();
@@ -886,7 +910,7 @@ namespace SARS
                 foreach (DataGridViewRow row in avatarGrid.SelectedRows)
                 {
                     avatar = avatars.FirstOrDefault(x => x.AvatarID == row.Cells[3].Value);
-                    Task.Run(() => AvatarFunctions.DownloadVrcaAsync(avatar, VrChat, configSave.Config.AuthKey, 0, 0, configSave.Config.TwoFactor,download));
+                    Task.Run(() => AvatarFunctions.DownloadVrcaAsync(avatar, VrChat, configSave.Config.AuthKey, 0, 0, configSave.Config.TwoFactor, download));
                 }
                 string fileLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + $"\\VRCA\\{avatar.AvatarID}.vrca";
             }
@@ -898,7 +922,7 @@ namespace SARS
                     Download download = new Download();
                     download.Show();
                     avatar = avatars.FirstOrDefault(x => x.AvatarID == row.Cells[3].Value);
-                    Task.Run(() => AvatarFunctions.DownloadVrcaAsync(avatar, VrChat, configSave.Config.AuthKey, nmPcVersion.Value, nmQuestVersion.Value, configSave.Config.TwoFactor,download));
+                    Task.Run(() => AvatarFunctions.DownloadVrcaAsync(avatar, VrChat, configSave.Config.AuthKey, nmPcVersion.Value, nmQuestVersion.Value, configSave.Config.TwoFactor, download));
                 }
                 string fileLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + $"\\VRCA\\{avatar.AvatarID}.vrca";
             }
@@ -917,7 +941,7 @@ namespace SARS
                     avatar = avatars.FirstOrDefault(x => x.AvatarID == avatarGrid.SelectedRows[0].Cells[3].Value);
                     if (await Task.Run(() => AvatarFunctions.DownloadVrcaAsync(avatar, VrChat, configSave.Config.AuthKey, nmPcVersion.Value, nmQuestVersion.Value, configSave.Config.TwoFactor, download)) == false) return;
                     avatarFile = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + $"\\VRCA\\{avatar.AvatarID}.vrca";
-                    
+
                 }
                 else
                 {
@@ -1010,6 +1034,11 @@ namespace SARS
 
         private void btnPreview_Click(object sender, EventArgs e)
         {
+            if (string.IsNullOrEmpty(configSave.Config.UserId))
+            {
+                MessageBox.Show("Please Login with an alt first.");
+                return;
+            }
             string fileLocation;
 
             if (vrcaLocation == "")
@@ -1082,7 +1111,8 @@ namespace SARS
                 {
                     MessageBox.Show("Token Works :D");
                 }
-            } else
+            }
+            else
             {
                 MessageBox.Show("Login First");
             }
@@ -1098,7 +1128,7 @@ namespace SARS
             if (result == DialogResult.OK)
             {
                 txtAvatarOutput.Text = folderDlg.SelectedPath;
-                configSave.Config.PreSelectedAvatarLocation= folderDlg.SelectedPath;
+                configSave.Config.PreSelectedAvatarLocation = folderDlg.SelectedPath;
                 configSave.Save();
             }
         }
@@ -1116,6 +1146,23 @@ namespace SARS
                 configSave.Config.PreSelectedWorldLocation = folderDlg.SelectedPath;
                 configSave.Save();
             }
+        }
+
+        private void toggleAvatar_CheckedChanged(object sender, EventArgs e)
+        {
+            configSave.Config.PreSelectedAvatarLocationChecked = toggleAvatar.Checked;
+            configSave.Save();
+        }
+
+        private void toggleWorld_CheckedChanged(object sender, EventArgs e)
+        {
+            configSave.Config.PreSelectedWorldLocationChecked = toggleWorld.Checked;
+            configSave.Save();
+        }
+
+        private void btn2FA_Click(object sender, EventArgs e)
+        {
+            Process.Start("https://support.google.com/accounts/answer/1066447?hl=en&ref_topic=2954345");
         }
     }
 }

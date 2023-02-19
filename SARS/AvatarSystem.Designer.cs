@@ -33,13 +33,13 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AvatarSystem));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AvatarSystem));
             this.tabControl = new MetroFramework.Controls.MetroTabControl();
             this.metroTabPage1 = new MetroFramework.Controls.MetroTabPage();
             this.avatarGrid = new System.Windows.Forms.DataGridView();
@@ -133,6 +133,7 @@
             this.dtAfter = new MetroFramework.Controls.MetroDateTime();
             this.metroLabel5 = new MetroFramework.Controls.MetroLabel();
             this.metroLabel6 = new MetroFramework.Controls.MetroLabel();
+            this.btn2FA = new MetroFramework.Controls.MetroButton();
             this.tabControl.SuspendLayout();
             this.metroTabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.avatarGrid)).BeginInit();
@@ -160,7 +161,7 @@
             this.tabControl.FontWeight = MetroFramework.MetroTabControlWeight.Bold;
             this.tabControl.Location = new System.Drawing.Point(28, 232);
             this.tabControl.Name = "tabControl";
-            this.tabControl.SelectedIndex = 2;
+            this.tabControl.SelectedIndex = 1;
             this.tabControl.Size = new System.Drawing.Size(848, 456);
             this.tabControl.TabIndex = 0;
             this.tabControl.UseSelectable = true;
@@ -252,7 +253,7 @@
             // 
             this.picture.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.TopCenter;
-            dataGridViewCellStyle2.NullValue = ((object)(resources.GetObject("dataGridViewCellStyle2.NullValue")));
+            dataGridViewCellStyle2.NullValue = null;
             this.picture.DefaultCellStyle = dataGridViewCellStyle2;
             this.picture.FillWeight = 45.91548F;
             this.picture.HeaderText = "Picture";
@@ -425,6 +426,7 @@
             this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox3.BackColor = System.Drawing.Color.Transparent;
+            this.groupBox3.Controls.Add(this.btn2FA);
             this.groupBox3.Controls.Add(this.metroLabel7);
             this.groupBox3.Controls.Add(this.txtTwoFactor);
             this.groupBox3.Controls.Add(this.btnSaveVRC);
@@ -440,7 +442,8 @@
             this.groupBox3.Size = new System.Drawing.Size(596, 243);
             this.groupBox3.TabIndex = 92;
             this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "VRChat Credientials (Really recommended to use a throw away account)";
+            this.groupBox3.Text = "VRChat Credientials (Really recommended to use a throw away account) | EMAIL 2FA " +
+    "NOT SUPPORTED";
             // 
             // metroLabel7
             // 
@@ -627,7 +630,7 @@
             this.txtClientVersion.FontSize = MetroFramework.MetroTextBoxSize.Medium;
             this.txtClientVersion.FontWeight = MetroFramework.MetroTextBoxWeight.Bold;
             this.txtClientVersion.Lines = new string[] {
-        "2022.4.2p1-1275--Release"};
+        "2023.1.1p2-1281--Release"};
             this.txtClientVersion.Location = new System.Drawing.Point(217, 149);
             this.txtClientVersion.MaxLength = 1000;
             this.txtClientVersion.Name = "txtClientVersion";
@@ -639,7 +642,7 @@
             this.txtClientVersion.ShortcutsEnabled = true;
             this.txtClientVersion.Size = new System.Drawing.Size(368, 32);
             this.txtClientVersion.TabIndex = 88;
-            this.txtClientVersion.Text = "2022.4.2p1-1275--Release";
+            this.txtClientVersion.Text = "2023.1.1p2-1281--Release";
             this.txtClientVersion.UseSelectable = true;
             this.txtClientVersion.UseStyleColors = true;
             this.txtClientVersion.WaterMarkColor = System.Drawing.Color.FromArgb(((int)(((byte)(109)))), ((int)(((byte)(109)))), ((int)(((byte)(109)))));
@@ -799,6 +802,7 @@
             this.toggleWorld.TabIndex = 62;
             this.toggleWorld.Text = "Off";
             this.toggleWorld.UseSelectable = true;
+            this.toggleWorld.CheckedChanged += new System.EventHandler(this.toggleWorld_CheckedChanged);
             // 
             // toggleAvatar
             // 
@@ -810,6 +814,7 @@
             this.toggleAvatar.TabIndex = 61;
             this.toggleAvatar.Text = "Off";
             this.toggleAvatar.UseSelectable = true;
+            this.toggleAvatar.CheckedChanged += new System.EventHandler(this.toggleAvatar_CheckedChanged);
             // 
             // btnWorldOut
             // 
@@ -1515,6 +1520,8 @@
             // chkContains
             // 
             this.chkContains.AutoSize = true;
+            this.chkContains.Checked = true;
+            this.chkContains.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkContains.FontSize = MetroFramework.MetroCheckBoxSize.Medium;
             this.chkContains.FontWeight = MetroFramework.MetroCheckBoxWeight.Bold;
             this.chkContains.Location = new System.Drawing.Point(263, 179);
@@ -1597,6 +1604,19 @@
             this.metroLabel6.TabIndex = 90;
             this.metroLabel6.Text = "After";
             this.metroLabel6.UseStyleColors = true;
+            // 
+            // btn2FA
+            // 
+            this.btn2FA.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn2FA.FontSize = MetroFramework.MetroButtonSize.Tall;
+            this.btn2FA.Location = new System.Drawing.Point(15, 197);
+            this.btn2FA.Name = "btn2FA";
+            this.btn2FA.Size = new System.Drawing.Size(141, 35);
+            this.btn2FA.TabIndex = 97;
+            this.btn2FA.Text = "2FA?";
+            this.btn2FA.UseSelectable = true;
+            this.btn2FA.UseStyleColors = true;
+            this.btn2FA.Click += new System.EventHandler(this.btn2FA_Click);
             // 
             // AvatarSystem
             // 
@@ -1765,6 +1785,7 @@
         private System.Windows.Forms.DataGridViewCheckBoxColumn Ripped;
         private System.Windows.Forms.DataGridViewCheckBoxColumn Favorited;
         private MetroFramework.Controls.MetroButton btnCheck;
+        public MetroFramework.Controls.MetroButton btn2FA;
     }
 }
 

@@ -10,7 +10,9 @@ namespace SARS.Models
         public string TwoFactor { get; set; }
         public string ApiKey { get; set; }
         public string PreSelectedAvatarLocation { get; set; }
+        public bool PreSelectedAvatarLocationChecked { get; set; }
         public string PreSelectedWorldLocation { get; set; }
+        public bool PreSelectedWorldLocationChecked { get; set; }
         public string UnityLocation { get; set; }
         public string ClientVersion { get; set; }
         public string UnityVersion { get; set; }

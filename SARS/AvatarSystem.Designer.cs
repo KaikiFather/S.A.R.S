@@ -57,6 +57,7 @@
             this.txtApiKey = new MetroFramework.Controls.MetroTextBox();
             this.btnSave = new MetroFramework.Controls.MetroButton();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.btn2FA = new MetroFramework.Controls.MetroButton();
             this.metroLabel7 = new MetroFramework.Controls.MetroLabel();
             this.txtTwoFactor = new MetroFramework.Controls.MetroTextBox();
             this.btnSaveVRC = new MetroFramework.Controls.MetroButton();
@@ -133,7 +134,8 @@
             this.dtAfter = new MetroFramework.Controls.MetroDateTime();
             this.metroLabel5 = new MetroFramework.Controls.MetroLabel();
             this.metroLabel6 = new MetroFramework.Controls.MetroLabel();
-            this.btn2FA = new MetroFramework.Controls.MetroButton();
+            this.metroTabPage5 = new MetroFramework.Controls.MetroTabPage();
+            this.faq = new System.Windows.Forms.WebBrowser();
             this.tabControl.SuspendLayout();
             this.metroTabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.avatarGrid)).BeginInit();
@@ -147,6 +149,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.nmQuestVersion)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nmPcVersion)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.metroStyleManager1)).BeginInit();
+            this.metroTabPage5.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl
@@ -158,10 +161,11 @@
             this.tabControl.Controls.Add(this.metroTabPage2);
             this.tabControl.Controls.Add(this.metroTabPage4);
             this.tabControl.Controls.Add(this.metroTabPage3);
+            this.tabControl.Controls.Add(this.metroTabPage5);
             this.tabControl.FontWeight = MetroFramework.MetroTabControlWeight.Bold;
             this.tabControl.Location = new System.Drawing.Point(28, 232);
             this.tabControl.Name = "tabControl";
-            this.tabControl.SelectedIndex = 1;
+            this.tabControl.SelectedIndex = 4;
             this.tabControl.Size = new System.Drawing.Size(848, 456);
             this.tabControl.TabIndex = 0;
             this.tabControl.UseSelectable = true;
@@ -444,6 +448,19 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "VRChat Credientials (Really recommended to use a throw away account) | EMAIL 2FA " +
     "NOT SUPPORTED";
+            // 
+            // btn2FA
+            // 
+            this.btn2FA.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn2FA.FontSize = MetroFramework.MetroButtonSize.Tall;
+            this.btn2FA.Location = new System.Drawing.Point(15, 197);
+            this.btn2FA.Name = "btn2FA";
+            this.btn2FA.Size = new System.Drawing.Size(141, 35);
+            this.btn2FA.TabIndex = 97;
+            this.btn2FA.Text = "2FA?";
+            this.btn2FA.UseSelectable = true;
+            this.btn2FA.UseStyleColors = true;
+            this.btn2FA.Click += new System.EventHandler(this.btn2FA_Click);
             // 
             // metroLabel7
             // 
@@ -1605,18 +1622,30 @@
             this.metroLabel6.Text = "After";
             this.metroLabel6.UseStyleColors = true;
             // 
-            // btn2FA
+            // metroTabPage5
             // 
-            this.btn2FA.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn2FA.FontSize = MetroFramework.MetroButtonSize.Tall;
-            this.btn2FA.Location = new System.Drawing.Point(15, 197);
-            this.btn2FA.Name = "btn2FA";
-            this.btn2FA.Size = new System.Drawing.Size(141, 35);
-            this.btn2FA.TabIndex = 97;
-            this.btn2FA.Text = "2FA?";
-            this.btn2FA.UseSelectable = true;
-            this.btn2FA.UseStyleColors = true;
-            this.btn2FA.Click += new System.EventHandler(this.btn2FA_Click);
+            this.metroTabPage5.Controls.Add(this.faq);
+            this.metroTabPage5.HorizontalScrollbarBarColor = true;
+            this.metroTabPage5.HorizontalScrollbarHighlightOnWheel = false;
+            this.metroTabPage5.HorizontalScrollbarSize = 10;
+            this.metroTabPage5.Location = new System.Drawing.Point(4, 38);
+            this.metroTabPage5.Name = "metroTabPage5";
+            this.metroTabPage5.Size = new System.Drawing.Size(840, 414);
+            this.metroTabPage5.TabIndex = 4;
+            this.metroTabPage5.Text = "FAQ";
+            this.metroTabPage5.VerticalScrollbarBarColor = true;
+            this.metroTabPage5.VerticalScrollbarHighlightOnWheel = false;
+            this.metroTabPage5.VerticalScrollbarSize = 10;
+            // 
+            // faq
+            // 
+            this.faq.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.faq.Location = new System.Drawing.Point(0, 0);
+            this.faq.MinimumSize = new System.Drawing.Size(20, 20);
+            this.faq.Name = "faq";
+            this.faq.Size = new System.Drawing.Size(840, 414);
+            this.faq.TabIndex = 2;
+            this.faq.Url = new System.Uri("https://shrektech.xyz/faq.html", System.UriKind.Absolute);
             // 
             // AvatarSystem
             // 
@@ -1685,6 +1714,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.nmQuestVersion)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nmPcVersion)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.metroStyleManager1)).EndInit();
+            this.metroTabPage5.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1786,6 +1816,8 @@
         private System.Windows.Forms.DataGridViewCheckBoxColumn Favorited;
         private MetroFramework.Controls.MetroButton btnCheck;
         public MetroFramework.Controls.MetroButton btn2FA;
+        private MetroFramework.Controls.MetroTabPage metroTabPage5;
+        private System.Windows.Forms.WebBrowser faq;
     }
 }
 

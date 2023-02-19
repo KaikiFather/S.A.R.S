@@ -860,6 +860,12 @@ namespace SARS
                 else
                 {
                     configSave.Config.UserId = File.ReadAllLines("auth.txt")[0];
+                    if (string.IsNullOrEmpty(configSave.Config.UserId))
+                    {
+                        configSave.Config.UserId = null;
+                        MessageBox.Show("Login Failed");
+                        return;
+                    }
                     configSave.Config.AuthKey = File.ReadAllLines("auth.txt")[1];
                     configSave.Config.TwoFactor = File.ReadAllLines("2fa.txt")[1];
                     configSave.Save();
@@ -887,6 +893,12 @@ namespace SARS
                 else
                 {
                     configSave.Config.UserId = File.ReadAllLines("auth.txt")[0];
+                    if (string.IsNullOrEmpty(configSave.Config.UserId))
+                    {
+                        configSave.Config.UserId = null;
+                        MessageBox.Show("Login Failed");
+                        return;
+                    }
                     configSave.Config.AuthKey = File.ReadAllLines("auth.txt")[1];
                     configSave.Config.TwoFactor = "";
                     configSave.Save();

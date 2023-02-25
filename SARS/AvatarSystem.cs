@@ -809,6 +809,7 @@ namespace SARS
             configSave.Config.AuthKey = null;
             configSave.Config.TwoFactor = null;
             configSave.Save();
+
             try
             {
                 _ = VrChat.CustomApiUser.Logout().Result;
@@ -839,9 +840,8 @@ namespace SARS
             {
 
             }
-            if (txtVRCUsername.Text != "" && txtVRCPassword.Text != "" && txtTwoFactor.Text != "")
+            if (txtVRCUsername.Text != "" && txtVRCPassword.Text != "")
             {
-                VrChat.TwoFactorCode = txtTwoFactor.Text;
                 try
                 {
                     _ = VrChat.CustomApiUser.Login(txtVRCUsername.Text, txtVRCPassword.Text, CustomApiUser.VerifyTwoFactorAuthCode).Result;
@@ -853,54 +853,15 @@ namespace SARS
                         MessageBox.Show(ex.Message);
                     }
                 }
-                if (!File.Exists("auth.txt") || !File.Exists("2fa.txt"))
+                if (string.IsNullOrEmpty(StaticValues.UserId))
                 {
                     MessageBox.Show("Login Failed");
                 }
                 else
                 {
-                    configSave.Config.UserId = File.ReadAllLines("auth.txt")[0];
-                    if (string.IsNullOrEmpty(configSave.Config.UserId))
-                    {
-                        configSave.Config.UserId = null;
-                        MessageBox.Show("Login Failed");
-                        return;
-                    }
-                    configSave.Config.AuthKey = File.ReadAllLines("auth.txt")[1];
-                    configSave.Config.TwoFactor = File.ReadAllLines("2fa.txt")[1];
-                    configSave.Save();
-                    MessageBox.Show("Login Successful");
-                }
-            }
-            else if (txtVRCUsername.Text != "" && txtVRCPassword.Text != "" && txtTwoFactor.Text == "")
-            {
-                try
-                {
-                    _ = VrChat.CustomApiUser.Login(txtVRCUsername.Text, txtVRCPassword.Text, null).Result;
-                    VrChat.TwoFactorCode = null;
-                }
-                catch (Exception ex)
-                {
-                    if (ex.Message == "Couldn't verify 2FA code")
-                    {
-                        MessageBox.Show(ex.Message);
-                    }
-                }
-                if (!File.Exists("auth.txt"))
-                {
-                    MessageBox.Show("Login Failed");
-                }
-                else
-                {
-                    configSave.Config.UserId = File.ReadAllLines("auth.txt")[0];
-                    if (string.IsNullOrEmpty(configSave.Config.UserId))
-                    {
-                        configSave.Config.UserId = null;
-                        MessageBox.Show("Login Failed");
-                        return;
-                    }
-                    configSave.Config.AuthKey = File.ReadAllLines("auth.txt")[1];
-                    configSave.Config.TwoFactor = "";
+                    configSave.Config.UserId = StaticValues.UserId;
+                    configSave.Config.AuthKey = StaticValues.AuthKey;
+                    configSave.Config.TwoFactor = StaticValues.TwoFactor;
                     configSave.Save();
                     MessageBox.Show("Login Successful");
                 }

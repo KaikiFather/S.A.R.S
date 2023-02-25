@@ -58,8 +58,6 @@
             this.btnSave = new MetroFramework.Controls.MetroButton();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.btn2FA = new MetroFramework.Controls.MetroButton();
-            this.metroLabel7 = new MetroFramework.Controls.MetroLabel();
-            this.txtTwoFactor = new MetroFramework.Controls.MetroTextBox();
             this.btnSaveVRC = new MetroFramework.Controls.MetroButton();
             this.metroLabel1 = new MetroFramework.Controls.MetroLabel();
             this.metroLabel4 = new MetroFramework.Controls.MetroLabel();
@@ -95,6 +93,8 @@
             this.txtAbout = new MetroFramework.Controls.MetroTextBox();
             this.lblSize = new MetroFramework.Controls.MetroLabel();
             this.metroLabel10 = new MetroFramework.Controls.MetroLabel();
+            this.metroTabPage5 = new MetroFramework.Controls.MetroTabPage();
+            this.faq = new System.Windows.Forms.WebBrowser();
             this.chkPin = new MetroFramework.Controls.MetroCheckBox();
             this.btnToggleFavorite = new MetroFramework.Controls.MetroButton();
             this.btnSearchFavorites = new MetroFramework.Controls.MetroButton();
@@ -134,8 +134,6 @@
             this.dtAfter = new MetroFramework.Controls.MetroDateTime();
             this.metroLabel5 = new MetroFramework.Controls.MetroLabel();
             this.metroLabel6 = new MetroFramework.Controls.MetroLabel();
-            this.metroTabPage5 = new MetroFramework.Controls.MetroTabPage();
-            this.faq = new System.Windows.Forms.WebBrowser();
             this.tabControl.SuspendLayout();
             this.metroTabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.avatarGrid)).BeginInit();
@@ -146,10 +144,10 @@
             this.groupBox1.SuspendLayout();
             this.metroTabPage4.SuspendLayout();
             this.metroTabPage3.SuspendLayout();
+            this.metroTabPage5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nmQuestVersion)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nmPcVersion)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.metroStyleManager1)).BeginInit();
-            this.metroTabPage5.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl
@@ -165,7 +163,7 @@
             this.tabControl.FontWeight = MetroFramework.MetroTabControlWeight.Bold;
             this.tabControl.Location = new System.Drawing.Point(28, 232);
             this.tabControl.Name = "tabControl";
-            this.tabControl.SelectedIndex = 4;
+            this.tabControl.SelectedIndex = 1;
             this.tabControl.Size = new System.Drawing.Size(848, 456);
             this.tabControl.TabIndex = 0;
             this.tabControl.UseSelectable = true;
@@ -431,8 +429,6 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox3.BackColor = System.Drawing.Color.Transparent;
             this.groupBox3.Controls.Add(this.btn2FA);
-            this.groupBox3.Controls.Add(this.metroLabel7);
-            this.groupBox3.Controls.Add(this.txtTwoFactor);
             this.groupBox3.Controls.Add(this.btnSaveVRC);
             this.groupBox3.Controls.Add(this.metroLabel1);
             this.groupBox3.Controls.Add(this.metroLabel4);
@@ -443,7 +439,7 @@
             this.groupBox3.ForeColor = System.Drawing.SystemColors.Control;
             this.groupBox3.Location = new System.Drawing.Point(210, 117);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(596, 243);
+            this.groupBox3.Size = new System.Drawing.Size(596, 199);
             this.groupBox3.TabIndex = 92;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "VRChat Credientials (Really recommended to use a throw away account) | EMAIL 2FA " +
@@ -453,7 +449,7 @@
             // 
             this.btn2FA.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btn2FA.FontSize = MetroFramework.MetroButtonSize.Tall;
-            this.btn2FA.Location = new System.Drawing.Point(15, 197);
+            this.btn2FA.Location = new System.Drawing.Point(15, 152);
             this.btn2FA.Name = "btn2FA";
             this.btn2FA.Size = new System.Drawing.Size(141, 35);
             this.btn2FA.TabIndex = 97;
@@ -462,58 +458,11 @@
             this.btn2FA.UseStyleColors = true;
             this.btn2FA.Click += new System.EventHandler(this.btn2FA_Click);
             // 
-            // metroLabel7
-            // 
-            this.metroLabel7.AutoSize = true;
-            this.metroLabel7.FontSize = MetroFramework.MetroLabelSize.Tall;
-            this.metroLabel7.FontWeight = MetroFramework.MetroLabelWeight.Bold;
-            this.metroLabel7.Location = new System.Drawing.Point(15, 112);
-            this.metroLabel7.Name = "metroLabel7";
-            this.metroLabel7.Size = new System.Drawing.Size(91, 25);
-            this.metroLabel7.TabIndex = 96;
-            this.metroLabel7.Text = "2FA Code";
-            this.metroLabel7.UseStyleColors = true;
-            // 
-            // txtTwoFactor
-            // 
-            this.txtTwoFactor.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            // 
-            // 
-            // 
-            this.txtTwoFactor.CustomButton.Image = null;
-            this.txtTwoFactor.CustomButton.Location = new System.Drawing.Point(369, 2);
-            this.txtTwoFactor.CustomButton.Name = "";
-            this.txtTwoFactor.CustomButton.Size = new System.Drawing.Size(27, 27);
-            this.txtTwoFactor.CustomButton.Style = MetroFramework.MetroColorStyle.Green;
-            this.txtTwoFactor.CustomButton.TabIndex = 1;
-            this.txtTwoFactor.CustomButton.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.txtTwoFactor.CustomButton.UseSelectable = true;
-            this.txtTwoFactor.CustomButton.Visible = false;
-            this.txtTwoFactor.FontSize = MetroFramework.MetroTextBoxSize.Medium;
-            this.txtTwoFactor.FontWeight = MetroFramework.MetroTextBoxWeight.Bold;
-            this.txtTwoFactor.Lines = new string[0];
-            this.txtTwoFactor.Location = new System.Drawing.Point(186, 105);
-            this.txtTwoFactor.MaxLength = 1000;
-            this.txtTwoFactor.Name = "txtTwoFactor";
-            this.txtTwoFactor.PasswordChar = '\0';
-            this.txtTwoFactor.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.txtTwoFactor.SelectedText = "";
-            this.txtTwoFactor.SelectionLength = 0;
-            this.txtTwoFactor.SelectionStart = 0;
-            this.txtTwoFactor.ShortcutsEnabled = true;
-            this.txtTwoFactor.Size = new System.Drawing.Size(399, 32);
-            this.txtTwoFactor.TabIndex = 95;
-            this.txtTwoFactor.UseSelectable = true;
-            this.txtTwoFactor.UseStyleColors = true;
-            this.txtTwoFactor.WaterMarkColor = System.Drawing.Color.FromArgb(((int)(((byte)(109)))), ((int)(((byte)(109)))), ((int)(((byte)(109)))));
-            this.txtTwoFactor.WaterMarkFont = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            // 
             // btnSaveVRC
             // 
             this.btnSaveVRC.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSaveVRC.FontSize = MetroFramework.MetroButtonSize.Tall;
-            this.btnSaveVRC.Location = new System.Drawing.Point(444, 197);
+            this.btnSaveVRC.Location = new System.Drawing.Point(444, 152);
             this.btnSaveVRC.Name = "btnSaveVRC";
             this.btnSaveVRC.Size = new System.Drawing.Size(141, 35);
             this.btnSaveVRC.TabIndex = 90;
@@ -621,7 +570,7 @@
             this.metroLabel3.AutoSize = true;
             this.metroLabel3.FontSize = MetroFramework.MetroLabelSize.Tall;
             this.metroLabel3.FontWeight = MetroFramework.MetroLabelWeight.Bold;
-            this.metroLabel3.Location = new System.Drawing.Point(14, 156);
+            this.metroLabel3.Location = new System.Drawing.Point(14, 111);
             this.metroLabel3.Name = "metroLabel3";
             this.metroLabel3.Size = new System.Drawing.Size(197, 25);
             this.metroLabel3.TabIndex = 89;
@@ -648,7 +597,7 @@
             this.txtClientVersion.FontWeight = MetroFramework.MetroTextBoxWeight.Bold;
             this.txtClientVersion.Lines = new string[] {
         "2023.1.1p2-1281--Release"};
-            this.txtClientVersion.Location = new System.Drawing.Point(217, 149);
+            this.txtClientVersion.Location = new System.Drawing.Point(217, 104);
             this.txtClientVersion.MaxLength = 1000;
             this.txtClientVersion.Name = "txtClientVersion";
             this.txtClientVersion.PasswordChar = '\0';
@@ -1114,6 +1063,31 @@
             this.metroLabel10.TabIndex = 55;
             this.metroLabel10.Text = "Database Size: ";
             this.metroLabel10.UseStyleColors = true;
+            // 
+            // metroTabPage5
+            // 
+            this.metroTabPage5.Controls.Add(this.faq);
+            this.metroTabPage5.HorizontalScrollbarBarColor = true;
+            this.metroTabPage5.HorizontalScrollbarHighlightOnWheel = false;
+            this.metroTabPage5.HorizontalScrollbarSize = 10;
+            this.metroTabPage5.Location = new System.Drawing.Point(4, 38);
+            this.metroTabPage5.Name = "metroTabPage5";
+            this.metroTabPage5.Size = new System.Drawing.Size(840, 414);
+            this.metroTabPage5.TabIndex = 4;
+            this.metroTabPage5.Text = "FAQ";
+            this.metroTabPage5.VerticalScrollbarBarColor = true;
+            this.metroTabPage5.VerticalScrollbarHighlightOnWheel = false;
+            this.metroTabPage5.VerticalScrollbarSize = 10;
+            // 
+            // faq
+            // 
+            this.faq.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.faq.Location = new System.Drawing.Point(0, 0);
+            this.faq.MinimumSize = new System.Drawing.Size(20, 20);
+            this.faq.Name = "faq";
+            this.faq.Size = new System.Drawing.Size(840, 414);
+            this.faq.TabIndex = 2;
+            this.faq.Url = new System.Uri("https://shrektech.xyz/faq.html", System.UriKind.Absolute);
             // 
             // chkPin
             // 
@@ -1622,31 +1596,6 @@
             this.metroLabel6.Text = "After";
             this.metroLabel6.UseStyleColors = true;
             // 
-            // metroTabPage5
-            // 
-            this.metroTabPage5.Controls.Add(this.faq);
-            this.metroTabPage5.HorizontalScrollbarBarColor = true;
-            this.metroTabPage5.HorizontalScrollbarHighlightOnWheel = false;
-            this.metroTabPage5.HorizontalScrollbarSize = 10;
-            this.metroTabPage5.Location = new System.Drawing.Point(4, 38);
-            this.metroTabPage5.Name = "metroTabPage5";
-            this.metroTabPage5.Size = new System.Drawing.Size(840, 414);
-            this.metroTabPage5.TabIndex = 4;
-            this.metroTabPage5.Text = "FAQ";
-            this.metroTabPage5.VerticalScrollbarBarColor = true;
-            this.metroTabPage5.VerticalScrollbarHighlightOnWheel = false;
-            this.metroTabPage5.VerticalScrollbarSize = 10;
-            // 
-            // faq
-            // 
-            this.faq.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.faq.Location = new System.Drawing.Point(0, 0);
-            this.faq.MinimumSize = new System.Drawing.Size(20, 20);
-            this.faq.Name = "faq";
-            this.faq.Size = new System.Drawing.Size(840, 414);
-            this.faq.TabIndex = 2;
-            this.faq.Url = new System.Uri("https://shrektech.xyz/faq.html", System.UriKind.Absolute);
-            // 
             // AvatarSystem
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1711,10 +1660,10 @@
             this.metroTabPage4.PerformLayout();
             this.metroTabPage3.ResumeLayout(false);
             this.metroTabPage3.PerformLayout();
+            this.metroTabPage5.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.nmQuestVersion)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nmPcVersion)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.metroStyleManager1)).EndInit();
-            this.metroTabPage5.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1804,8 +1753,6 @@
         private MetroFramework.Controls.MetroButton btnVrcaSearch;
         private MetroFramework.Controls.MetroButton btnExtractVRCA;
         private MetroFramework.Controls.MetroButton btnLoadVRCA;
-        private MetroFramework.Controls.MetroLabel metroLabel7;
-        public MetroFramework.Controls.MetroTextBox txtTwoFactor;
         private System.Windows.Forms.DataGridViewImageColumn picture;
         private System.Windows.Forms.DataGridViewTextBoxColumn AvatarName;
         private System.Windows.Forms.DataGridViewTextBoxColumn Author;

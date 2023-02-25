@@ -30,7 +30,7 @@ namespace SARS.Modules
                 catch { }
             }
         }
-        private static bool firstDownload = true;
+
         public static bool pcDownload = true;
         public static async Task<bool> DownloadVrcaAsync(Avatar avatar, VRChatApiClient VrChat, string AuthKey, decimal pcVersion, decimal questVersion, string TwoFactor, Download download)
         {

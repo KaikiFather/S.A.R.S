@@ -262,23 +262,23 @@ namespace SARS
             }
             if (string.IsNullOrEmpty(txtSearchTerm.Text))
             {
-                avatars = shrekApi.blankSearch(!chkPublic.Checked, !chkPrivate.Checked, chkQuest.Checked, chkPC.Checked, Convert.ToInt32(limit), before, after);
+                avatars = shrekApi.blankSearch(chkPublic.Checked, chkPrivate.Checked, chkQuest.Checked, chkPC.Checked, Convert.ToInt32(limit), before, after);
             }
             else if (cbSearchTerm.Text == "Avatar Name")
             {
-                avatars = shrekApi.avatarNameSearch(txtSearchTerm.Text, chkContains.Checked, !chkPublic.Checked, !chkPrivate.Checked, chkQuest.Checked, chkPC.Checked, Convert.ToInt32(limit), before, after);
+                avatars = shrekApi.avatarNameSearch(txtSearchTerm.Text, chkContains.Checked, chkPublic.Checked, chkPrivate.Checked, chkQuest.Checked, chkPC.Checked, Convert.ToInt32(limit), before, after);
             }
             else if (cbSearchTerm.Text == "Author Name")
             {
-                avatars = shrekApi.authorNameSearch(txtSearchTerm.Text, chkContains.Checked, !chkPublic.Checked, !chkPrivate.Checked, chkQuest.Checked, chkPC.Checked, Convert.ToInt32(limit), before, after);
+                avatars = shrekApi.authorNameSearch(txtSearchTerm.Text, chkContains.Checked, chkPublic.Checked, chkPrivate.Checked, chkQuest.Checked, chkPC.Checked, Convert.ToInt32(limit), before, after);
             }
             else if (cbSearchTerm.Text == "Avatar ID")
             {
-                avatars = shrekApi.avatarIdSearch(txtSearchTerm.Text, !chkPublic.Checked, !chkPrivate.Checked, chkQuest.Checked, chkPC.Checked);
+                avatars = shrekApi.avatarIdSearch(txtSearchTerm.Text, chkPublic.Checked, chkPrivate.Checked, chkQuest.Checked, chkPC.Checked);
             }
             else if (cbSearchTerm.Text == "Author ID")
             {
-                avatars = shrekApi.authorIdSearch(txtSearchTerm.Text, !chkPublic.Checked, !chkPrivate.Checked, chkQuest.Checked, chkPC.Checked, Convert.ToInt32(limit), before, after);
+                avatars = shrekApi.authorIdSearch(txtSearchTerm.Text, chkPublic.Checked, chkPrivate.Checked, chkQuest.Checked, chkPC.Checked, Convert.ToInt32(limit), before, after);
             }
             else if (cbSearchTerm.Text == "World Name")
             {

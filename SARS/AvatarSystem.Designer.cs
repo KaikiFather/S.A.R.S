@@ -596,7 +596,7 @@
             this.txtClientVersion.FontSize = MetroFramework.MetroTextBoxSize.Medium;
             this.txtClientVersion.FontWeight = MetroFramework.MetroTextBoxWeight.Bold;
             this.txtClientVersion.Lines = new string[] {
-        "2023.1.1p2-1281--Release"};
+        "2023.1.2p1-1287--Release"};
             this.txtClientVersion.Location = new System.Drawing.Point(217, 104);
             this.txtClientVersion.MaxLength = 1000;
             this.txtClientVersion.Name = "txtClientVersion";
@@ -608,7 +608,7 @@
             this.txtClientVersion.ShortcutsEnabled = true;
             this.txtClientVersion.Size = new System.Drawing.Size(368, 32);
             this.txtClientVersion.TabIndex = 88;
-            this.txtClientVersion.Text = "2023.1.1p2-1281--Release";
+            this.txtClientVersion.Text = "2023.1.2p1-1287--Release";
             this.txtClientVersion.UseSelectable = true;
             this.txtClientVersion.UseStyleColors = true;
             this.txtClientVersion.WaterMarkColor = System.Drawing.Color.FromArgb(((int)(((byte)(109)))), ((int)(((byte)(109)))), ((int)(((byte)(109)))));

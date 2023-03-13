@@ -44,7 +44,12 @@ namespace SARS
 
         private void AvatarSystem_Load(object sender, EventArgs e)
         {
-
+            string filePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            if (filePath.ToLower().Contains("\\local\\temp"))
+            {
+                MessageBox.Show("EXTRACT THE PROGRAM FIRST");
+                Close();
+            }
             var assembly = Assembly.GetExecutingAssembly();
             var fileVersionInfo = FileVersionInfo.GetVersionInfo(assembly.Location);
             SystemName = "Shrek Avatar Recovery System (S.A.R.S) V" + fileVersionInfo.ProductVersion;
@@ -54,9 +59,9 @@ namespace SARS
             cbLimit.SelectedIndex = 3;
             try
             {
-                configSave = new ConfigSave<Config>(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\config.cfg");
-                rippedList = new ConfigSave<List<Avatar>>(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\ripped.cfg");
-                favList = new ConfigSave<List<Avatar>>(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\fav.cfg");
+                configSave = new ConfigSave<Config>(filePath + "\\config.cfg");
+                rippedList = new ConfigSave<List<Avatar>>(filePath + "\\ripped.cfg");
+                favList = new ConfigSave<List<Avatar>>(filePath + "\\fav.cfg");
                 tabControl.SelectedIndex = 0;
             }
             catch { Console.WriteLine("Error with config"); }
@@ -990,6 +995,7 @@ namespace SARS
                     if (vrcaLocation == "")
                     {
                         rippedList.Config.Add(avatar);
+                        rippedList.Save();
                     }
                 }
             }

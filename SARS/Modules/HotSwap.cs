@@ -113,7 +113,6 @@ namespace SARS.Modules
             }
             catch (Exception ex)
             {
-                //CoreFunctions.WriteLog(string.Format("{0}", ex.Message), this);
                 MessageBox.Show("Error compressing VRCA file");
                 if (hotSwapConsole.InvokeRequired)
                     hotSwapConsole.Invoke((MethodInvoker)delegate { hotSwapConsole.Close(); });
@@ -148,7 +147,6 @@ namespace SARS.Modules
             }
 
             var uncompressedSize = $"{len:0.##} {sizes[order]}";
-            //CoreFunctions.WriteLog("Successfully hotswapped avatar", this);
 
             RandomFunctions.tryDelete(fileDecompressed);
             RandomFunctions.tryDelete(fileDecompressed2);
@@ -161,10 +159,12 @@ namespace SARS.Modules
 
             MessageBox.Show($"Got file sizes, comp:{compressedSize}, decomp:{uncompressedSize}", "Info",
                 MessageBoxButtons.OK, MessageBoxIcon.Information);
-            ;
-            File.AppendAllText(filePath + @"\Ripped.txt", matchModelOld.AvatarId + "\n");
-            avatarSystem.rippedList.Config.Add(avatarSystem.avatars.FirstOrDefault(x=>x.AvatarID ==matchModelOld.AvatarId));
-            avatarSystem.rippedList.Save();
+            var avatar = avatarSystem.avatars.FirstOrDefault(x => x.AvatarID == matchModelOld.AvatarId);
+            if (avatar != default && avatar != null)
+            {
+                avatarSystem.rippedList.Config.Add(avatar);
+                avatarSystem.rippedList.Save();
+            }
         }
 
         private static string getFileString(string file, string searchRegexString)

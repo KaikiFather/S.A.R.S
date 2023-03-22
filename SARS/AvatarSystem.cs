@@ -60,11 +60,38 @@ namespace SARS
             try
             {
                 configSave = new ConfigSave<Config>(filePath + "\\config.cfg");
-                rippedList = new ConfigSave<List<Avatar>>(filePath + "\\ripped.cfg");
-                favList = new ConfigSave<List<Avatar>>(filePath + "\\fav.cfg");
-                tabControl.SelectedIndex = 0;
             }
-            catch { Console.WriteLine("Error with config"); }
+            catch
+            {
+                MessageBox.Show("Error with config file, settings reset");
+                File.Delete(filePath + "\\config.cfg");
+                Console.WriteLine("Error with config");
+            }
+
+            try
+            {
+                rippedList = new ConfigSave<List<Avatar>>(filePath + "\\ripped.cfg");
+            }
+            catch
+            {
+                MessageBox.Show("Error with ripped file, ripped list reset");
+                File.Delete(filePath + "\\ripped.cfg");
+                Console.WriteLine("Error with ripped list");
+            }
+
+            try
+            {
+                favList = new ConfigSave<List<Avatar>>(filePath + "\\fav.cfg");
+            }
+            catch
+            {
+                MessageBox.Show("Error with favorites file, favorites list reset");
+                File.Delete(filePath + "\\fav.cfg");
+                favList = new ConfigSave<List<Avatar>>(filePath + "\\fav.cfg");
+                Console.WriteLine("Error with fav list");
+            }
+
+            tabControl.SelectedIndex = 0;
             try
             {
                 LoadSettings();
@@ -832,7 +859,8 @@ namespace SARS
             try
             {
                 File.Delete("2fa.txt");
-            } catch {}
+            }
+            catch { }
         }
 
         private void btnSaveVRC_Click(object sender, EventArgs e)

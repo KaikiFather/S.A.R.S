@@ -508,13 +508,6 @@ namespace SARS
             this.Text = SystemName;
             this.Update();
             this.Refresh();
-            //if(avatarGrid.SelectedRows.Count == 1)
-            //{
-            //    Avatar info = avatars.FirstOrDefault(x => x.AvatarID == avatarGrid.SelectedRows[0].Cells[3].Value.ToString());
-            //    var versions = AvatarFunctions.GetVersion(info.PCAssetURL, info.QUESTAssetURL, configSave.Config.AuthKey, configSave.Config.TwoFactor, VrChat);
-            //    nmPcVersion.Value = versions.Item1;
-            //    nmQuestVersion.Value = versions.Item2;
-            //}
         }
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -750,7 +743,6 @@ namespace SARS
             if (avatarGrid.Columns[e.ColumnIndex].AutoSizeMode != DataGridViewAutoSizeColumnMode.None)
             {
 
-                //throw new InvalidOperationException(Format("dataGridView1 {0} AutoSizeMode <> 'None'", dataGridView1.Columns[e.ColumnIndex].Name));
             }
 
             var s = e.Graphics.MeasureString(e.Value.ToString(), new Font("Segoe UI", 11, FontStyle.Regular, GraphicsUnit.Pixel));
@@ -918,7 +910,6 @@ namespace SARS
                     avatar = avatars.FirstOrDefault(x => x.AvatarID == row.Cells[3].Value);
                     Task.Run(() => AvatarFunctions.DownloadVrcaAsync(avatar, VrChat, configSave.Config.AuthKey, 0, 0, configSave.Config.TwoFactor, download));
                 }
-                string fileLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + $"\\VRCA\\{avatar.AvatarID}.vrca";
             }
             else
             {
@@ -930,7 +921,6 @@ namespace SARS
                     avatar = avatars.FirstOrDefault(x => x.AvatarID == row.Cells[3].Value);
                     Task.Run(() => AvatarFunctions.DownloadVrcaAsync(avatar, VrChat, configSave.Config.AuthKey, nmPcVersion.Value, nmQuestVersion.Value, configSave.Config.TwoFactor, download));
                 }
-                string fileLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + $"\\VRCA\\{avatar.AvatarID}.vrca";
             }
         }
 
@@ -946,12 +936,37 @@ namespace SARS
                     download.Show();
                     avatar = avatars.FirstOrDefault(x => x.AvatarID == avatarGrid.SelectedRows[0].Cells[3].Value);
                     if (await Task.Run(() => AvatarFunctions.DownloadVrcaAsync(avatar, VrChat, configSave.Config.AuthKey, nmPcVersion.Value, nmQuestVersion.Value, configSave.Config.TwoFactor, download)) == false) return;
-                    avatarFile = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + $"\\VRCA\\{avatar.AvatarID}.vrca";
+                    avatarFile = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + $"\\VRCA\\{avatar.AvatarName}-{avatar.AvatarID}_pc.vrca";
 
                 }
                 else
                 {
                     avatarFile = vrcaLocation;
+                }
+
+                if (File.Exists(avatarFile) && File.Exists(avatarFile.Replace("_pc", "_quest")))
+                {
+                    var dlgResult = MessageBox.Show("Select which version to extract", "VRCA Select",
+                       MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+
+                    if (dlgResult == DialogResult.No)
+                    {
+                        avatarFile = avatarFile.Replace("_pc", "_quest");
+                    }
+                }
+                else
+                {
+                    if (!File.Exists(avatarFile))
+                    {
+                        if (File.Exists(avatarFile.Replace("_pc", "_quest")))
+                        {
+                            avatarFile = avatarFile.Replace("_pc", "_quest");
+                        } else
+                        {
+                            MessageBox.Show("Something went wrong with avatar file location, either it failed to download or the file doesn't exist");
+                            return;
+                        }
+                    }
                 }
 
                 var folderDlg = new FolderBrowserDialog
@@ -1064,11 +1079,7 @@ namespace SARS
                     avatar = avatars.FirstOrDefault(x => x.AvatarID == row.Cells[3].Value);
                     Task.Run(() => AvatarFunctions.DownloadVrcaAsync(avatar, VrChat, configSave.Config.AuthKey, nmPcVersion.Value, nmQuestVersion.Value, configSave.Config.TwoFactor, download).Result);
                 }
-                fileLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + $"\\VRCA\\{avatar.AvatarID}.vrca";
-                if (!File.Exists(fileLocation))
-                {
-                    return;
-                }
+                fileLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + $"\\VRCA\\{avatar.AvatarID}_pc.vrca";
             }
             else
             {
@@ -1078,6 +1089,32 @@ namespace SARS
                     return;
                 }
                 fileLocation = vrcaLocation;
+            }
+
+            if (File.Exists(fileLocation) && File.Exists(fileLocation.Replace("_pc", "_quest")))
+            {
+                var dlgResult = MessageBox.Show("Select which version to extract", "VRCA Select",
+                   MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+
+                if (dlgResult == DialogResult.No)
+                {
+                    fileLocation = fileLocation.Replace("_pc", "_quest");
+                }
+            }
+            else
+            {
+                if (!File.Exists(fileLocation))
+                {
+                    if (File.Exists(fileLocation.Replace("_pc", "_quest")))
+                    {
+                        fileLocation = fileLocation.Replace("_pc", "_quest");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Avatar file doesn't exist");
+                        return;
+                    }
+                }
             }
 
 

@@ -40,7 +40,7 @@ namespace SARS.Modules
                 MessageBoxManager.No = "Quest";
                 MessageBoxManager.Register();
             } catch { }
-            var filePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + $"\\VRCA\\{avatar.AvatarID}.vrca";
+            var filePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + $"\\VRCA\\{avatar.AvatarName}-{avatar.AvatarID}.vrca";
             if (AuthKey == "")
             {
                 MessageBox.Show("please enter VRC Details on Settings page");
@@ -50,7 +50,6 @@ namespace SARS.Modules
 
             if (download.InvokeRequired)
             {
-                // Call this same method but append THREAD2 to the text
                 Action safeWrite = delegate { download.Text = avatar.AvatarID; };
                 download.Invoke(safeWrite);
             }

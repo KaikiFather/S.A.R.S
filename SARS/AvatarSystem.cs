@@ -13,6 +13,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -677,11 +678,11 @@ namespace SARS
                 }
                 if (AvatarFunctions.pcDownload)
                 {
-                    fileLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + $"\\VRCA\\{avatar.AvatarID}_pc.vrca";
+                    fileLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + $"\\VRCA\\{RandomFunctions.ReplaceInvalidChars(avatar.AvatarName)}-{avatar.AvatarID}_pc.vrca";
                 }
                 else
                 {
-                    fileLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + $"\\VRCA\\{avatar.AvatarID}_quest.vrca";
+                    fileLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + $"\\VRCA\\{RandomFunctions.ReplaceInvalidChars(avatar.AvatarName)}-{avatar.AvatarID}_quest.vrca";
                 }
                 if (!File.Exists(fileLocation))
                 {
@@ -895,10 +896,15 @@ namespace SARS
 
         private void btnDownload_Click(object sender, EventArgs e)
         {
+            Download();
+        }
+
+        private async Task<bool> Download()
+        {
             if (string.IsNullOrEmpty(configSave.Config.UserId))
             {
                 MessageBox.Show("Please Login with an alt first.");
-                return;
+                return false;
             }
             if (avatarGrid.SelectedRows.Count > 1)
             {
@@ -908,7 +914,7 @@ namespace SARS
                 foreach (DataGridViewRow row in avatarGrid.SelectedRows)
                 {
                     avatar = avatars.FirstOrDefault(x => x.AvatarID == row.Cells[3].Value);
-                    Task.Run(() => AvatarFunctions.DownloadVrcaAsync(avatar, VrChat, configSave.Config.AuthKey, 0, 0, configSave.Config.TwoFactor, download));
+                    await Task.Run(() => AvatarFunctions.DownloadVrcaAsync(avatar, VrChat, configSave.Config.AuthKey, 0, 0, configSave.Config.TwoFactor, download));
                 }
             }
             else
@@ -919,9 +925,10 @@ namespace SARS
                     Download download = new Download();
                     download.Show();
                     avatar = avatars.FirstOrDefault(x => x.AvatarID == row.Cells[3].Value);
-                    Task.Run(() => AvatarFunctions.DownloadVrcaAsync(avatar, VrChat, configSave.Config.AuthKey, nmPcVersion.Value, nmQuestVersion.Value, configSave.Config.TwoFactor, download));
+                    await Task.Run(() => AvatarFunctions.DownloadVrcaAsync(avatar, VrChat, configSave.Config.AuthKey, nmPcVersion.Value, nmQuestVersion.Value, configSave.Config.TwoFactor, download));
                 }
             }
+            return true;
         }
 
         private async void btnExtractVRCA_Click(object sender, EventArgs e)
@@ -1056,10 +1063,15 @@ namespace SARS
 
         private void btnPreview_Click(object sender, EventArgs e)
         {
+            Preview();
+        }
+
+        private async Task<bool> Preview()
+        {
             if (string.IsNullOrEmpty(configSave.Config.UserId))
             {
                 MessageBox.Show("Please Login with an alt first.");
-                return;
+                return false;
             }
             string fileLocation;
 
@@ -1068,7 +1080,7 @@ namespace SARS
                 if (avatarGrid.SelectedRows.Count > 1)
                 {
                     MessageBox.Show("Please only select 1 row at a time for hotswapping.");
-                    return;
+                    return false;
                 }
                 bool downloaded = false;
                 Avatar avatar = null;
@@ -1077,16 +1089,17 @@ namespace SARS
                     Download download = new Download();
                     download.Show();
                     avatar = avatars.FirstOrDefault(x => x.AvatarID == row.Cells[3].Value);
-                    Task.Run(() => AvatarFunctions.DownloadVrcaAsync(avatar, VrChat, configSave.Config.AuthKey, nmPcVersion.Value, nmQuestVersion.Value, configSave.Config.TwoFactor, download).Result);
+                    await Task.Run(() => AvatarFunctions.DownloadVrcaAsync(avatar, VrChat, configSave.Config.AuthKey, nmPcVersion.Value, nmQuestVersion.Value, configSave.Config.TwoFactor, download));
+
                 }
-                fileLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + $"\\VRCA\\{avatar.AvatarID}_pc.vrca";
+                fileLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + $"\\VRCA\\{RandomFunctions.ReplaceInvalidChars(avatar.AvatarName)}-{avatar.AvatarID}_pc.vrca";
             }
             else
             {
                 if (string.IsNullOrEmpty(vrcaLocation))
                 {
                     MessageBox.Show("Please select an avatar first or load an VRCA file");
-                    return;
+                    return false;
                 }
                 fileLocation = vrcaLocation;
             }
@@ -1112,7 +1125,7 @@ namespace SARS
                     else
                     {
                         MessageBox.Show("Avatar file doesn't exist");
-                        return;
+                        return false;
                     }
                 }
             }
@@ -1133,7 +1146,7 @@ namespace SARS
                 p.Start();
             }
             catch (Exception ex) { Console.WriteLine(ex.Message); }
-
+            return true;
         }
 
         private void tabControl_SelectedIndexChanged(object sender, EventArgs e)

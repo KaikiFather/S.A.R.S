@@ -22,6 +22,11 @@ namespace SARS.Modules
                 .Select(s => s[random.Next(s.Length)]).ToArray());
         }
 
+        public static string ReplaceInvalidChars(string filename)
+        {
+            return string.Join("_", filename.Split(Path.GetInvalidFileNameChars()));
+        }
+
         public static void tryDelete(string location)
         {
             try

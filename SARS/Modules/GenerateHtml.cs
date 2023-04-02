@@ -123,11 +123,11 @@ namespace SARS.Modules
             string buildString = "";
             for (int i = 0; i < avatars.Count - 1; i++)
             {
-                if (avatars[i].PCAssetURL.Trim() != "None")
+                if (avatars[i].avatar.pcAssetUrl.Trim() != "None")
                 {
                     assetTypes = "PC";
                 }
-                if (avatars[i].QUESTAssetURL.Trim() != "None")
+                if (avatars[i].avatar.questAssetUrl.Trim() != "None")
                 {
                     if (assetTypes != null)
                     {
@@ -156,7 +156,7 @@ namespace SARS.Modules
                                                                                        </div>
                                                                </div>
                                                    </div> </a> </div>
-                                                                                ", avatars[i].Releasestatus, avatars[i].ImageURL, avatars[i].AvatarName, avatars[i].AuthorName, avatars[i].AvatarID, avatars[i].Created, assetTypes);
+                                                                                ", avatars[i].avatar.releaseStatus, avatars[i].avatar.imageUrl, avatars[i].avatar.avatarName, avatars[i].avatar.authorName, avatars[i].avatar.avatarId, avatars[i].avatar.recordCreated, assetTypes);
                 buildString += avatarSection;
             }
 

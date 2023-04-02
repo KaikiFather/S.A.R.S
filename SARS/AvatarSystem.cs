@@ -104,14 +104,8 @@ namespace SARS
                 configSave.Config.HotSwapName = RandomFunctions.RandomString(randomAmount);
                 configSave.Save();
             }
-            if (!string.IsNullOrEmpty(configSave.Config.ApiKey))
-            {
-                shrekApi = new ShrekApi(configSave.Config.ApiKey);
-            }
-            else
-            {
-                shrekApi = new ShrekApi("");
-            }
+            shrekApi = new ShrekApi();
+            
 
             MessageBoxManager.Yes = "PC";
             MessageBoxManager.No = "Quest";
@@ -295,23 +289,23 @@ namespace SARS
             }
             if (string.IsNullOrEmpty(txtSearchTerm.Text))
             {
-                avatars = shrekApi.blankSearch(chkPublic.Checked, chkPrivate.Checked, chkQuest.Checked, chkPC.Checked, Convert.ToInt32(limit), before, after);
+                avatars = shrekApi.AvatarSearch(new AvatarSearch { key = configSave.Config.ApiKey, amount = Convert.ToInt32(limit) });
             }
             else if (cbSearchTerm.Text == "Avatar Name")
             {
-                avatars = shrekApi.avatarNameSearch(txtSearchTerm.Text, chkContains.Checked, chkPublic.Checked, chkPrivate.Checked, chkQuest.Checked, chkPC.Checked, Convert.ToInt32(limit), before, after);
+                //avatars = shrekApi.avatarNameSearch(txtSearchTerm.Text, chkContains.Checked, chkPublic.Checked, chkPrivate.Checked, chkQuest.Checked, chkPC.Checked, Convert.ToInt32(limit), before, after);
             }
             else if (cbSearchTerm.Text == "Author Name")
             {
-                avatars = shrekApi.authorNameSearch(txtSearchTerm.Text, chkContains.Checked, chkPublic.Checked, chkPrivate.Checked, chkQuest.Checked, chkPC.Checked, Convert.ToInt32(limit), before, after);
+                //avatars = shrekApi.authorNameSearch(txtSearchTerm.Text, chkContains.Checked, chkPublic.Checked, chkPrivate.Checked, chkQuest.Checked, chkPC.Checked, Convert.ToInt32(limit), before, after);
             }
             else if (cbSearchTerm.Text == "Avatar ID")
             {
-                avatars = shrekApi.avatarIdSearch(txtSearchTerm.Text, chkPublic.Checked, chkPrivate.Checked, chkQuest.Checked, chkPC.Checked);
+                //avatars = shrekApi.avatarIdSearch(txtSearchTerm.Text, chkPublic.Checked, chkPrivate.Checked, chkQuest.Checked, chkPC.Checked);
             }
             else if (cbSearchTerm.Text == "Author ID")
             {
-                avatars = shrekApi.authorIdSearch(txtSearchTerm.Text, chkPublic.Checked, chkPrivate.Checked, chkQuest.Checked, chkPC.Checked, Convert.ToInt32(limit), before, after);
+                //avatars = shrekApi.authorIdSearch(txtSearchTerm.Text, chkPublic.Checked, chkPrivate.Checked, chkQuest.Checked, chkPC.Checked, Convert.ToInt32(limit), before, after);
             }
             else if (cbSearchTerm.Text == "World Name")
             {
@@ -319,9 +313,13 @@ namespace SARS
             else if (cbSearchTerm.Text == "World ID")
             {
             }
+            
             avatarGrid.Rows.Clear();
-            LoadData();
-            LoadImages();
+            if (avatars != null)
+            {
+                LoadData();
+                LoadImages();
+            }
         }
 
         private void LoadData()
@@ -345,16 +343,16 @@ namespace SARS
                     DataGridViewRow row = (DataGridViewRow)avatarGrid.Rows[0].Clone();
 
                     row.Cells[0].Value = bitmap2;
-                    row.Cells[1].Value = avatars[i].AvatarName;
-                    row.Cells[2].Value = avatars[i].AuthorName;
-                    row.Cells[3].Value = avatars[i].AvatarID;
-                    row.Cells[4].Value = avatars[i].Created;
-                    row.Cells[5].Value = avatars[i].ThumbnailURL;
-                    if (rippedList.Config.Any(x => x.AvatarID == avatars[i].AvatarID))
+                    row.Cells[1].Value = avatars[i].avatar.avatarName;
+                    row.Cells[2].Value = avatars[i].avatar.authorName;
+                    row.Cells[3].Value = avatars[i].avatar.avatarId;
+                    row.Cells[4].Value = avatars[i].avatar.recordCreated;
+                    row.Cells[5].Value = avatars[i].avatar.thumbnailUrl;
+                    if (rippedList.Config.Any(x => x.avatar.avatarId == avatars[i].avatar.avatarId))
                     {
                         row.Cells[6].Value = true;
                     }
-                    if (favList.Config.Any(x => x.AvatarID == avatars[i].AvatarID))
+                    if (favList.Config.Any(x => x.avatar.avatarId == avatars[i].avatar.avatarId))
                     {
                         row.Cells[7].Value = true;
                     }
@@ -421,7 +419,7 @@ namespace SARS
         {
             foreach (DataGridViewRow row in avatarGrid.SelectedRows)
             {
-                Avatar info = avatars.FirstOrDefault(x => x.AvatarID == row.Cells[3].Value);
+                Avatar info = avatars.FirstOrDefault(x => x.avatar.avatarId == row.Cells[3].Value);
                 Avatar_Info avatar = new Avatar_Info();
                 avatar.txtAvatarInfo.Text = SetAvatarInfo(info);
                 avatar._selectedAvatar = info;
@@ -431,20 +429,19 @@ namespace SARS
 
         public string SetAvatarInfo(Avatar avatar)
         {
-            string avatarString = $"Time Detected: {avatar.Created} {Environment.NewLine}" +
-                $"Avatar Pin: {avatar.PinCode} {Environment.NewLine}" +
-                $"Avatar ID: {avatar.AvatarID} {Environment.NewLine}" +
-                $"Avatar Name: {avatar.AvatarName} {Environment.NewLine}" +
-                $"Avatar Description {avatar.AvatarDescription} {Environment.NewLine}" +
-                $"Author ID: {avatar.AuthorID} {Environment.NewLine}" +
-                $"Author Name: {avatar.AuthorName} {Environment.NewLine}" +
-                $"PC Asset URL: {avatar.PCAssetURL} {Environment.NewLine}" +
-                $"Quest Asset URL: {avatar.QUESTAssetURL} {Environment.NewLine}" +
-                $"Image URL: {avatar.ImageURL} {Environment.NewLine}" +
-                $"Thumbnail URL: {avatar.ThumbnailURL} {Environment.NewLine}" +
-                $"Unity Version: {avatar.UnityVersion} {Environment.NewLine}" +
-                $"Release Status: {avatar.Releasestatus} {Environment.NewLine}" +
-                $"Tags: {avatar.Tags}";
+            string avatarString = $"Time Detected: {avatar.avatar.recordCreated} {Environment.NewLine}" +
+                $"Avatar ID: {avatar.avatar.avatarId} {Environment.NewLine}" +
+                $"Avatar Name: {avatar.avatar.avatarName} {Environment.NewLine}" +
+                $"Avatar Description {avatar.avatar.avatarDescription} {Environment.NewLine}" +
+                $"Author ID: {avatar.avatar.authorId} {Environment.NewLine}" +
+                $"Author Name: {avatar.avatar.avatarName} {Environment.NewLine}" +
+                $"PC Asset URL: {avatar.avatar.pcAssetUrl} {Environment.NewLine}" +
+                $"Quest Asset URL: {avatar.avatar.questAssetUrl} {Environment.NewLine}" +
+                $"Image URL: {avatar.avatar.imageUrl} {Environment.NewLine}" +
+                $"Thumbnail URL: {avatar.avatar.thumbnailUrl} {Environment.NewLine}" +
+                $"Unity Version: {avatar.avatar.unityVersion} {Environment.NewLine}" +
+                $"Release Status: {avatar.avatar.releaseStatus} {Environment.NewLine}";// +
+                //$"Tags: {avatar.tags.ToString()}";
             return avatarString;
         }
 
@@ -483,14 +480,14 @@ namespace SARS
             {
                 try
                 {
-                    if (!favList.Config.Any(x => x.AvatarID == row.Cells[3].Value.ToString()))
+                    if (!favList.Config.Any(x => x.avatar.avatarId == row.Cells[3].Value.ToString()))
                     {
-                        favList.Config.Add(avatars.FirstOrDefault(x => x.AvatarID == row.Cells[3].Value.ToString()));
+                        favList.Config.Add(avatars.FirstOrDefault(x => x.avatar.avatarId == row.Cells[3].Value.ToString()));
                         row.Cells[7].Value = "true";
                     }
                     else
                     {
-                        favList.Config.Remove(avatars.FirstOrDefault(x => x.AvatarID == row.Cells[3].Value.ToString()));
+                        favList.Config.Remove(avatars.FirstOrDefault(x => x.avatar.avatarId == row.Cells[3].Value.ToString()));
                         row.Cells[7].Value = "false";
                     }
                 }
@@ -515,7 +512,6 @@ namespace SARS
         {
             configSave.Config.ApiKey = txtApiKey.Text.Trim();
             configSave.Save();
-            shrekApi = new ShrekApi(txtApiKey.Text.Trim());
             if (configSave.Config.ApiKey != "")
             {
                 shrekApi.checkLogin();
@@ -671,18 +667,18 @@ namespace SARS
                         Image myImg = (row.Cells[0].Value as Image);
                         myImg.Save(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) +
                                     $"\\{configSave.Config.HotSwapName}\\Assets\\Shrek SMART\\Resources\\shrekLogo.png", ImageFormat.Png);
-                        avatar = avatars.FirstOrDefault(x => x.AvatarID == row.Cells[3].Value);
+                        avatar = avatars.FirstOrDefault(x => x.avatar.avatarId == row.Cells[3].Value);
                     }
                     catch { }
                     await Task.Run(() => AvatarFunctions.DownloadVrcaAsync(avatar, VrChat, configSave.Config.AuthKey, nmPcVersion.Value, nmQuestVersion.Value, configSave.Config.TwoFactor, download));
                 }
                 if (AvatarFunctions.pcDownload)
                 {
-                    fileLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + $"\\VRCA\\{RandomFunctions.ReplaceInvalidChars(avatar.AvatarName)}-{avatar.AvatarID}_pc.vrca";
+                    fileLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + $"\\VRCA\\{RandomFunctions.ReplaceInvalidChars(avatar.avatar.avatarName)}-{avatar.avatar.avatarId}_pc.vrca";
                 }
                 else
                 {
-                    fileLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + $"\\VRCA\\{RandomFunctions.ReplaceInvalidChars(avatar.AvatarName)}-{avatar.AvatarID}_quest.vrca";
+                    fileLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + $"\\VRCA\\{RandomFunctions.ReplaceInvalidChars(avatar.avatar.avatarName)}-{avatar.avatar.avatarId}_quest.vrca";
                 }
                 if (!File.Exists(fileLocation))
                 {
@@ -821,8 +817,8 @@ namespace SARS
             this.Refresh();
             if (avatarGrid.SelectedRows.Count == 1)
             {
-                Avatar info = avatars.FirstOrDefault(x => x.AvatarID == avatarGrid.SelectedRows[0].Cells[3].Value.ToString());
-                var versions = AvatarFunctions.GetVersion(info.PCAssetURL, info.QUESTAssetURL, configSave.Config.AuthKey, configSave.Config.TwoFactor, VrChat);
+                Avatar info = avatars.FirstOrDefault(x => x.avatar.avatarId == avatarGrid.SelectedRows[0].Cells[3].Value.ToString());
+                var versions = AvatarFunctions.GetVersion(info.avatar.pcAssetUrl, info.avatar.questAssetUrl, configSave.Config.AuthKey, configSave.Config.TwoFactor, VrChat);
                 nmPcVersion.Value = versions.Item1;
                 nmQuestVersion.Value = versions.Item2;
             }
@@ -913,7 +909,7 @@ namespace SARS
                 Avatar avatar = null;
                 foreach (DataGridViewRow row in avatarGrid.SelectedRows)
                 {
-                    avatar = avatars.FirstOrDefault(x => x.AvatarID == row.Cells[3].Value);
+                    avatar = avatars.FirstOrDefault(x => x.avatar.avatarId == row.Cells[3].Value);
                     await Task.Run(() => AvatarFunctions.DownloadVrcaAsync(avatar, VrChat, configSave.Config.AuthKey, 0, 0, configSave.Config.TwoFactor, download));
                 }
             }
@@ -924,7 +920,7 @@ namespace SARS
                 {
                     Download download = new Download();
                     download.Show();
-                    avatar = avatars.FirstOrDefault(x => x.AvatarID == row.Cells[3].Value);
+                    avatar = avatars.FirstOrDefault(x => x.avatar.avatarId == row.Cells[3].Value);
                     await Task.Run(() => AvatarFunctions.DownloadVrcaAsync(avatar, VrChat, configSave.Config.AuthKey, nmPcVersion.Value, nmQuestVersion.Value, configSave.Config.TwoFactor, download));
                 }
             }
@@ -941,9 +937,9 @@ namespace SARS
                 {
                     Download download = new Download();
                     download.Show();
-                    avatar = avatars.FirstOrDefault(x => x.AvatarID == avatarGrid.SelectedRows[0].Cells[3].Value);
+                    avatar = avatars.FirstOrDefault(x => x.avatar.avatarId == avatarGrid.SelectedRows[0].Cells[3].Value);
                     if (await Task.Run(() => AvatarFunctions.DownloadVrcaAsync(avatar, VrChat, configSave.Config.AuthKey, nmPcVersion.Value, nmQuestVersion.Value, configSave.Config.TwoFactor, download)) == false) return;
-                    avatarFile = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + $"\\VRCA\\{avatar.AvatarName}-{avatar.AvatarID}_pc.vrca";
+                    avatarFile = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + $"\\VRCA\\{avatar.avatar.avatarName}-{avatar.avatar.avatarId}_pc.vrca";
 
                 }
                 else
@@ -1088,11 +1084,11 @@ namespace SARS
                 {
                     Download download = new Download();
                     download.Show();
-                    avatar = avatars.FirstOrDefault(x => x.AvatarID == row.Cells[3].Value);
+                    avatar = avatars.FirstOrDefault(x => x.avatar.avatarId == row.Cells[3].Value);
                     await Task.Run(() => AvatarFunctions.DownloadVrcaAsync(avatar, VrChat, configSave.Config.AuthKey, nmPcVersion.Value, nmQuestVersion.Value, configSave.Config.TwoFactor, download));
 
                 }
-                fileLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + $"\\VRCA\\{RandomFunctions.ReplaceInvalidChars(avatar.AvatarName)}-{avatar.AvatarID}_pc.vrca";
+                fileLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + $"\\VRCA\\{RandomFunctions.ReplaceInvalidChars(avatar.avatar.avatarName)}-{avatar.avatar.avatarId}_pc.vrca";
             }
             else
             {

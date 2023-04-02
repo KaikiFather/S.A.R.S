@@ -159,7 +159,7 @@ namespace SARS.Modules
 
             MessageBox.Show($"Got file sizes, comp:{compressedSize}, decomp:{uncompressedSize}", "Info",
                 MessageBoxButtons.OK, MessageBoxIcon.Information);
-            var avatar = avatarSystem.avatars.FirstOrDefault(x => x.AvatarID == matchModelOld.AvatarId);
+            var avatar = avatarSystem.avatars.FirstOrDefault(x => x.avatar.avatarId == matchModelOld.AvatarId);
             if (avatar != default && avatar != null)
             {
                 avatarSystem.rippedList.Config.Add(avatar);

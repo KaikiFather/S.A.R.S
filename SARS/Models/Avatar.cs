@@ -1,29 +1,50 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace SARS.Models
 {
-    internal class AvatarList
+
+    public class AvatarDetails
     {
-        public List<Avatar> records { get; set; }
+        public int id { get; set; }
+        public string avatarId { get; set; }
+        public string avatarName { get; set; }
+        public string avatarDescription { get; set; }
+        public string authorId { get; set; }
+        public string authorName { get; set; }
+        public string imageUrl { get; set; }
+        public string thumbnailUrl { get; set; }
+        public string questAssetUrl { get; set; }
+        public string pcAssetUrl { get; set; }
+        public string releaseStatus { get; set; }
+        public string unityVersion { get; set; }
+        public DateTime recordCreated { get; set; }
     }
+
 
     public class Avatar
     {
-        public string TimeDetected { get; set; }
-        public string AvatarID { get; set; }
-        public string AvatarName { get; set; }
-        public string AvatarDescription { get; set; }
-        public string AuthorName { get; set; }
-        public string AuthorID { get; set; }
-        public string PCAssetURL { get; set; }
-        public string QUESTAssetURL { get; set; }
-        public string ImageURL { get; set; }
-        public string ThumbnailURL { get; set; }
-        public string UnityVersion { get; set; }
-        public string Releasestatus { get; set; }
-        public string Tags { get; set; }
-        public string Pin { get; set; }
-        public string PinCode { get; set; }
-        public string Created { get; set; }
+        public AvatarDetails avatar { get; set; }
+        public List<string> tags { get; set; }
+    }
+
+    public class AvatarResponse
+    {
+        public List<Avatar> avatars { get; set; }
+        public bool authorized { get; set; }
+        public bool banned { get; set; }
+    }
+
+
+    public class AvatarSearch
+    {
+        public string avatarId { get; set; }
+        public string authorId { get; set; }
+        public string avatarName { get; set; }
+        public string authorName { get; set; }
+        public List<string> tags = null;
+        public int amount { get; set; }
+        public string key { get; set; }
+        public bool debugMode { get; set; }
     }
 }

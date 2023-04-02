@@ -1,6 +1,7 @@
 ﻿using MetroFramework;
 using MetroFramework.Forms;
 using Microsoft.Win32;
+using Newtonsoft.Json.Linq;
 using SARS.Models;
 using SARS.Modules;
 using SARS.Properties;
@@ -14,6 +15,7 @@ using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -45,6 +47,7 @@ namespace SARS
 
         private void AvatarSystem_Load(object sender, EventArgs e)
         {
+            typeof(DataGridView).InvokeMember("DoubleBuffered", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.SetProperty, null, avatarGrid, new object[] { true });
             string filePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             if (filePath.ToLower().Contains("\\local\\temp"))
             {
@@ -105,7 +108,7 @@ namespace SARS
                 configSave.Save();
             }
             shrekApi = new ShrekApi();
-            
+
 
             MessageBoxManager.Yes = "PC";
             MessageBoxManager.No = "Quest";
@@ -266,6 +269,10 @@ namespace SARS
             }
         }
 
+        [DllImport("user32.dll")]
+        private static extern int SendMessage(IntPtr hWnd, Int32 wMsg, bool wParam, Int32 lParam);
+        private const int WM_SETREDRAW = 11;
+
         private void btnSearch_Click(object sender, EventArgs e)
         {
             string limit = cbLimit.Text;
@@ -287,24 +294,25 @@ namespace SARS
             {
                 after = dtAfter.Value;
             }
-            if (string.IsNullOrEmpty(txtSearchTerm.Text))
+            AvatarSearch avatarSearch = new AvatarSearch { key = configSave.Config.ApiKey, amount = Convert.ToInt32(limit) };
+            if (cbSearchTerm.Text == "Avatar Name")
             {
-                avatars = shrekApi.AvatarSearch(new AvatarSearch { key = configSave.Config.ApiKey, amount = Convert.ToInt32(limit) });
-            }
-            else if (cbSearchTerm.Text == "Avatar Name")
-            {
+                avatarSearch.avatarName = txtSearchTerm.Text;
                 //avatars = shrekApi.avatarNameSearch(txtSearchTerm.Text, chkContains.Checked, chkPublic.Checked, chkPrivate.Checked, chkQuest.Checked, chkPC.Checked, Convert.ToInt32(limit), before, after);
             }
             else if (cbSearchTerm.Text == "Author Name")
             {
+                avatarSearch.authorName = txtSearchTerm.Text;
                 //avatars = shrekApi.authorNameSearch(txtSearchTerm.Text, chkContains.Checked, chkPublic.Checked, chkPrivate.Checked, chkQuest.Checked, chkPC.Checked, Convert.ToInt32(limit), before, after);
             }
             else if (cbSearchTerm.Text == "Avatar ID")
             {
+                avatarSearch.avatarId = txtSearchTerm.Text;
                 //avatars = shrekApi.avatarIdSearch(txtSearchTerm.Text, chkPublic.Checked, chkPrivate.Checked, chkQuest.Checked, chkPC.Checked);
             }
             else if (cbSearchTerm.Text == "Author ID")
             {
+                avatarSearch.authorId = txtSearchTerm.Text;
                 //avatars = shrekApi.authorIdSearch(txtSearchTerm.Text, chkPublic.Checked, chkPrivate.Checked, chkQuest.Checked, chkPC.Checked, Convert.ToInt32(limit), before, after);
             }
             else if (cbSearchTerm.Text == "World Name")
@@ -313,11 +321,16 @@ namespace SARS
             else if (cbSearchTerm.Text == "World ID")
             {
             }
-            
+
+            avatars = shrekApi.AvatarSearch(avatarSearch);
+
             avatarGrid.Rows.Clear();
             if (avatars != null)
             {
+                SendMessage(avatarGrid.Handle, WM_SETREDRAW, false, 0);
                 LoadData();
+                SendMessage(avatarGrid.Handle, WM_SETREDRAW, true, 0);
+                avatarGrid.Refresh();
                 LoadImages();
             }
         }
@@ -333,6 +346,8 @@ namespace SARS
                 bitmap2 = new Bitmap(responseStream);
             }
             catch { }
+
+            
 
             avatarGrid.AllowUserToAddRows = true;
             avatarGrid.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
@@ -364,8 +379,6 @@ namespace SARS
             int count = avatarGrid.Rows.Count;
 
             lblAvatarCount.Text = (count).ToString();
-
-            avatarGrid.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
         }
 
         private void LoadImages()
@@ -441,7 +454,7 @@ namespace SARS
                 $"Thumbnail URL: {avatar.avatar.thumbnailUrl} {Environment.NewLine}" +
                 $"Unity Version: {avatar.avatar.unityVersion} {Environment.NewLine}" +
                 $"Release Status: {avatar.avatar.releaseStatus} {Environment.NewLine}";// +
-                //$"Tags: {avatar.tags.ToString()}";
+                                                                                       //$"Tags: {avatar.tags.ToString()}";
             return avatarString;
         }
 
@@ -964,7 +977,8 @@ namespace SARS
                         if (File.Exists(avatarFile.Replace("_pc", "_quest")))
                         {
                             avatarFile = avatarFile.Replace("_pc", "_quest");
-                        } else
+                        }
+                        else
                         {
                             MessageBox.Show("Something went wrong with avatar file location, either it failed to download or the file doesn't exist");
                             return;

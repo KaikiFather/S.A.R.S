@@ -48,7 +48,7 @@ namespace SARS.Modules
         public List<Avatar> AvatarSearch(AvatarSearch avatar)
         {
 
-            var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://dev.shrektech.xyz/Avatar/GetKeyAvatar");
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://unlocked.shrektech.xyz/Avatar/GetKeyAvatar");
             httpWebRequest.ContentType = "application/json";
             httpWebRequest.Method = "POST";
             httpWebRequest.UserAgent = $"SARS" + coreApiVersion;

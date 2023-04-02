@@ -42,9 +42,18 @@ namespace SARS.Models
         public string authorId { get; set; }
         public string avatarName { get; set; }
         public string authorName { get; set; }
-        public List<string> tags = null;
+        public List<Tag> tags { get; set; }
         public int amount { get; set; }
+        public bool containsSearch { get; set; }
+        public bool publicAvatars { get; set; }
+        public bool privateAvatars { get; set; }
         public string key { get; set; }
         public bool debugMode { get; set; }
     }
+
+    public class Tag
+    {
+        public string tag { get; set; }
+    }
+
 }

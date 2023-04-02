@@ -1,6 +1,7 @@
 ﻿using MetroFramework.Forms;
 using SARS.Models;
 using System;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace SARS
@@ -105,8 +106,8 @@ namespace SARS
             }
 
             if (cbCopy.Text == "Tags")
-            {
-                //Clipboard.SetText(_selectedAvatar.tags.ToString());
+            {               
+                Clipboard.SetText(String.Join(", ", _selectedAvatar.tags.Select(p => p.ToString()).ToArray()));
                 MessageBox.Show(this, "information copied to clipboard.", "Copied", MessageBoxButtons.OK,
                     MessageBoxIcon.Information);
             }

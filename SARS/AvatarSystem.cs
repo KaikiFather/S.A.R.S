@@ -294,26 +294,22 @@ namespace SARS
             {
                 after = dtAfter.Value;
             }
-            AvatarSearch avatarSearch = new AvatarSearch { key = configSave.Config.ApiKey, amount = Convert.ToInt32(limit) };
+            AvatarSearch avatarSearch = new AvatarSearch { key = configSave.Config.ApiKey, amount = Convert.ToInt32(limit), privateAvatars = chkPrivate.Checked, publicAvatars = chkPublic.Checked, containsSearch = chkContains.Checked };
             if (cbSearchTerm.Text == "Avatar Name")
             {
                 avatarSearch.avatarName = txtSearchTerm.Text;
-                //avatars = shrekApi.avatarNameSearch(txtSearchTerm.Text, chkContains.Checked, chkPublic.Checked, chkPrivate.Checked, chkQuest.Checked, chkPC.Checked, Convert.ToInt32(limit), before, after);
             }
             else if (cbSearchTerm.Text == "Author Name")
             {
                 avatarSearch.authorName = txtSearchTerm.Text;
-                //avatars = shrekApi.authorNameSearch(txtSearchTerm.Text, chkContains.Checked, chkPublic.Checked, chkPrivate.Checked, chkQuest.Checked, chkPC.Checked, Convert.ToInt32(limit), before, after);
             }
             else if (cbSearchTerm.Text == "Avatar ID")
             {
                 avatarSearch.avatarId = txtSearchTerm.Text;
-                //avatars = shrekApi.avatarIdSearch(txtSearchTerm.Text, chkPublic.Checked, chkPrivate.Checked, chkQuest.Checked, chkPC.Checked);
             }
             else if (cbSearchTerm.Text == "Author ID")
             {
                 avatarSearch.authorId = txtSearchTerm.Text;
-                //avatars = shrekApi.authorIdSearch(txtSearchTerm.Text, chkPublic.Checked, chkPrivate.Checked, chkQuest.Checked, chkPC.Checked, Convert.ToInt32(limit), before, after);
             }
             else if (cbSearchTerm.Text == "World Name")
             {
@@ -453,8 +449,8 @@ namespace SARS
                 $"Image URL: {avatar.avatar.imageUrl} {Environment.NewLine}" +
                 $"Thumbnail URL: {avatar.avatar.thumbnailUrl} {Environment.NewLine}" +
                 $"Unity Version: {avatar.avatar.unityVersion} {Environment.NewLine}" +
-                $"Release Status: {avatar.avatar.releaseStatus} {Environment.NewLine}";// +
-                                                                                       //$"Tags: {avatar.tags.ToString()}";
+                $"Release Status: {avatar.avatar.releaseStatus} {Environment.NewLine}" +
+                $"Tags: {String.Join(", ", avatar.tags.Select(p => p.ToString()).ToArray())}";
             return avatarString;
         }
 

@@ -5,7 +5,7 @@ VisualStudioVersion = 17.3.32929.385
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SARS", "SARS\SARS.csproj", "{66E2170A-B249-4B64-B885-38B3DE79C21E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VRChatAPI", "..\ARES\ARES_C\ARES\VRChatAPI\VRChatAPI.csproj", "{08C47817-A081-49DA-A47A-77B511B9B36E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VRChatAPI", "VRChatAPI\VRChatAPI.csproj", "{08C47817-A081-49DA-A47A-77B511B9B36E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

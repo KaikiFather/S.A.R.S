@@ -74,24 +74,25 @@ namespace SARS
 
             try
             {
-                rippedList = new ConfigSave<List<Avatar>>(filePath + "\\ripped.cfg");
+                rippedList = new ConfigSave<List<Avatar>>(filePath + "\\rippedNew.cfg");
             }
             catch
             {
                 MessageBox.Show("Error with ripped file, ripped list reset");
-                File.Delete(filePath + "\\ripped.cfg");
+                File.Delete(filePath + "\\rippedNew.cfg");
+                rippedList = new ConfigSave<List<Avatar>>(filePath + "\\rippedNew.cfg");
                 Console.WriteLine("Error with ripped list");
             }
 
             try
             {
-                favList = new ConfigSave<List<Avatar>>(filePath + "\\fav.cfg");
+                favList = new ConfigSave<List<Avatar>>(filePath + "\\favNew.cfg");
             }
             catch
             {
                 MessageBox.Show("Error with favorites file, favorites list reset");
-                File.Delete(filePath + "\\fav.cfg");
-                favList = new ConfigSave<List<Avatar>>(filePath + "\\fav.cfg");
+                File.Delete(filePath + "\\favNew.cfg");
+                favList = new ConfigSave<List<Avatar>>(filePath + "\\favNew.cfg");
                 Console.WriteLine("Error with fav list");
             }
 

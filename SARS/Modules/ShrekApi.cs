@@ -84,7 +84,6 @@ namespace SARS.Modules
                 }
                 return new List<Avatar>();
             }
-            return new List<Avatar>();
         }
     }
 }

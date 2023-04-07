@@ -53,6 +53,7 @@
             this.Favorited = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.metroTabPage2 = new MetroFramework.Controls.MetroTabPage();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.chkAltApi = new MetroFramework.Controls.MetroCheckBox();
             this.metroLabel15 = new MetroFramework.Controls.MetroLabel();
             this.txtApiKey = new MetroFramework.Controls.MetroTextBox();
             this.btnSave = new MetroFramework.Controls.MetroButton();
@@ -82,7 +83,6 @@
             this.btnAvatarOut = new MetroFramework.Controls.MetroButton();
             this.metroLabel13 = new MetroFramework.Controls.MetroLabel();
             this.txtAvatarOutput = new MetroFramework.Controls.MetroTextBox();
-            this.btnVrcaSearch = new MetroFramework.Controls.MetroButton();
             this.btnExtractVRCA = new MetroFramework.Controls.MetroButton();
             this.btnLoadVRCA = new MetroFramework.Controls.MetroButton();
             this.metroTabPage3 = new MetroFramework.Controls.MetroTabPage();
@@ -134,6 +134,7 @@
             this.dtAfter = new MetroFramework.Controls.MetroDateTime();
             this.metroLabel5 = new MetroFramework.Controls.MetroLabel();
             this.metroLabel6 = new MetroFramework.Controls.MetroLabel();
+            this.btnUnityLoc = new MetroFramework.Controls.MetroButton();
             this.tabControl.SuspendLayout();
             this.metroTabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.avatarGrid)).BeginInit();
@@ -163,7 +164,7 @@
             this.tabControl.FontWeight = MetroFramework.MetroTabControlWeight.Bold;
             this.tabControl.Location = new System.Drawing.Point(28, 232);
             this.tabControl.Name = "tabControl";
-            this.tabControl.SelectedIndex = 1;
+            this.tabControl.SelectedIndex = 0;
             this.tabControl.Size = new System.Drawing.Size(848, 456);
             this.tabControl.TabIndex = 0;
             this.tabControl.UseSelectable = true;
@@ -353,6 +354,7 @@
             // groupBox4
             // 
             this.groupBox4.BackColor = System.Drawing.Color.Transparent;
+            this.groupBox4.Controls.Add(this.chkAltApi);
             this.groupBox4.Controls.Add(this.metroLabel15);
             this.groupBox4.Controls.Add(this.txtApiKey);
             this.groupBox4.Controls.Add(this.btnSave);
@@ -362,6 +364,17 @@
             this.groupBox4.TabIndex = 96;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "API";
+            // 
+            // chkAltApi
+            // 
+            this.chkAltApi.AutoSize = true;
+            this.chkAltApi.Location = new System.Drawing.Point(14, 69);
+            this.chkAltApi.Name = "chkAltApi";
+            this.chkAltApi.Size = new System.Drawing.Size(77, 15);
+            this.chkAltApi.TabIndex = 97;
+            this.chkAltApi.Text = "Alt API Url";
+            this.chkAltApi.UseSelectable = true;
+            this.chkAltApi.CheckedChanged += new System.EventHandler(this.chkAltApi_CheckedChanged);
             // 
             // metroLabel15
             // 
@@ -735,6 +748,7 @@
             // 
             // metroTabPage4
             // 
+            this.metroTabPage4.Controls.Add(this.btnUnityLoc);
             this.metroTabPage4.Controls.Add(this.toggleWorld);
             this.metroTabPage4.Controls.Add(this.toggleAvatar);
             this.metroTabPage4.Controls.Add(this.btnWorldOut);
@@ -743,7 +757,6 @@
             this.metroTabPage4.Controls.Add(this.btnAvatarOut);
             this.metroTabPage4.Controls.Add(this.metroLabel13);
             this.metroTabPage4.Controls.Add(this.txtAvatarOutput);
-            this.metroTabPage4.Controls.Add(this.btnVrcaSearch);
             this.metroTabPage4.Controls.Add(this.btnExtractVRCA);
             this.metroTabPage4.Controls.Add(this.btnLoadVRCA);
             this.metroTabPage4.HorizontalScrollbarBarColor = true;
@@ -903,17 +916,6 @@
             this.txtAvatarOutput.UseStyleColors = true;
             this.txtAvatarOutput.WaterMarkColor = System.Drawing.Color.FromArgb(((int)(((byte)(109)))), ((int)(((byte)(109)))), ((int)(((byte)(109)))));
             this.txtAvatarOutput.WaterMarkFont = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Pixel);
-            // 
-            // btnVrcaSearch
-            // 
-            this.btnVrcaSearch.FontSize = MetroFramework.MetroButtonSize.Tall;
-            this.btnVrcaSearch.Location = new System.Drawing.Point(3, 99);
-            this.btnVrcaSearch.Name = "btnVrcaSearch";
-            this.btnVrcaSearch.Size = new System.Drawing.Size(189, 35);
-            this.btnVrcaSearch.TabIndex = 37;
-            this.btnVrcaSearch.Text = "Attempt VRCA Search";
-            this.btnVrcaSearch.UseSelectable = true;
-            this.btnVrcaSearch.UseStyleColors = true;
             // 
             // btnExtractVRCA
             // 
@@ -1596,6 +1598,18 @@
             this.metroLabel6.Text = "After";
             this.metroLabel6.UseStyleColors = true;
             // 
+            // btnUnityLoc
+            // 
+            this.btnUnityLoc.FontSize = MetroFramework.MetroButtonSize.Tall;
+            this.btnUnityLoc.Location = new System.Drawing.Point(3, 99);
+            this.btnUnityLoc.Name = "btnUnityLoc";
+            this.btnUnityLoc.Size = new System.Drawing.Size(189, 35);
+            this.btnUnityLoc.TabIndex = 63;
+            this.btnUnityLoc.Text = "Change Unity Location";
+            this.btnUnityLoc.UseSelectable = true;
+            this.btnUnityLoc.UseStyleColors = true;
+            this.btnUnityLoc.Click += new System.EventHandler(this.btnUnityLoc_Click_1);
+            // 
             // AvatarSystem
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1750,7 +1764,6 @@
         private MetroFramework.Controls.MetroButton btnAvatarOut;
         private MetroFramework.Controls.MetroLabel metroLabel13;
         private MetroFramework.Controls.MetroTextBox txtAvatarOutput;
-        private MetroFramework.Controls.MetroButton btnVrcaSearch;
         private MetroFramework.Controls.MetroButton btnExtractVRCA;
         private MetroFramework.Controls.MetroButton btnLoadVRCA;
         private System.Windows.Forms.DataGridViewImageColumn picture;
@@ -1765,6 +1778,8 @@
         public MetroFramework.Controls.MetroButton btn2FA;
         private MetroFramework.Controls.MetroTabPage metroTabPage5;
         private System.Windows.Forms.WebBrowser faq;
+        private MetroFramework.Controls.MetroCheckBox chkAltApi;
+        private MetroFramework.Controls.MetroButton btnUnityLoc;
     }
 }
 

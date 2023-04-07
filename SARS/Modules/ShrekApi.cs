@@ -45,10 +45,14 @@ namespace SARS.Modules
         /// </summary>
         /// <param name="avatar"></param>
         /// <returns></returns>
-        public List<Avatar> AvatarSearch(AvatarSearch avatar)
+        public List<Avatar> AvatarSearch(AvatarSearch avatar, bool altApi)
         {
-
-            var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://unlocked.shrektech.xyz/Avatar/GetKeyAvatar");
+            string apiUrl = "https://unlocked.shrektech.xyz/Avatar/GetKeyAvatar";
+            if (altApi)
+            {
+                apiUrl =  "https://reverse.shrektech.xyz/Avatar/GetKeyAvatar";
+            }
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create(apiUrl);
             httpWebRequest.ContentType = "application/json";
             httpWebRequest.Method = "POST";
             httpWebRequest.UserAgent = $"SARS" + coreApiVersion;
@@ -81,6 +85,10 @@ namespace SARS.Modules
                 if (ex.Message.Contains("403"))
                 {
                     MessageBox.Show("ERROR KEY INVALID");
+                }
+                else
+                {
+                    MessageBox.Show($"Unknown Error: {ex.Message}");
                 }
                 return new List<Avatar>();
             }

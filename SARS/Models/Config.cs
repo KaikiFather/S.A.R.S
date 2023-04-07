@@ -22,5 +22,6 @@ namespace SARS.Models
         public string HotSwapName { get; set; }
         public string MacAddress { get; set; }
         public int HsbVersion { get; set; }
+        public bool AltAPI { get; set; }
     }
 }

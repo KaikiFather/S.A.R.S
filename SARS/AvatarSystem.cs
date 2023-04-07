@@ -1,7 +1,6 @@
 ﻿using MetroFramework;
 using MetroFramework.Forms;
 using Microsoft.Win32;
-using Newtonsoft.Json.Linq;
 using SARS.Models;
 using SARS.Modules;
 using SARS.Properties;
@@ -14,7 +13,6 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -49,6 +47,11 @@ namespace SARS
         {
             typeof(DataGridView).InvokeMember("DoubleBuffered", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.SetProperty, null, avatarGrid, new object[] { true });
             string filePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            ServicePointManager.ServerCertificateValidationCallback = delegate
+            {
+                return true;
+            };
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12 | SecurityProtocolType.Tls13;
             if (filePath.ToLower().Contains("\\local\\temp"))
             {
                 MessageBox.Show("EXTRACT THE PROGRAM FIRST");
@@ -109,7 +112,6 @@ namespace SARS
                 configSave.Save();
             }
             shrekApi = new ShrekApi();
-
 
             MessageBoxManager.Yes = "PC";
             MessageBoxManager.No = "Quest";
@@ -182,6 +184,8 @@ namespace SARS
             {
                 toggleWorld.Checked = configSave.Config.PreSelectedWorldLocationChecked;
             }
+
+            chkAltApi.Checked = configSave.Config.AltAPI;
 
             VrChat = new VRChatApiClient(15, configSave.Config.MacAddress);
             var check = VrChat.CustomApiUser.LoginWithExistingSession(configSave.Config.UserId, configSave.Config.AuthKey, configSave.Config.TwoFactor);
@@ -272,6 +276,7 @@ namespace SARS
 
         [DllImport("user32.dll")]
         private static extern int SendMessage(IntPtr hWnd, Int32 wMsg, bool wParam, Int32 lParam);
+
         private const int WM_SETREDRAW = 11;
 
         private void btnSearch_Click(object sender, EventArgs e)
@@ -295,22 +300,22 @@ namespace SARS
             {
                 after = dtAfter.Value;
             }
-            AvatarSearch avatarSearch = new AvatarSearch { key = configSave.Config.ApiKey, amount = Convert.ToInt32(limit), privateAvatars = chkPrivate.Checked, publicAvatars = chkPublic.Checked, containsSearch = chkContains.Checked };
+            AvatarSearch avatarSearch = new AvatarSearch { Key = configSave.Config.ApiKey, Amount = Convert.ToInt32(limit), PrivateAvatars = chkPrivate.Checked, PublicAvatars = chkPublic.Checked, ContainsSearch = chkContains.Checked, DebugMode = true, PcAvatars = chkPC.Checked, QuestAvatars = chkQuest.Checked };
             if (cbSearchTerm.Text == "Avatar Name")
             {
-                avatarSearch.avatarName = txtSearchTerm.Text;
+                avatarSearch.AvatarName = txtSearchTerm.Text;
             }
             else if (cbSearchTerm.Text == "Author Name")
             {
-                avatarSearch.authorName = txtSearchTerm.Text;
+                avatarSearch.AuthorName = txtSearchTerm.Text;
             }
             else if (cbSearchTerm.Text == "Avatar ID")
             {
-                avatarSearch.avatarId = txtSearchTerm.Text;
+                avatarSearch.AvatarId = txtSearchTerm.Text;
             }
             else if (cbSearchTerm.Text == "Author ID")
             {
-                avatarSearch.authorId = txtSearchTerm.Text;
+                avatarSearch.AuthorId = txtSearchTerm.Text;
             }
             else if (cbSearchTerm.Text == "World Name")
             {
@@ -319,7 +324,7 @@ namespace SARS
             {
             }
 
-            avatars = shrekApi.AvatarSearch(avatarSearch);
+            avatars = shrekApi.AvatarSearch(avatarSearch, chkAltApi.Checked);
 
             avatarGrid.Rows.Clear();
             if (avatars != null)
@@ -343,8 +348,6 @@ namespace SARS
                 bitmap2 = new Bitmap(responseStream);
             }
             catch { }
-
-            
 
             avatarGrid.AllowUserToAddRows = true;
             avatarGrid.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
@@ -749,7 +752,6 @@ namespace SARS
 
             if (avatarGrid.Columns[e.ColumnIndex].AutoSizeMode != DataGridViewAutoSizeColumnMode.None)
             {
-
             }
 
             var s = e.Graphics.MeasureString(e.Value.ToString(), new Font("Segoe UI", 11, FontStyle.Regular, GraphicsUnit.Pixel));
@@ -847,7 +849,6 @@ namespace SARS
             }
             catch
             {
-
             }
             try
             {
@@ -870,7 +871,6 @@ namespace SARS
             }
             catch
             {
-
             }
             if (txtVRCUsername.Text != "" && txtVRCPassword.Text != "")
             {
@@ -950,7 +950,6 @@ namespace SARS
                     avatar = avatars.FirstOrDefault(x => x.avatar.avatarId == avatarGrid.SelectedRows[0].Cells[3].Value);
                     if (await Task.Run(() => AvatarFunctions.DownloadVrcaAsync(avatar, VrChat, configSave.Config.AuthKey, nmPcVersion.Value, nmQuestVersion.Value, configSave.Config.TwoFactor, download)) == false) return;
                     avatarFile = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + $"\\VRCA\\{avatar.avatar.avatarName}-{avatar.avatar.avatarId}_pc.vrca";
-
                 }
                 else
                 {
@@ -1043,7 +1042,6 @@ namespace SARS
                             folderExtractLocation + @"\ExportedProject\Assets\.Scripts");
                         Directory.Move(folderExtractLocation + @"\ExportedProject\Assets\MonoScript",
                             folderExtractLocation + @"\ExportedProject\Assets\.MonoScript");
-
                     }
                     catch
                     {
@@ -1097,7 +1095,6 @@ namespace SARS
                     download.Show();
                     avatar = avatars.FirstOrDefault(x => x.avatar.avatarId == row.Cells[3].Value);
                     await Task.Run(() => AvatarFunctions.DownloadVrcaAsync(avatar, VrChat, configSave.Config.AuthKey, nmPcVersion.Value, nmQuestVersion.Value, configSave.Config.TwoFactor, download));
-
                 }
                 fileLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + $"\\VRCA\\{RandomFunctions.ReplaceInvalidChars(avatar.avatar.avatarName)}-{avatar.avatar.avatarId}_pc.vrca";
             }
@@ -1137,7 +1134,6 @@ namespace SARS
                 }
             }
 
-
             try
             {
                 string commands = string.Format(fileLocation);
@@ -1158,7 +1154,6 @@ namespace SARS
 
         private void tabControl_SelectedIndexChanged(object sender, EventArgs e)
         {
-
         }
 
         private void btnCheck_Click(object sender, EventArgs e)
@@ -1227,6 +1222,17 @@ namespace SARS
         private void btn2FA_Click(object sender, EventArgs e)
         {
             Process.Start("https://support.google.com/accounts/answer/1066447?hl=en&ref_topic=2954345");
+        }
+
+        private void chkAltApi_CheckedChanged(object sender, EventArgs e)
+        {
+            configSave.Config.AltAPI = chkAltApi.Checked;
+            configSave.Save();
+        }
+
+        private void btnUnityLoc_Click_1(object sender, EventArgs e)
+        {
+            SelectFile();
         }
     }
 }

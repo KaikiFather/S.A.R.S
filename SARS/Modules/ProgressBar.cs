@@ -47,4 +47,9 @@ public class SZProgress : SevenZip.ICodeProgress
         maxSize = 0;
         prog = 0.0f;
     }
+
+    public void AddProgress(ulong delta)
+    {
+        
+    }
 }

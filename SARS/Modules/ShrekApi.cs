@@ -45,12 +45,16 @@ namespace SARS.Modules
         /// </summary>
         /// <param name="avatar"></param>
         /// <returns></returns>
-        public List<Avatar> AvatarSearch(AvatarSearch avatar, bool altApi)
+        public List<Avatar> AvatarSearch(AvatarSearch avatar, bool altApi, string customApi)
         {
-            string apiUrl = "https://unlocked.shrektech.xyz/Avatar/GetKeyAvatar";
+            string apiUrl = "https://unlocked.modvrc.com/Avatar/GetKeyAvatar";
             if (altApi)
             {
-                apiUrl =  "https://reverse.shrektech.xyz/Avatar/GetKeyAvatar";
+                apiUrl = "https://unlocked.ares-mod.com/Avatar/GetKeyAvatar";
+            }
+            if(!string.IsNullOrEmpty(customApi))
+            {
+                apiUrl = customApi;
             }
             var httpWebRequest = (HttpWebRequest)WebRequest.Create(apiUrl);
             httpWebRequest.ContentType = "application/json";

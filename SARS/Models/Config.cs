@@ -23,5 +23,11 @@ namespace SARS.Models
         public string MacAddress { get; set; }
         public int HsbVersion { get; set; }
         public bool AltAPI { get; set; }
+        public bool Tls10 { get; set; }
+        public bool Tls11 { get; set; }
+        public bool Tls12 { get; set; }
+        public bool Tls13 { get; set; }
+        public string CustomApi { get; set; }
+        public bool CustomApiUse { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using MetroFramework;
+﻿using FACS01.Utilities;
+using MetroFramework;
 using MetroFramework.Forms;
 using Microsoft.Win32;
 using SARS.Models;
@@ -36,6 +37,8 @@ namespace SARS
         private VRChatApiClient VrChat;
         private string SystemName;
         private static int LatestHsbVersion = 2;
+        private RootClass avatarVersionPc;
+        private RootClass avatarVersionQuest;
 
         public AvatarSystem()
         {
@@ -185,6 +188,17 @@ namespace SARS
                 toggleWorld.Checked = configSave.Config.PreSelectedWorldLocationChecked;
             }
 
+            chkTls10.Checked = configSave.Config.Tls10;
+            chkTls11.Checked = configSave.Config.Tls11;
+            chkTls12.Checked = configSave.Config.Tls12;
+            chkTls13.Checked = configSave.Config.Tls13;
+            chkCustomApi.Checked = configSave.Config.CustomApiUse;
+
+            if (!string.IsNullOrEmpty(configSave.Config.CustomApi))
+            {
+                txtCustomApi.Text = configSave.Config.CustomApi;
+            }
+
             chkAltApi.Checked = configSave.Config.AltAPI;
 
             VrChat = new VRChatApiClient(15, configSave.Config.MacAddress);
@@ -323,8 +337,12 @@ namespace SARS
             else if (cbSearchTerm.Text == "World ID")
             {
             }
-
-            avatars = shrekApi.AvatarSearch(avatarSearch, chkAltApi.Checked);
+            string customApi = "";
+            if (chkCustomApi.Checked)
+            {
+                customApi = txtCustomApi.Text;
+            }
+            avatars = shrekApi.AvatarSearch(avatarSearch, chkAltApi.Checked, customApi);
 
             avatarGrid.Rows.Clear();
             if (avatars != null)
@@ -649,6 +667,7 @@ namespace SARS
         private void btnHotswap_Click(object sender, EventArgs e)
         {
             hotSwap();
+
         }
 
         private async Task<bool> hotSwap()
@@ -831,8 +850,46 @@ namespace SARS
             {
                 Avatar info = avatars.FirstOrDefault(x => x.avatar.avatarId == avatarGrid.SelectedRows[0].Cells[3].Value.ToString());
                 var versions = AvatarFunctions.GetVersion(info.avatar.pcAssetUrl, info.avatar.questAssetUrl, configSave.Config.AuthKey, configSave.Config.TwoFactor, VrChat);
-                nmPcVersion.Value = versions.Item1;
-                nmQuestVersion.Value = versions.Item2;
+                avatarVersionPc = versions.Item3;
+                avatarVersionQuest = versions.Item4;
+                if (avatarVersionPc != null)
+                {
+                    nmPcVersion.Maximum = versions.Item1;
+                    nmPcVersion.Value = versions.Item1;
+                    txtAvatarSizePc.Text = FormatSize(avatarVersionPc.versions.FirstOrDefault(x => x.version == nmPcVersion.Value).file.sizeInBytes);
+                }
+                if (avatarVersionQuest != null)
+                {
+                    nmQuestVersion.Maximum = versions.Item2;
+                    nmQuestVersion.Value = versions.Item2;
+                    txtAvatarSizeQuest.Text = FormatSize(avatarVersionQuest.versions.FirstOrDefault(x => x.version == nmQuestVersion.Value).file.sizeInBytes);
+                }
+                else
+                {
+                    nmQuestVersion.Maximum = 1;
+                    txtAvatarSizeQuest.Text = "0MB";
+                }
+            }
+        }
+        // Load all suffixes in an array
+        static readonly string[] suffixes =
+        { "Bytes", "KB", "MB", "GB", "TB", "PB" };
+        public string FormatSize(Int64 bytes)
+        {
+            try
+            {
+                int counter = 0;
+                decimal number = (decimal)bytes;
+                while (Math.Round(number / 1024) >= 1)
+                {
+                    number = number / 1024;
+                    counter++;
+                }
+                return string.Format("{0:n1}{1}", number, suffixes[counter]);
+            }
+            catch
+            {
+                return "0MB";
             }
         }
 
@@ -1046,6 +1103,8 @@ namespace SARS
                     catch
                     {
                     }
+                    FixVRC3Scripts fixVRC3Scripts = new FixVRC3Scripts();
+                    fixVRC3Scripts.FixScripts(folderExtractLocation);
 
                     if (vrcaLocation == "")
                     {
@@ -1233,6 +1292,86 @@ namespace SARS
         private void btnUnityLoc_Click_1(object sender, EventArgs e)
         {
             SelectFile();
+        }
+
+        private void chkTls13_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkTls13.Checked)
+            {
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls13;
+                chkTls10.Checked = false;
+                chkTls11.Checked = false;
+                chkTls12.Checked = false;
+            }
+            configSave.Config.Tls13 = chkTls13.Checked;
+            configSave.Save();
+        }
+
+        private void chkTls12_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkTls12.Checked)
+            {
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+                chkTls10.Checked = false;
+                chkTls11.Checked = false;
+                chkTls13.Checked = false;
+            }
+            configSave.Config.Tls12 = chkTls12.Checked;
+            configSave.Save();
+        }
+
+        private void chkTls11_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkTls11.Checked)
+            {
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls11;
+                chkTls10.Checked = false;
+                chkTls13.Checked = false;
+                chkTls12.Checked = false;
+            }
+            configSave.Config.Tls11 = chkTls11.Checked;
+            configSave.Save();
+        }
+
+        private void chkTls10_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkTls10.Checked)
+            {
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls;
+                chkTls13.Checked = false;
+                chkTls11.Checked = false;
+                chkTls12.Checked = false;
+            }
+            configSave.Config.Tls10 = chkTls10.Checked;
+            configSave.Save();
+        }
+
+        private void btnCustomSave_Click(object sender, EventArgs e)
+        {
+            configSave.Config.CustomApi = txtCustomApi.Text;
+            configSave.Save();
+        }
+
+        private void chkCustomApi_CheckedChanged(object sender, EventArgs e)
+        {
+            configSave.Config.CustomApiUse = chkCustomApi.Checked;
+            configSave.Save();
+        }
+
+        private void nmPcVersion_ValueChanged(object sender, EventArgs e)
+        {
+            if (avatarVersionPc != null && nmPcVersion.Value > 0)
+            {
+                txtAvatarSizePc.Text = FormatSize(avatarVersionPc.versions.FirstOrDefault(x => x.version == nmPcVersion.Value).file.sizeInBytes);
+            }
+        }
+
+        private void nmQuestVersion_ValueChanged(object sender, EventArgs e)
+        {
+            if (avatarVersionQuest != null && nmQuestVersion.Value > 0)
+            {
+                txtAvatarSizeQuest.Text = FormatSize(avatarVersionQuest.versions.FirstOrDefault(x => x.version == nmQuestVersion.Value).file.sizeInBytes);
+            }
         }
     }
 }

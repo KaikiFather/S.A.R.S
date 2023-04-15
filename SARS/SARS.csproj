@@ -102,6 +102,7 @@
     <Compile Include="Models\MatchModel.cs" />
     <Compile Include="Modules\AvatarFunctions.cs" />
     <Compile Include="Modules\ConfigSave.cs" />
+    <Compile Include="Modules\FixVRC3Scripts.cs" />
     <Compile Include="Modules\GenerateHtml.cs" />
     <Compile Include="Modules\HotSwap.cs" />
     <Compile Include="Modules\MessageBoxManager.cs" />
@@ -287,6 +288,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="AssetRipperConsole_win64\AssetRipper.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AssetRipperConsole_win64\av_libglesv2.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="AssetRipperConsole_win64\capstone.dll">
@@ -632,6 +636,9 @@
       <Project>{08c47817-a081-49da-a47a-77b511b9b36e}</Project>
       <Name>VRChatAPI</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="External\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

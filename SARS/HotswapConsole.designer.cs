@@ -38,6 +38,9 @@ namespace SARS
             // 
             // txtStatusText
             // 
+            this.txtStatusText.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.txtStatusText.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtStatusText.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
             this.txtStatusText.Location = new System.Drawing.Point(12, 12);
             this.txtStatusText.Multiline = true;
             this.txtStatusText.Name = "txtStatusText";
@@ -62,6 +65,7 @@ namespace SARS
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.pbProgress);
             this.Controls.Add(this.txtStatusText);

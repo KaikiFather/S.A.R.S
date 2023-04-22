@@ -105,6 +105,9 @@
             this.metroLabel10 = new MetroFramework.Controls.MetroLabel();
             this.metroTabPage5 = new MetroFramework.Controls.MetroTabPage();
             this.faq = new System.Windows.Forms.WebBrowser();
+            this.btnScanCache = new MetroFramework.Controls.MetroTabPage();
+            this.btnScanCacheFolder = new MetroFramework.Controls.MetroButton();
+            this.txtCacheScannerLog = new MetroFramework.Controls.MetroTextBox();
             this.chkPin = new MetroFramework.Controls.MetroCheckBox();
             this.btnToggleFavorite = new MetroFramework.Controls.MetroButton();
             this.btnSearchFavorites = new MetroFramework.Controls.MetroButton();
@@ -160,6 +163,7 @@
             this.metroTabPage4.SuspendLayout();
             this.metroTabPage3.SuspendLayout();
             this.metroTabPage5.SuspendLayout();
+            this.btnScanCache.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nmQuestVersion)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nmPcVersion)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.metroStyleManager1)).BeginInit();
@@ -173,9 +177,10 @@
             this.tabControl.Controls.Add(this.metroTabPage4);
             this.tabControl.Controls.Add(this.metroTabPage3);
             this.tabControl.Controls.Add(this.metroTabPage5);
+            this.tabControl.Controls.Add(this.btnScanCache);
             this.tabControl.FontWeight = MetroFramework.MetroTabControlWeight.Bold;
             this.tabControl.Name = "tabControl";
-            this.tabControl.SelectedIndex = 0;
+            this.tabControl.SelectedIndex = 5;
             this.tabControl.UseSelectable = true;
             this.tabControl.SelectedIndexChanged += new System.EventHandler(this.tabControl_SelectedIndexChanged);
             // 
@@ -649,8 +654,7 @@
             this.txtClientVersion.CustomButton.Visible = ((bool)(resources.GetObject("resource.Visible4")));
             this.txtClientVersion.FontSize = MetroFramework.MetroTextBoxSize.Medium;
             this.txtClientVersion.FontWeight = MetroFramework.MetroTextBoxWeight.Bold;
-            this.txtClientVersion.Lines = new string[] {
-        "2023.1.2p4-1290--Release"};
+            this.txtClientVersion.Lines = new string[0];
             this.txtClientVersion.MaxLength = 1000;
             this.txtClientVersion.Name = "txtClientVersion";
             this.txtClientVersion.PasswordChar = '\0';
@@ -1026,6 +1030,61 @@
             this.faq.Name = "faq";
             this.faq.Url = new System.Uri("https://ares-mod.com/faq.html", System.UriKind.Absolute);
             // 
+            // btnScanCache
+            // 
+            this.btnScanCache.Controls.Add(this.btnScanCacheFolder);
+            this.btnScanCache.Controls.Add(this.txtCacheScannerLog);
+            this.btnScanCache.HorizontalScrollbarBarColor = true;
+            this.btnScanCache.HorizontalScrollbarHighlightOnWheel = false;
+            this.btnScanCache.HorizontalScrollbarSize = 10;
+            resources.ApplyResources(this.btnScanCache, "btnScanCache");
+            this.btnScanCache.Name = "btnScanCache";
+            this.btnScanCache.VerticalScrollbarBarColor = true;
+            this.btnScanCache.VerticalScrollbarHighlightOnWheel = false;
+            this.btnScanCache.VerticalScrollbarSize = 10;
+            // 
+            // btnScanCacheFolder
+            // 
+            resources.ApplyResources(this.btnScanCacheFolder, "btnScanCacheFolder");
+            this.btnScanCacheFolder.FontSize = MetroFramework.MetroButtonSize.Medium;
+            this.btnScanCacheFolder.Name = "btnScanCacheFolder";
+            this.btnScanCacheFolder.UseSelectable = true;
+            this.btnScanCacheFolder.UseStyleColors = true;
+            this.btnScanCacheFolder.Click += new System.EventHandler(this.btnScanCacheFolder_Click);
+            // 
+            // txtCacheScannerLog
+            // 
+            resources.ApplyResources(this.txtCacheScannerLog, "txtCacheScannerLog");
+            // 
+            // 
+            // 
+            this.txtCacheScannerLog.CustomButton.Image = ((System.Drawing.Image)(resources.GetObject("resource.Image8")));
+            this.txtCacheScannerLog.CustomButton.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("resource.ImeMode")));
+            this.txtCacheScannerLog.CustomButton.Location = ((System.Drawing.Point)(resources.GetObject("resource.Location8")));
+            this.txtCacheScannerLog.CustomButton.Name = "";
+            this.txtCacheScannerLog.CustomButton.Size = ((System.Drawing.Size)(resources.GetObject("resource.Size8")));
+            this.txtCacheScannerLog.CustomButton.Style = MetroFramework.MetroColorStyle.Green;
+            this.txtCacheScannerLog.CustomButton.TabIndex = ((int)(resources.GetObject("resource.TabIndex8")));
+            this.txtCacheScannerLog.CustomButton.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.txtCacheScannerLog.CustomButton.UseSelectable = true;
+            this.txtCacheScannerLog.CustomButton.Visible = ((bool)(resources.GetObject("resource.Visible8")));
+            this.txtCacheScannerLog.FontSize = MetroFramework.MetroTextBoxSize.Medium;
+            this.txtCacheScannerLog.FontWeight = MetroFramework.MetroTextBoxWeight.Bold;
+            this.txtCacheScannerLog.Lines = new string[0];
+            this.txtCacheScannerLog.MaxLength = 32767;
+            this.txtCacheScannerLog.Multiline = true;
+            this.txtCacheScannerLog.Name = "txtCacheScannerLog";
+            this.txtCacheScannerLog.PasswordChar = '\0';
+            this.txtCacheScannerLog.ReadOnly = true;
+            this.txtCacheScannerLog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txtCacheScannerLog.SelectedText = "";
+            this.txtCacheScannerLog.SelectionLength = 0;
+            this.txtCacheScannerLog.SelectionStart = 0;
+            this.txtCacheScannerLog.ShortcutsEnabled = true;
+            this.txtCacheScannerLog.UseSelectable = true;
+            this.txtCacheScannerLog.WaterMarkColor = System.Drawing.Color.FromArgb(((int)(((byte)(109)))), ((int)(((byte)(109)))), ((int)(((byte)(109)))));
+            this.txtCacheScannerLog.WaterMarkFont = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Pixel);
+            // 
             // chkPin
             // 
             resources.ApplyResources(this.chkPin, "chkPin");
@@ -1078,15 +1137,15 @@
             // 
             // 
             // 
-            this.txtSearchTerm.CustomButton.Image = ((System.Drawing.Image)(resources.GetObject("resource.Image8")));
-            this.txtSearchTerm.CustomButton.Location = ((System.Drawing.Point)(resources.GetObject("resource.Location8")));
+            this.txtSearchTerm.CustomButton.Image = ((System.Drawing.Image)(resources.GetObject("resource.Image9")));
+            this.txtSearchTerm.CustomButton.Location = ((System.Drawing.Point)(resources.GetObject("resource.Location9")));
             this.txtSearchTerm.CustomButton.Name = "";
-            this.txtSearchTerm.CustomButton.Size = ((System.Drawing.Size)(resources.GetObject("resource.Size8")));
+            this.txtSearchTerm.CustomButton.Size = ((System.Drawing.Size)(resources.GetObject("resource.Size9")));
             this.txtSearchTerm.CustomButton.Style = MetroFramework.MetroColorStyle.Green;
-            this.txtSearchTerm.CustomButton.TabIndex = ((int)(resources.GetObject("resource.TabIndex8")));
+            this.txtSearchTerm.CustomButton.TabIndex = ((int)(resources.GetObject("resource.TabIndex9")));
             this.txtSearchTerm.CustomButton.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.txtSearchTerm.CustomButton.UseSelectable = true;
-            this.txtSearchTerm.CustomButton.Visible = ((bool)(resources.GetObject("resource.Visible8")));
+            this.txtSearchTerm.CustomButton.Visible = ((bool)(resources.GetObject("resource.Visible9")));
             this.txtSearchTerm.FontSize = MetroFramework.MetroTextBoxSize.Medium;
             this.txtSearchTerm.FontWeight = MetroFramework.MetroTextBoxWeight.Bold;
             this.txtSearchTerm.Lines = new string[0];
@@ -1402,19 +1461,18 @@
             // 
             // 
             // 
-            this.txtAvatarSizePc.CustomButton.Image = ((System.Drawing.Image)(resources.GetObject("resource.Image10")));
-            this.txtAvatarSizePc.CustomButton.Location = ((System.Drawing.Point)(resources.GetObject("resource.Location10")));
+            this.txtAvatarSizePc.CustomButton.Image = ((System.Drawing.Image)(resources.GetObject("resource.Image11")));
+            this.txtAvatarSizePc.CustomButton.Location = ((System.Drawing.Point)(resources.GetObject("resource.Location11")));
             this.txtAvatarSizePc.CustomButton.Name = "";
-            this.txtAvatarSizePc.CustomButton.Size = ((System.Drawing.Size)(resources.GetObject("resource.Size10")));
+            this.txtAvatarSizePc.CustomButton.Size = ((System.Drawing.Size)(resources.GetObject("resource.Size11")));
             this.txtAvatarSizePc.CustomButton.Style = MetroFramework.MetroColorStyle.Green;
-            this.txtAvatarSizePc.CustomButton.TabIndex = ((int)(resources.GetObject("resource.TabIndex10")));
+            this.txtAvatarSizePc.CustomButton.TabIndex = ((int)(resources.GetObject("resource.TabIndex11")));
             this.txtAvatarSizePc.CustomButton.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.txtAvatarSizePc.CustomButton.UseSelectable = true;
-            this.txtAvatarSizePc.CustomButton.Visible = ((bool)(resources.GetObject("resource.Visible10")));
+            this.txtAvatarSizePc.CustomButton.Visible = ((bool)(resources.GetObject("resource.Visible11")));
             this.txtAvatarSizePc.FontSize = MetroFramework.MetroTextBoxSize.Medium;
             this.txtAvatarSizePc.FontWeight = MetroFramework.MetroTextBoxWeight.Bold;
-            this.txtAvatarSizePc.Lines = new string[] {
-        "0MB"};
+            this.txtAvatarSizePc.Lines = new string[0];
             this.txtAvatarSizePc.MaxLength = 32767;
             this.txtAvatarSizePc.Name = "txtAvatarSizePc";
             this.txtAvatarSizePc.PasswordChar = '\0';
@@ -1434,19 +1492,18 @@
             // 
             // 
             // 
-            this.txtAvatarSizeQuest.CustomButton.Image = ((System.Drawing.Image)(resources.GetObject("resource.Image9")));
-            this.txtAvatarSizeQuest.CustomButton.Location = ((System.Drawing.Point)(resources.GetObject("resource.Location9")));
+            this.txtAvatarSizeQuest.CustomButton.Image = ((System.Drawing.Image)(resources.GetObject("resource.Image10")));
+            this.txtAvatarSizeQuest.CustomButton.Location = ((System.Drawing.Point)(resources.GetObject("resource.Location10")));
             this.txtAvatarSizeQuest.CustomButton.Name = "";
-            this.txtAvatarSizeQuest.CustomButton.Size = ((System.Drawing.Size)(resources.GetObject("resource.Size9")));
+            this.txtAvatarSizeQuest.CustomButton.Size = ((System.Drawing.Size)(resources.GetObject("resource.Size10")));
             this.txtAvatarSizeQuest.CustomButton.Style = MetroFramework.MetroColorStyle.Green;
-            this.txtAvatarSizeQuest.CustomButton.TabIndex = ((int)(resources.GetObject("resource.TabIndex9")));
+            this.txtAvatarSizeQuest.CustomButton.TabIndex = ((int)(resources.GetObject("resource.TabIndex10")));
             this.txtAvatarSizeQuest.CustomButton.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.txtAvatarSizeQuest.CustomButton.UseSelectable = true;
-            this.txtAvatarSizeQuest.CustomButton.Visible = ((bool)(resources.GetObject("resource.Visible9")));
+            this.txtAvatarSizeQuest.CustomButton.Visible = ((bool)(resources.GetObject("resource.Visible10")));
             this.txtAvatarSizeQuest.FontSize = MetroFramework.MetroTextBoxSize.Medium;
             this.txtAvatarSizeQuest.FontWeight = MetroFramework.MetroTextBoxWeight.Bold;
-            this.txtAvatarSizeQuest.Lines = new string[] {
-        "0MB"};
+            this.txtAvatarSizeQuest.Lines = new string[0];
             this.txtAvatarSizeQuest.MaxLength = 32767;
             this.txtAvatarSizeQuest.Name = "txtAvatarSizeQuest";
             this.txtAvatarSizeQuest.PasswordChar = '\0';
@@ -1534,6 +1591,7 @@
             this.metroTabPage3.ResumeLayout(false);
             this.metroTabPage3.PerformLayout();
             this.metroTabPage5.ResumeLayout(false);
+            this.btnScanCache.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.nmQuestVersion)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nmPcVersion)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.metroStyleManager1)).EndInit();
@@ -1652,6 +1710,9 @@
         public MetroFramework.Controls.MetroLabel metroLabel8;
         public MetroFramework.Controls.MetroTextBox txtAvatarSizeQuest;
         public MetroFramework.Controls.MetroLabel metroLabel9;
+        private MetroFramework.Controls.MetroTabPage btnScanCache;
+        public MetroFramework.Controls.MetroButton btnScanCacheFolder;
+        public MetroFramework.Controls.MetroTextBox txtCacheScannerLog;
     }
 }
 

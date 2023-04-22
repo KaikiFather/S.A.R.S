@@ -2,6 +2,7 @@
 using MetroFramework;
 using MetroFramework.Forms;
 using Microsoft.Win32;
+using Microsoft.WindowsAPICodePack.Dialogs;
 using SARS.Models;
 using SARS.Modules;
 using SARS.Properties;
@@ -14,12 +15,14 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using VRChatAPI;
 using VRChatAPI.Models;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace SARS
 {
@@ -54,6 +57,7 @@ namespace SARS
             {
                 return true;
             };
+            MessageBox.Show(filePath);
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12 | SecurityProtocolType.Tls13;
             if (filePath.ToLower().Contains("\\local\\temp"))
             {
@@ -1238,30 +1242,24 @@ namespace SARS
 
         private void btnAvatarOut_Click(object sender, EventArgs e)
         {
-            var folderDlg = new FolderBrowserDialog
-            {
-                ShowNewFolderButton = true
-            };
+            var folderDlg = new CommonOpenFileDialog { IsFolderPicker = true, InitialDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) };
             var result = folderDlg.ShowDialog();
-            if (result == DialogResult.OK)
+            if (result == CommonFileDialogResult.Ok)
             {
-                txtAvatarOutput.Text = folderDlg.SelectedPath;
-                configSave.Config.PreSelectedAvatarLocation = folderDlg.SelectedPath;
+                txtAvatarOutput.Text = folderDlg.FileName;
+                configSave.Config.PreSelectedAvatarLocation = folderDlg.FileName;
                 configSave.Save();
             }
         }
 
         private void btnWorldOut_Click(object sender, EventArgs e)
         {
-            var folderDlg = new FolderBrowserDialog
-            {
-                ShowNewFolderButton = true
-            };
+            var folderDlg = new CommonOpenFileDialog { IsFolderPicker = true, InitialDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) };
             var result = folderDlg.ShowDialog();
-            if (result == DialogResult.OK)
+            if (result == CommonFileDialogResult.Ok)
             {
-                txtWorldOutput.Text = folderDlg.SelectedPath;
-                configSave.Config.PreSelectedWorldLocation = folderDlg.SelectedPath;
+                txtWorldOutput.Text = folderDlg.FileName;
+                configSave.Config.PreSelectedWorldLocation = folderDlg.FileName;
                 configSave.Save();
             }
         }
@@ -1372,6 +1370,29 @@ namespace SARS
             {
                 txtAvatarSizeQuest.Text = FormatSize(avatarVersionQuest.versions.FirstOrDefault(x => x.version == nmQuestVersion.Value).file.sizeInBytes);
             }
+        }
+
+        private void btnScanCacheFolder_Click(object sender, EventArgs e)
+        {
+            string cachePath = $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}Low\\VRChat\\VRChat\\Cache-WindowsPlayer";
+
+            CommonOpenFileDialog dialog = new CommonOpenFileDialog { IsFolderPicker = true };
+            dialog.Title = "Select your VrChat Cache folder called Cache-WindowsPlayer";
+
+            if (Directory.Exists(cachePath))
+            {
+                dialog.InitialDirectory = cachePath;
+            }
+
+            if (dialog.ShowDialog() != CommonFileDialogResult.Ok)
+            {
+                MessageBox.Show("No Folder selected");
+                return;
+            }
+
+            cachePath = dialog.FileName;
+            CacheScanner cacheScanner = new CacheScanner(txtCacheScannerLog);
+            var task = Task.Run(() => cacheScanner.ScanCache(cachePath));
         }
     }
 }

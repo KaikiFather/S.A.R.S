@@ -888,9 +888,6 @@
   <data name="txtClientVersion.TabIndex" type="System.Int32, mscorlib">
     <value>88</value>
   </data>
-  <data name="txtClientVersion.Text" xml:space="preserve">
-    <value>2023.1.2p4-1290--Release</value>
-  </data>
   <data name="&gt;&gt;txtClientVersion.Name" xml:space="preserve">
     <value>txtClientVersion</value>
   </data>
@@ -1821,6 +1818,99 @@
   <data name="&gt;&gt;metroTabPage5.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
+  <data name="btnScanCacheFolder.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Left</value>
+  </data>
+  <data name="btnScanCacheFolder.Location" type="System.Drawing.Point, System.Drawing">
+    <value>717, 366</value>
+  </data>
+  <data name="btnScanCacheFolder.Size" type="System.Drawing.Size, System.Drawing">
+    <value>120, 35</value>
+  </data>
+  <data name="btnScanCacheFolder.TabIndex" type="System.Int32, mscorlib">
+    <value>79</value>
+  </data>
+  <data name="btnScanCacheFolder.Text" xml:space="preserve">
+    <value>Scan Cache</value>
+  </data>
+  <data name="&gt;&gt;btnScanCacheFolder.Name" xml:space="preserve">
+    <value>btnScanCacheFolder</value>
+  </data>
+  <data name="&gt;&gt;btnScanCacheFolder.Type" xml:space="preserve">
+    <value>MetroFramework.Controls.MetroButton, MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a</value>
+  </data>
+  <data name="&gt;&gt;btnScanCacheFolder.Parent" xml:space="preserve">
+    <value>btnScanCache</value>
+  </data>
+  <data name="&gt;&gt;btnScanCacheFolder.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="txtCacheScannerLog.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
+  </data>
+  <data name="resource.Image8" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="resource.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="resource.Location8" type="System.Drawing.Point, System.Drawing">
+    <value>491, 2</value>
+  </data>
+  <data name="resource.Size8" type="System.Drawing.Size, System.Drawing">
+    <value>343, 343</value>
+  </data>
+  <data name="resource.TabIndex8" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="resource.Visible8" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="txtCacheScannerLog.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 12</value>
+  </data>
+  <data name="txtCacheScannerLog.Size" type="System.Drawing.Size, System.Drawing">
+    <value>837, 348</value>
+  </data>
+  <data name="txtCacheScannerLog.TabIndex" type="System.Int32, mscorlib">
+    <value>69</value>
+  </data>
+  <data name="&gt;&gt;txtCacheScannerLog.Name" xml:space="preserve">
+    <value>txtCacheScannerLog</value>
+  </data>
+  <data name="&gt;&gt;txtCacheScannerLog.Type" xml:space="preserve">
+    <value>MetroFramework.Controls.MetroTextBox, MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a</value>
+  </data>
+  <data name="&gt;&gt;txtCacheScannerLog.Parent" xml:space="preserve">
+    <value>btnScanCache</value>
+  </data>
+  <data name="&gt;&gt;txtCacheScannerLog.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="btnScanCache.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 38</value>
+  </data>
+  <data name="btnScanCache.Size" type="System.Drawing.Size, System.Drawing">
+    <value>840, 414</value>
+  </data>
+  <data name="btnScanCache.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="btnScanCache.Text" xml:space="preserve">
+    <value>Cache Scanner</value>
+  </data>
+  <data name="&gt;&gt;btnScanCache.Name" xml:space="preserve">
+    <value>btnScanCache</value>
+  </data>
+  <data name="&gt;&gt;btnScanCache.Type" xml:space="preserve">
+    <value>MetroFramework.Controls.MetroTabPage, MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a</value>
+  </data>
+  <data name="&gt;&gt;btnScanCache.Parent" xml:space="preserve">
+    <value>tabControl</value>
+  </data>
+  <data name="&gt;&gt;btnScanCache.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
   <data name="tabControl.Location" type="System.Drawing.Point, System.Drawing">
     <value>28, 232</value>
   </data>
@@ -1980,19 +2070,19 @@
   <data name="txtSearchTerm.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <data name="resource.Image8" type="System.Resources.ResXNullRef, System.Windows.Forms">
+  <data name="resource.Image9" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
-  <data name="resource.Location8" type="System.Drawing.Point, System.Drawing">
+  <data name="resource.Location9" type="System.Drawing.Point, System.Drawing">
     <value>444, 1</value>
   </data>
-  <data name="resource.Size8" type="System.Drawing.Size, System.Drawing">
+  <data name="resource.Size9" type="System.Drawing.Size, System.Drawing">
     <value>27, 27</value>
   </data>
-  <data name="resource.TabIndex8" type="System.Int32, mscorlib">
+  <data name="resource.TabIndex9" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="resource.Visible8" type="System.Boolean, mscorlib">
+  <data name="resource.Visible9" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
   <data name="txtSearchTerm.Location" type="System.Drawing.Point, System.Drawing">
@@ -2703,19 +2793,19 @@
   <data name="txtAvatarSizeQuest.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom</value>
   </data>
-  <data name="resource.Image9" type="System.Resources.ResXNullRef, System.Windows.Forms">
+  <data name="resource.Image10" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
-  <data name="resource.Location9" type="System.Drawing.Point, System.Drawing">
+  <data name="resource.Location10" type="System.Drawing.Point, System.Drawing">
     <value>101, 1</value>
   </data>
-  <data name="resource.Size9" type="System.Drawing.Size, System.Drawing">
+  <data name="resource.Size10" type="System.Drawing.Size, System.Drawing">
     <value>27, 27</value>
   </data>
-  <data name="resource.TabIndex9" type="System.Int32, mscorlib">
+  <data name="resource.TabIndex10" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="resource.Visible9" type="System.Boolean, mscorlib">
+  <data name="resource.Visible10" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
   <data name="txtAvatarSizeQuest.Location" type="System.Drawing.Point, System.Drawing">
@@ -2726,9 +2816,6 @@
   </data>
   <data name="txtAvatarSizeQuest.TabIndex" type="System.Int32, mscorlib">
     <value>96</value>
-  </data>
-  <data name="txtAvatarSizeQuest.Text" xml:space="preserve">
-    <value>0MB</value>
   </data>
   <data name="&gt;&gt;txtAvatarSizeQuest.Name" xml:space="preserve">
     <value>txtAvatarSizeQuest</value>
@@ -2775,19 +2862,19 @@
   <data name="txtAvatarSizePc.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom</value>
   </data>
-  <data name="resource.Image10" type="System.Resources.ResXNullRef, System.Windows.Forms">
+  <data name="resource.Image11" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
-  <data name="resource.Location10" type="System.Drawing.Point, System.Drawing">
+  <data name="resource.Location11" type="System.Drawing.Point, System.Drawing">
     <value>101, 1</value>
   </data>
-  <data name="resource.Size10" type="System.Drawing.Size, System.Drawing">
+  <data name="resource.Size11" type="System.Drawing.Size, System.Drawing">
     <value>27, 27</value>
   </data>
-  <data name="resource.TabIndex10" type="System.Int32, mscorlib">
+  <data name="resource.TabIndex11" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="resource.Visible10" type="System.Boolean, mscorlib">
+  <data name="resource.Visible11" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
   <data name="txtAvatarSizePc.Location" type="System.Drawing.Point, System.Drawing">
@@ -2798,9 +2885,6 @@
   </data>
   <data name="txtAvatarSizePc.TabIndex" type="System.Int32, mscorlib">
     <value>94</value>
-  </data>
-  <data name="txtAvatarSizePc.Text" xml:space="preserve">
-    <value>0MB</value>
   </data>
   <data name="&gt;&gt;txtAvatarSizePc.Name" xml:space="preserve">
     <value>txtAvatarSizePc</value>

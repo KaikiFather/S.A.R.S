@@ -37,7 +37,7 @@ namespace SARS.Modules
                     //CoreFunctions.WriteLog($"Deleted file {location}", this);
                 }
             }
-            catch (Exception ex)
+            catch
             {
                 //CoreFunctions.WriteLog($"{ex.Message}", this);
             }
@@ -50,7 +50,7 @@ namespace SARS.Modules
                 Directory.Delete(location, true);
                 //CoreFunctions.WriteLog($"Deleted file {location}", this);
             }
-            catch (Exception ex)
+            catch
             {
                 //if (showExceptions) CoreFunctions.WriteLog($"{ex.Message}", this);
             }

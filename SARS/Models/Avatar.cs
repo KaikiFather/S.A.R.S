@@ -38,17 +38,19 @@ namespace SARS.Models
 
     public class AvatarSearch
     {
-        public string avatarId { get; set; }
-        public string authorId { get; set; }
-        public string avatarName { get; set; }
-        public string authorName { get; set; }
-        public List<Tag> tags { get; set; }
-        public int amount { get; set; }
-        public bool containsSearch { get; set; }
-        public bool publicAvatars { get; set; }
-        public bool privateAvatars { get; set; }
-        public string key { get; set; }
-        public bool debugMode { get; set; }
+        public string AvatarId { get; set; }
+        public string AuthorId { get; set; }
+        public string AvatarName { get; set; }
+        public string AuthorName { get; set; }
+        public List<Tag> Tags { get; set; }
+        public int Amount { get; set; }
+        public bool ContainsSearch { get; set; }
+        public bool PublicAvatars { get; set; }
+        public bool PrivateAvatars { get; set; }
+        public bool PcAvatars { get; set; }
+        public bool QuestAvatars { get; set; }
+        public string Key { get; set; }
+        public bool DebugMode { get; set; }
     }
 
     public class Tag

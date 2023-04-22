@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using VRChatAPI;
+using VRChatAPI.Models;
 
 namespace SARS.Modules
 {
@@ -153,10 +154,12 @@ namespace SARS.Modules
             return true;
         }
 
-        public static Tuple<int, int> GetVersion(string pcUrl, string questUrl, string authKey, string twoFactor, VRChatApiClient vrChat)
+        public static Tuple<int, int, RootClass, RootClass> GetVersion(string pcUrl, string questUrl, string authKey, string twoFactor, VRChatApiClient vrChat)
         {
             int pcVersion;
             int questVersion;
+            RootClass pcRoot = null;
+            RootClass questRoot = null;
             if (!string.IsNullOrEmpty(pcUrl) && pcUrl.ToLower() != "none" && authKey != "")
             {
                 try
@@ -166,6 +169,7 @@ namespace SARS.Modules
                     var versionList = vrChat.GetVersions(urlCheck, authKey, twoFactor);
                     if (versionList != null)
                     {
+                        pcRoot = versionList;
                         pcVersion = Convert.ToInt32(versionList.versions.LastOrDefault().version);
                     }
                     else
@@ -192,6 +196,7 @@ namespace SARS.Modules
                     var versionList = vrChat.GetVersions(urlCheck, authKey, twoFactor);
                     if (versionList != null)
                     {
+                        questRoot = versionList;
                         questVersion = Convert.ToInt32(versionList.versions.LastOrDefault().version);
                     }
                     else
@@ -209,7 +214,7 @@ namespace SARS.Modules
                 questVersion = 0;
             }
 
-            return Tuple.Create(pcVersion, questVersion);
+            return Tuple.Create(pcVersion, questVersion, pcRoot, questRoot);
         }
     }
 }

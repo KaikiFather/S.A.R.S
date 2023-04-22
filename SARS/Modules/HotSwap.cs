@@ -159,31 +159,15 @@ namespace SARS.Modules
 
             MessageBox.Show($"Got file sizes, comp:{compressedSize}, decomp:{uncompressedSize}", "Info",
                 MessageBoxButtons.OK, MessageBoxIcon.Information);
-            var avatar = avatarSystem.avatars.FirstOrDefault(x => x.avatar.avatarId == matchModelOld.AvatarId);
-            if (avatar != default && avatar != null)
+            if (avatarSystem.avatars != null)
             {
-                avatarSystem.rippedList.Config.Add(avatar);
-                avatarSystem.rippedList.Save();
+                var avatar = avatarSystem.avatars.FirstOrDefault(x => x.avatar.avatarId == matchModelOld.AvatarId);
+                if (avatar != default && avatar != null)
+                {
+                    avatarSystem.rippedList.Config.Add(avatar);
+                    avatarSystem.rippedList.Save();
+                }
             }
-        }
-
-        private static string getFileString(string file, string searchRegexString)
-        {
-            string line;
-            string lineReturn = null;
-
-            var fileOpen =
-                new StreamReader(file);
-
-            while ((line = fileOpen.ReadLine()) != null)
-            {
-                lineReturn = Regex.Match(line, searchRegexString).Value;
-                if (!string.IsNullOrEmpty(lineReturn)) break;
-            }
-
-            fileOpen.Close();
-
-            return lineReturn;
         }
 
         private static MatchModel getMatches(string file, Regex avatarId, Regex avatarCab, Regex unityVersion,
@@ -258,28 +242,30 @@ namespace SARS.Modules
             AssetBundleFile bundle = bundleInst.file;
             SafeWrite(hotSwap.txtStatusText, $"22.2% Bundle file assigned!" + Environment.NewLine);
             SafeProgress(hotSwap.pbProgress, 22);
-            FileStream bundleStream = File.Open(savePath, FileMode.Create);
-            SafeWrite(hotSwap.txtStatusText, $"33.3% Loaded file to bundle stream!" + Environment.NewLine);
-            SafeProgress(hotSwap.pbProgress, 33);
-            var progressBar = new SZProgress(hotSwap);
-            bundle.Unpack(bundle.reader, new AssetsFileWriter(bundleStream), progressBar);
-            SafeWrite(hotSwap.txtStatusText, $"44.4% Unpack stream complete!" + Environment.NewLine);
-            SafeProgress(hotSwap.pbProgress, 44);
-            bundleStream.Position = 0;
-            SafeWrite(hotSwap.txtStatusText, $"55.5% Bundle stream position assigned!" + Environment.NewLine);
-            SafeProgress(hotSwap.pbProgress, 55);
-            AssetBundleFile newBundle = new AssetBundleFile();
-            SafeWrite(hotSwap.txtStatusText, $"66.6% Created new asset bundle file!" + Environment.NewLine);
-            SafeProgress(hotSwap.pbProgress, 66);
-            newBundle.Read(new AssetsFileReader(bundleStream), false);
-            SafeWrite(hotSwap.txtStatusText, $"77.7% Bundle written to file!" + Environment.NewLine);
-            SafeProgress(hotSwap.pbProgress, 77);
-            bundle.reader.Close();
-            SafeWrite(hotSwap.txtStatusText, $"88.8% Bundle closed!" + Environment.NewLine);
-            SafeProgress(hotSwap.pbProgress, 88);
-            bundleInst.file = newBundle;
-            bundleStream.Flush();
-            bundleStream.Close();
+            using (FileStream bundleStream = File.Open(savePath, FileMode.OpenOrCreate))
+            {
+                using (BufferedStream bs = new BufferedStream(bundleStream)){
+                    SafeWrite(hotSwap.txtStatusText, $"33.3% Loaded file to bundle stream!" + Environment.NewLine);
+                    SafeProgress(hotSwap.pbProgress, 33);
+                    var progressBar = new SZProgress(hotSwap);
+                    bundle.Unpack(bundle.reader, new AssetsFileWriter(bs), progressBar);
+                    SafeWrite(hotSwap.txtStatusText, $"44.4% Unpack stream complete!" + Environment.NewLine);
+                    SafeProgress(hotSwap.pbProgress, 44);
+                    bundleStream.Position = 0;
+                    SafeWrite(hotSwap.txtStatusText, $"55.5% Bundle stream position assigned!" + Environment.NewLine);
+                    SafeProgress(hotSwap.pbProgress, 55);
+                    AssetBundleFile newBundle = new AssetBundleFile();
+                    SafeWrite(hotSwap.txtStatusText, $"66.6% Created new asset bundle file!" + Environment.NewLine);
+                    SafeProgress(hotSwap.pbProgress, 66);
+                    newBundle.Read(new AssetsFileReader(bs), false);
+                    SafeWrite(hotSwap.txtStatusText, $"77.7% Bundle written to file!" + Environment.NewLine);
+                    SafeProgress(hotSwap.pbProgress, 77);
+                    bundle.reader.Close();
+                    SafeWrite(hotSwap.txtStatusText, $"88.8% Bundle closed!" + Environment.NewLine);
+                    SafeProgress(hotSwap.pbProgress, 88);
+                    bundleInst.file = newBundle;
+                }
+            }
             SafeWrite(hotSwap.txtStatusText, $"100% Bundle instance cleaned!" + Environment.NewLine);
             SafeProgress(hotSwap.pbProgress, 100);
         }
@@ -299,7 +285,7 @@ namespace SARS.Modules
             {
                 text.Invoke((MethodInvoker)delegate
                 {
-                    text.Text += textWrite;
+                    text.Text = textWrite + text.Text;
                 });
             }
         }

@@ -465,7 +465,7 @@ namespace SARS
                 $"Avatar Name: {avatar.avatar.avatarName} {Environment.NewLine}" +
                 $"Avatar Description {avatar.avatar.avatarDescription} {Environment.NewLine}" +
                 $"Author ID: {avatar.avatar.authorId} {Environment.NewLine}" +
-                $"Author Name: {avatar.avatar.avatarName} {Environment.NewLine}" +
+                $"Author Name: {avatar.avatar.authorName} {Environment.NewLine}" +
                 $"PC Asset URL: {avatar.avatar.pcAssetUrl} {Environment.NewLine}" +
                 $"Quest Asset URL: {avatar.avatar.questAssetUrl} {Environment.NewLine}" +
                 $"Image URL: {avatar.avatar.imageUrl} {Environment.NewLine}" +

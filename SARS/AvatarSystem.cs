@@ -1136,7 +1136,7 @@ namespace SARS
 
         private async Task<bool> Preview()
         {
-            if (string.IsNullOrEmpty(configSave.Config.UserId))
+            if (string.IsNullOrEmpty(configSave.Config.UserId) && vrcaLocation == "")
             {
                 MessageBox.Show("Please Login with an alt first.");
                 return false;

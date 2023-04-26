@@ -113,7 +113,7 @@ namespace SARS.Modules
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error compressing VRCA file");
+                MessageBox.Show($"Error compressing VRCA file\n{ex.Message}");
                 if (hotSwapConsole.InvokeRequired)
                     hotSwapConsole.Invoke((MethodInvoker)delegate { hotSwapConsole.Close(); });
                 return;

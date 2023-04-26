@@ -117,6 +117,7 @@
     <Compile Include="Modules\ProgressBar.cs" />
     <Compile Include="Modules\RandomFunctions.cs" />
     <Compile Include="Modules\ShrekApi.cs" />
+    <Compile Include="Modules\ShrekProtocol.cs" />
     <Compile Include="Modules\StreamReader.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

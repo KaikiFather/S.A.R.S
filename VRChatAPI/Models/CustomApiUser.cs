@@ -197,11 +197,11 @@ namespace VRChatAPI.Models
             CustomApiUser apiUser = new CustomApiUser(ApiClient);
             if (res.Contains("requiresTwoFactorAuth"))
             {
-                if (res.ToLower().Contains("email"))
-                {
-                    MessageBox.Show("Email 2FA not supported\nIf you are getting this message and don't have email 2FA active then you are getting an email from VRChat to confirm your login\nLogin on the browser first then try again.\nIf you are still getting this then enable 2FA via google or something as they are forcing it on you.");
-                    return null;
-                }
+                //if (res.ToLower().Contains("email"))
+                //{
+                //    MessageBox.Show("Email 2FA not supported\nIf you are getting this message and don't have email 2FA active then you are getting an email from VRChat to confirm your login\nLogin on the browser first then try again.\nIf you are still getting this then enable 2FA via google or something as they are forcing it on you.");
+                //    return null;
+                //}
                 CustomApi2FA customApi2FA = JsonConvert.DeserializeObject<CustomApi2FA>(res);
                 customApi2FA.ApiClient = ApiClient;
                 if (twoFactorAuth != null)
@@ -241,7 +241,7 @@ namespace VRChatAPI.Models
             return apiUser;
         }
 
-        public async Task<CustomApiUser> LoginWithExistingSession(string id, string authcookie, string twoFactor = "")
+        public async Task<CustomApiUser> LoginWithExistingSession(string authcookie, string twoFactor = "")
         {
             var cookies = (CookieContainer)ApiClient.ObjectStore["CookieContainer"];
             cookies.Add((Uri)ApiClient.ObjectStore["ApiUri"], new Cookie("auth", authcookie));
@@ -251,7 +251,7 @@ namespace VRChatAPI.Models
                 cookies.Add((Uri)ApiClient.ObjectStore["ApiUri"], new Cookie("twoFactorAuth", twoFactor));
                 ApiClient.ObjectStore["TwoFactorAuth"] = twoFactor;
             }
-            var apiUserResponse = await ApiClient.HttpFactory.GetResponseAsync(MakeRequestEndpoint() + $"/{id}" + ApiClient.GetApiKeyAsQuery() + ApiClient.GetOrganizationAsAdditionalQuery(), HttpCompletionOption.ResponseHeadersRead).ConfigureAwait(false);
+            var apiUserResponse = await ApiClient.HttpFactory.GetResponseAsync(MakeRequestEndpoint() + ApiClient.GetApiKeyAsQuery() + ApiClient.GetOrganizationAsAdditionalQuery(), HttpCompletionOption.ResponseHeadersRead).ConfigureAwait(false);
             if (!apiUserResponse.IsSuccessStatusCode)
             {
                 Console.WriteLine($"Status: {(int)apiUserResponse.StatusCode} {apiUserResponse.StatusCode}{Environment.NewLine}{await apiUserResponse.Content.ReadAsStringAsync()}");
@@ -269,46 +269,41 @@ namespace VRChatAPI.Models
 
         public static async Task<CustomApiUser> VerifyTwoFactorAuthCode(CustomApi2FA twoFactorAuth)
         {
-            var apiClient = twoFactorAuth.ApiClient;
-            var httpClient = twoFactorAuth.ApiClient.HttpClient;
-            var requestHeaders = httpClient.DefaultRequestHeaders;
-
-            var twoFAType = twoFactorAuth.GetFirstSupported2FAType();
-            string input = AskInputAuthCode();
-            if (string.IsNullOrEmpty(input))
-            {
-                MessageBox.Show("Login Failed");
-                return null;
-            }
-            var twoFAContainer = new CustomApi2FA.CustomApi2FAContainer(input);
-
-            var twoFARet = await twoFactorAuth.ApiClient.HttpFactory.PostAsync<CustomApi2FAVerify>($"auth/twofactorauth/{twoFAType}/verify" + twoFactorAuth.ApiClient.GetApiKeyAsQuery(), ToJsonContent(JsonConvert.SerializeObject(twoFAContainer))).ConfigureAwait(false);
-            if (!twoFARet.Verified)
+            VRChatApiClient vrchatApiClient = twoFactorAuth.ApiClient;
+            HttpClient httpClient = twoFactorAuth.ApiClient.HttpClient;
+            HttpRequestHeaders requestHeaders = httpClient.DefaultRequestHeaders;
+            string twoFAType = twoFactorAuth.GetFirstSupported2FAType();
+            CustomApi2FA.CustomApi2FAContainer twoFAContainer = new CustomApi2FA.CustomApi2FAContainer(AskInputAuthCode(twoFAType));
+            httpClient.DefaultRequestHeaders.Authorization = null;
+            if (!(await twoFactorAuth.ApiClient.HttpFactory.PostAsync<CustomApi2FAVerify>($"auth/twofactorauth/{twoFAType}/verify{twoFactorAuth.ApiClient.GetApiKeyAsQuery()}" + twoFactorAuth.ApiClient.GetOrganizationAsAdditionalQuery(), ToJsonContent(JsonConvert.SerializeObject(twoFAContainer))).ConfigureAwait(continueOnCapturedContext: false)).Verified)
             {
                 Console.WriteLine("Couldn't verify 2FA!");
                 return null;
             }
-
-            CustomApiUser result = await apiClient.HttpFactory.GetAsync<CustomApiUser>("auth/user" + apiClient.GetApiKeyAsQuery()).ConfigureAwait(continueOnCapturedContext: false);
-            foreach (Cookie cookie in ((CookieContainer)apiClient.ObjectStore["CookieContainer"]).GetCookies((Uri)apiClient.ObjectStore["ApiUri"]))
+            CustomApiUser ret = await vrchatApiClient.HttpFactory.GetAsync<CustomApiUser>("auth/user" + vrchatApiClient.GetApiKeyAsQuery() + vrchatApiClient.GetOrganizationAsAdditionalQuery()).ConfigureAwait(continueOnCapturedContext: false);
+            foreach (Cookie cookie in ((CookieContainer)vrchatApiClient.ObjectStore["CookieContainer"]).GetCookies((Uri)vrchatApiClient.ObjectStore["ApiUri"]))
             {
                 if (cookie.Name.Equals("auth", StringComparison.OrdinalIgnoreCase))
                 {
-                    apiClient.ObjectStore["AuthCookie"] = cookie.Value;
+                    vrchatApiClient.ObjectStore["AuthCookie"] = cookie.Value;
                 }
                 if (cookie.Name.Equals("twoFactorAuth", StringComparison.OrdinalIgnoreCase))
                 {
-                    apiClient.ObjectStore["TwoFactorAuth"] = cookie.Value;
+                    vrchatApiClient.ObjectStore["TwoFactorAuth"] = cookie.Value;
                 }
             }
             requestHeaders.Remove("Authorization");
-            return result;
+            return ret;
         }
 
-        private static string AskInputAuthCode()
-        {
-            string input = Interaction.InputBox("Enter your 2FA Code", "2FA Code", "");
 
+        private static string AskInputAuthCode(string twoFAType)
+        {
+            if (twoFAType == "emailotp")
+            {
+                MessageBox.Show("VRChat has sent you an email, please check your Inbox");
+            }
+            string input = Interaction.InputBox($"Enter your 2FA Code for type {twoFAType}", "2FA Code", "");
             return input;
         }
 

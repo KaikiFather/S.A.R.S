@@ -33,7 +33,7 @@ namespace SARS.Modules
         }
 
         public static bool pcDownload = true;
-        public static async Task<bool> DownloadVrcaAsync(Avatar avatar, VRChatApiClient VrChat, string AuthKey, decimal pcVersion, decimal questVersion, string TwoFactor, Download download)
+        public static async Task<bool> DownloadVrcaAsync(Avatar avatar, VRChatApiClient VrChat, string AuthKey, decimal pcVersion, decimal questVersion, string TwoFactor, Download download, bool both = false)
         {
             try
             {
@@ -49,23 +49,25 @@ namespace SARS.Modules
                 return false;
             }
 
-            if (download.InvokeRequired)
+            try
             {
-                Action safeWrite = delegate { download.Text = avatar.avatar.avatarId; };
-                download.Invoke(safeWrite);
+                if (download.InvokeRequired)
+                {
+                    Action safeWrite = delegate { download.Text = avatar.avatar.avatarId; };
+                    download.Invoke(safeWrite);
+                }
+                else
+                {
+                    download.Text = avatar.avatar.avatarId;
+                }
             }
-            else
-            {
-                download.Text = avatar.avatar.avatarId;
-            }
+            catch { }
 
             if (avatar.avatar.pcAssetUrl.ToLower() != "none" && avatar.avatar.questAssetUrl.ToLower() != "none" && avatar.avatar.pcAssetUrl != null && avatar.avatar.questAssetUrl != null)
             {
-                var dlgResult = MessageBox.Show("Select which version to download", "VRCA Select",
-                    MessageBoxButtons.YesNo, MessageBoxIcon.Information);
-
-                if (dlgResult == DialogResult.No)
+                if (both)
                 {
+                    Console.WriteLine("Starting Download");
                     if (avatar.avatar.questAssetUrl.ToLower() != "none")
                     {
                         try
@@ -75,21 +77,11 @@ namespace SARS.Modules
                             {
                                 version[7] = questVersion.ToString();
                             }
-                            await Task.Run(() => VrChat.DownloadFile(string.Join("/", version), AuthKey, TwoFactor, filePath.Replace(".vrca", "_quest.vrca"), download.downloadProgress));
+                            await Task.Run(() => VrChat.DownloadFile(string.Join("/", version), AuthKey, TwoFactor, filePath.Replace(".vrca", "_quest.vrca"), download.downloadProgress, both));
                         }
-                        catch { await Task.Run(() => VrChat.DownloadFile(avatar.avatar.questAssetUrl, AuthKey, TwoFactor, filePath.Replace(".vrca", "_quest.vrca"), download.downloadProgress)); }
-                        pcDownload = false;
+                        catch { await Task.Run(() => VrChat.DownloadFile(avatar.avatar.questAssetUrl, AuthKey, TwoFactor, filePath.Replace(".vrca", "_quest.vrca"), download.downloadProgress, both)); }                       
                     }
-                    else
-                    {
-                        MessageBox.Show("Quest version doesn't exist", "ERROR", MessageBoxButtons.OK,
-                            MessageBoxIcon.Error);
-                        download.error = true;
-                        return false;
-                    }
-                }
-                else if (dlgResult == DialogResult.Yes)
-                {
+                    Console.WriteLine("QUEST DOWNLOAD");
                     if (avatar.avatar.pcAssetUrl.ToLower() != "none")
                     {
                         try
@@ -99,23 +91,71 @@ namespace SARS.Modules
                             {
                                 version[7] = pcVersion.ToString();
                             }
-                            await Task.Run(() => VrChat.DownloadFile(string.Join("/", version), AuthKey, TwoFactor, filePath.Replace(".vrca", "_pc.vrca"), download.downloadProgress));
+                            await Task.Run(() => VrChat.DownloadFile(string.Join("/", version), AuthKey, TwoFactor, filePath.Replace(".vrca", "_pc.vrca"), download.downloadProgress, both));
                         }
-                        catch { await Task.Run(() => VrChat.DownloadFile(avatar.avatar.pcAssetUrl, AuthKey, TwoFactor, filePath.Replace(".vrca", "_pc.vrca"), download.downloadProgress)); }
-                        pcDownload = true;
+                        catch { await Task.Run(() => VrChat.DownloadFile(avatar.avatar.pcAssetUrl, AuthKey, TwoFactor, filePath.Replace(".vrca", "_pc.vrca"), download.downloadProgress, both)); }
                     }
-                    else
-                    {
-                        MessageBox.Show("PC version doesn't exist", "ERROR", MessageBoxButtons.OK,
-                            MessageBoxIcon.Error);
-                        download.error = true;
-                        return false;
-                    }
+                    Console.WriteLine("PC DOWNLOAD");
+                    return true;
                 }
                 else
                 {
-                    download.error = true;
-                    return false;
+                    var dlgResult = MessageBox.Show("Select which version to download", "VRCA Select",
+                        MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+
+                    if (dlgResult == DialogResult.No)
+                    {
+                        if (avatar.avatar.questAssetUrl.ToLower() != "none")
+                        {
+                            try
+                            {
+                                var version = avatar.avatar.questAssetUrl.Split('/');
+                                if (questVersion > 0)
+                                {
+                                    version[7] = questVersion.ToString();
+                                }
+                                await Task.Run(() => VrChat.DownloadFile(string.Join("/", version), AuthKey, TwoFactor, filePath.Replace(".vrca", "_quest.vrca"), download.downloadProgress));
+                            }
+                            catch { await Task.Run(() => VrChat.DownloadFile(avatar.avatar.questAssetUrl, AuthKey, TwoFactor, filePath.Replace(".vrca", "_quest.vrca"), download.downloadProgress)); }
+                            pcDownload = false;
+                        }
+                        else
+                        {
+                            MessageBox.Show("Quest version doesn't exist", "ERROR", MessageBoxButtons.OK,
+                                MessageBoxIcon.Error);
+                            download.error = true;
+                            return false;
+                        }
+                    }
+                    else if (dlgResult == DialogResult.Yes)
+                    {
+                        if (avatar.avatar.pcAssetUrl.ToLower() != "none")
+                        {
+                            try
+                            {
+                                var version = avatar.avatar.pcAssetUrl.Split('/');
+                                if (pcVersion > 0)
+                                {
+                                    version[7] = pcVersion.ToString();
+                                }
+                                await Task.Run(() => VrChat.DownloadFile(string.Join("/", version), AuthKey, TwoFactor, filePath.Replace(".vrca", "_pc.vrca"), download.downloadProgress));
+                            }
+                            catch { await Task.Run(() => VrChat.DownloadFile(avatar.avatar.pcAssetUrl, AuthKey, TwoFactor, filePath.Replace(".vrca", "_pc.vrca"), download.downloadProgress)); }
+                            pcDownload = true;
+                        }
+                        else
+                        {
+                            MessageBox.Show("PC version doesn't exist", "ERROR", MessageBoxButtons.OK,
+                                MessageBoxIcon.Error);
+                            download.error = true;
+                            return false;
+                        }
+                    }
+                    else
+                    {
+                        download.error = true;
+                        return false;
+                    }
                 }
             }
             else if (avatar.avatar.pcAssetUrl.ToLower() != "none" && avatar.avatar.pcAssetUrl != null)

@@ -1,28 +1,25 @@
-﻿using System.Collections.Generic;
+﻿using SARS.Models;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Threading.Tasks;
-using System;
-using SARS.Models;
-using System.Text;
-using System.Runtime.InteropServices;
 using System.Linq;
-using System.Windows.Forms;
-using MetroFramework.Controls;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using System.Runtime.InteropServices;
+using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace SARS.Modules
 {
     public class CacheScanner
     {
-        private MetroTextBox textbox;
-        public CacheScanner(MetroTextBox logBox)
+        public CacheScanner()
         {
-            textbox = logBox;
         }
-        public List<string> avatarIds = new List<string>();
-        public void ReadUntilAvatarId(string filePath)
+
+        public static List<CacheAvatar> avatarIds = new List<CacheAvatar>();
+
+        public static void ReadUntilAvatarId(string filePath)
         {
             try
             {
@@ -60,9 +57,11 @@ namespace SARS.Modules
                                             string avatarId = "avtr_" + avatarIdBuilder.ToString().Split('_')[2];
                                             if (avatarIdRegEx.IsMatch(avatarId))
                                             {
-                                                if (!avatarIds.Contains(avatarId) && avatarId.Length == 41)
+                                                CacheAvatar cacheAvatar = new CacheAvatar { AvatarId = avatarId.Trim(), FileLocation = filePath, AvatarDetected = File.GetCreationTime(filePath) };
+                                                if (!avatarIds.Contains(cacheAvatar) && avatarId.Length == 41)
                                                 {
-                                                    avatarIds.Add(avatarId.Trim());
+                                                    avatarIds.Add(cacheAvatar);
+                                                    NewMessage($"Avatar found: {avatarId}{Environment.NewLine}");
                                                 }
                                             }
                                             return;
@@ -84,31 +83,43 @@ namespace SARS.Modules
             {
                 if (IsFileLocked(e))
                 {
-                    Console.WriteLine("File is locked");
+                    NewMessage($"File is locked (VRChat open?){Environment.NewLine}");
                 }
                 return;
             }
         }
 
-        private bool IsFileLocked(IOException exception)
+        public static Queue<string> messages = new Queue<string>();
+
+        public static void NewMessage(string text)
+        {
+            lock (messages)
+            {
+                messages.Enqueue(text);
+            }
+        }
+
+        private static int avatarsFound = 0;
+        private static Stopwatch stop = new Stopwatch();
+
+        private static bool IsFileLocked(IOException exception)
         {
             int errorCode = Marshal.GetHRForException(exception) & ((1 << 16) - 1);
             return errorCode == 32 || errorCode == 33;
         }
 
-        public async Task ScanCache(string cacheLocation)
+        public static async Task ScanCache(string cacheLocation)
         {
-            
-            int avatarsFound = 0;
-            List<VRCCacheScannerModel> avatars = new List<VRCCacheScannerModel>();
-
-            Stopwatch stop = new Stopwatch();
             stop.Start();
+            Task.Run(() => ScanFunction(cacheLocation));
+        }
 
+        private static async Task ScanFunction(string cacheLocation)
+        {
             List<Task> tasks = new List<Task>();
-            Dictionary<string, DateTime> locations = getCacheLocations(cacheLocation);
+            List<string> locations = GetCacheLocations(cacheLocation);
 
-            foreach (string cache in locations.Keys)
+            foreach (string cache in locations)
             {
                 tasks.Add(Task.Run(() => ReadUntilAvatarId(cache)));
             }
@@ -117,32 +128,22 @@ namespace SARS.Modules
             string outputBuffer = "";
 
             avatarIds = avatarIds.Distinct().ToList();
-            string appendText = "";
+
             foreach (var item in avatarIds)
             {
-                outputBuffer += $"{item};\n";
-                appendText = $"Avatar found: {item}{Environment.NewLine}" + appendText;
+                outputBuffer += $"{item.AvatarId};\n";
+
                 avatarsFound++;
             }
             File.WriteAllText("avatarLog.txt", outputBuffer);
             stop.Stop();
             string timeRan = TimeSpan.FromMilliseconds(stop.ElapsedMilliseconds).TotalSeconds.ToString();
-            AppendTextBox($"Found {avatarsFound} avatars in {timeRan} seconds{Environment.NewLine}{appendText}");
-        }
-        
-        public void AppendTextBox(string value)
-        {
-            if (textbox.InvokeRequired)
-            {
-                textbox.Invoke(new Action<string>(AppendTextBox), new object[] { value });
-                return;
-            }
-            textbox.Text += value + textbox.Text;
+            NewMessage($"Found {avatarsFound} avatars in {timeRan} seconds{Environment.NewLine}");
         }
 
-        public static Dictionary<string, DateTime> getCacheLocations(string path)
+        public static List<string> GetCacheLocations(string path)
         {
-            Dictionary<string, DateTime> dataLocations = new Dictionary<string, DateTime>();
+            List<string> dataLocations = new List<string>();
 
             string[] directory = Directory.GetDirectories(path);
             foreach (string item in directory)
@@ -152,12 +153,11 @@ namespace SARS.Modules
                     string[] dataFolders = Directory.GetDirectories(item);
                     if (dataFolders.Length > 0)
                     {
-                        //Has data cache ?
                         string cacheDataPath = dataFolders[0] + "\\__data";
                         if (File.Exists(cacheDataPath))
                         {
                             FileInfo info = new FileInfo(cacheDataPath);
-                            dataLocations.Add(cacheDataPath, info.CreationTime);
+                            dataLocations.Add(cacheDataPath);
                         }
                     }
                 }
@@ -166,12 +166,10 @@ namespace SARS.Modules
                     Console.WriteLine(e.Message);
                     continue;
                 }
-
             }
 
-            var dicList = dataLocations.OrderByDescending(x => x.Value).ToDictionary(x => x.Key, x => x.Value);
-            return dicList;
+            var cacheList = dataLocations;
+            return cacheList;
         }
     }
-
 }

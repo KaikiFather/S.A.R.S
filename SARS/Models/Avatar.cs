@@ -6,7 +6,6 @@ namespace SARS.Models
 
     public class AvatarDetails
     {
-        public int id { get; set; }
         public string avatarId { get; set; }
         public string avatarName { get; set; }
         public string avatarDescription { get; set; }
@@ -18,6 +17,23 @@ namespace SARS.Models
         public string pcAssetUrl { get; set; }
         public string releaseStatus { get; set; }
         public string unityVersion { get; set; }
+        public DateTime recordCreated { get; set; }
+    }
+
+    public class AvatarDetailsSend
+    {
+        public string avatarId { get; set; }
+        public string avatarName { get; set; }
+        public string avatarDescription { get; set; }
+        public string authorId { get; set; }
+        public string authorName { get; set; }
+        public string imageUrl { get; set; }
+        public string thumbnailUrl { get; set; }
+        public string questAssetUrl { get; set; }
+        public string pcAssetUrl { get; set; }
+        public string releaseStatus { get; set; }
+        public string unityVersion { get; set; }
+        public string tags { get; set; }
         public DateTime recordCreated { get; set; }
     }
 

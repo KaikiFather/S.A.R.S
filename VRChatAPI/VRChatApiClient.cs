@@ -100,83 +100,84 @@ namespace VRChatAPI
             return "&organization=vrchat";
         }
 
-        public async Task DownloadFile(string url, string auth, string twoFactor, string fileLocation, System.Windows.Forms.ProgressBar progressBar)
+        public async Task DownloadFile(string url, string auth, string twoFactor, string fileLocation, System.Windows.Forms.ProgressBar progressBar, bool both = false)
         {
-            WebClient webClient = new WebClient();
-            try
+            using (WebClient webClient = new WebClient())
             {
-
-                webClient.DownloadProgressChanged += (s, e) =>
+                try
                 {
+                    webClient.DownloadProgressChanged += (s, e) =>
+                    {
+                        if (progressBar.InvokeRequired)
+                        {
+                            // Call this same method but append THREAD2 to the text
+                            Action safeWrite = delegate { progressBar.Value = e.ProgressPercentage; };
+                            progressBar.Invoke(safeWrite);
+                        }
+                        else
+                        {
+                            progressBar.Value = e.ProgressPercentage;
+                        }
+                    };
+                    webClient.BaseAddress = "https://api.vrchat.cloud";
+                    webClient.Headers.Add("Accept", $"*/*");
+                    webClient.Headers.Add("Cookie", $"auth={auth}; twoFactorAuth={twoFactor}");
+                    webClient.Headers.Add("X-MacAddress", StaticValues.MacAddress);
+                    webClient.Headers.Add("X-Client-Version",
+                            StaticValues.ClientVersion);
+                    webClient.Headers.Add("X-Platform",
+                            "standalonewindows");
+                    webClient.Headers.Add("user-agent",
+                            "VRC.Core.BestHTTP");
+                    webClient.Headers.Add("X-Unity-Version",
+                            "2019.4.40f1");
+                    await webClient.DownloadFileTaskAsync(new Uri(url), fileLocation);
+
+                    // force just incase
                     if (progressBar.InvokeRequired)
                     {
                         // Call this same method but append THREAD2 to the text
-                        Action safeWrite = delegate { progressBar.Value = e.ProgressPercentage; };
+                        Action safeWrite = delegate { progressBar.Value = 100; };
                         progressBar.Invoke(safeWrite);
                     }
                     else
                     {
-                        progressBar.Value = e.ProgressPercentage;
+                        progressBar.Value = 100;
                     }
-                };
-                webClient.BaseAddress = "https://api.vrchat.cloud";
-                webClient.Headers.Add("Accept", $"*/*");
-                webClient.Headers.Add("Cookie", $"auth={auth}; twoFactorAuth={twoFactor}");
-                webClient.Headers.Add("X-MacAddress", StaticValues.MacAddress);
-                webClient.Headers.Add("X-Client-Version",
-                        StaticValues.ClientVersion);
-                webClient.Headers.Add("X-Platform",
-                        "standalonewindows");
-                webClient.Headers.Add("user-agent",
-                        "VRC.Core.BestHTTP");
-                webClient.Headers.Add("X-Unity-Version",
-                        "2019.4.40f1");
-                await webClient.DownloadFileTaskAsync(new Uri(url), fileLocation);
 
-                // force just incase
-                if (progressBar.InvokeRequired)
-                {
-                    // Call this same method but append THREAD2 to the text
-                    Action safeWrite = delegate { progressBar.Value = 100; };
-                    progressBar.Invoke(safeWrite);
+                    webClient.Dispose();
                 }
-                else
+                catch (Exception ex)
                 {
-                    progressBar.Value = 100;
+                    Console.WriteLine(ex.Message);
+                    if (ex.Message.Contains("403"))
+                    {
+                        MessageBox.Show("Error downloading Avatar, its likely that the account you are using has been banned.\nPlease login with a new account or try another avatar.");
+                    }
+                    else if (ex.Message.Contains("404"))
+                    {
+                        MessageBox.Show("Avatar has been removed from VRChat servers or this version doesn't exist");
+                    }
+                    else if (ex.Message.Contains("401"))
+                    {
+                        MessageBox.Show("Login with a alt VRChat account in the settings page");
+                    }
+                    else
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
+                    if (progressBar.InvokeRequired)
+                    {
+                        // Call this same method but append THREAD2 to the text
+                        Action safeWrite = delegate { progressBar.Value = 100; };
+                        progressBar.Invoke(safeWrite);
+                    }
+                    else
+                    {
+                        progressBar.Value = 100;
+                    }
+                    webClient.Dispose();
                 }
-
-                webClient.Dispose();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                if (ex.Message.Contains("403"))
-                {
-                    MessageBox.Show("Error downloading Avatar, its likely that the account you are using has been banned.\nPlease login with a new account or try another avatar.");
-                }
-                else if (ex.Message.Contains("404"))
-                {
-                    MessageBox.Show("Avatar has been removed from VRChat servers or this version doesn't exist");
-                }
-                else if (ex.Message.Contains("401"))
-                {
-                    MessageBox.Show("Login with a alt VRChat account in the settings page");
-                }
-                else
-                {
-                    MessageBox.Show(ex.Message);
-                }
-                if (progressBar.InvokeRequired)
-                {
-                    // Call this same method but append THREAD2 to the text
-                    Action safeWrite = delegate { progressBar.Value = 100; };
-                    progressBar.Invoke(safeWrite);
-                }
-                else
-                {
-                    progressBar.Value = 100;
-                }
-                webClient.Dispose();
             }
         }
 

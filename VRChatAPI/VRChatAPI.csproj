@@ -52,6 +52,7 @@
     <Compile Include="EasyHash.cs" />
     <Compile Include="Models\ApiVersion.cs" />
     <Compile Include="Models\CustomApi2FA.cs" />
+    <Compile Include="Models\CustomApi2FAVerify.cs" />
     <Compile Include="Models\CustomApiModel.cs" />
     <Compile Include="Models\CustomApiUser.cs" />
     <Compile Include="Models\CustomRemoteConfig.cs" />

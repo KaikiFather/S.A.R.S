@@ -43,6 +43,8 @@ Features:
     -Ability to hotswap from a vaid VRCA file downloaded elsewhere
 
     -Ability to almost perfectly extract vrca files for repairs with FACS
+	
+	-Auto repair scripts on Extract (thanks to FACS for the original script which has been modified to work outside Unity)
 
 Installation:
 	

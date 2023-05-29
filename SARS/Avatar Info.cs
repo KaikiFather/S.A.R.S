@@ -1,4 +1,5 @@
-﻿using MetroFramework.Forms;
+﻿using MetroFramework.Components;
+using MetroFramework.Forms;
 using SARS.Models;
 using System;
 using System.Linq;
@@ -9,7 +10,6 @@ namespace SARS
     public partial class Avatar_Info : MetroForm
     {
         public Avatar _selectedAvatar;
-
         public Avatar_Info()
         {
             InitializeComponent();

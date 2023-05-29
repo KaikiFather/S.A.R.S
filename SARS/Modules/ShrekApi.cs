@@ -12,7 +12,6 @@ namespace SARS.Modules
 {
     internal class ShrekApi
     {
-        private int maxSearch = 10000;
         private string coreApiVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
         public ShrekApi()

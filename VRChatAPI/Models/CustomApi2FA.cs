@@ -5,44 +5,74 @@ using System.Reflection;
 
 namespace VRChatAPI.Models
 {
-    [Obfuscation(Exclude = true)]
     public class CustomApi2FA : CustomApiModel
     {
-        public CustomApi2FA(VRChatApiClient client) : base(client)
-        {
-        }
-
-        [JsonProperty("requiresTwoFactorAuth")]
-        public List<string> Supported2FATypes { get; set; }
-
-        public string GetFirstSupported2FAType()
-        {
-            return Supported2FATypes != null && Supported2FATypes.Count > 0 ? Supported2FATypes.FirstOrDefault() : string.Empty;
-        }
-
         public class CustomApi2FAContainer
         {
             [JsonProperty("code")]
             public string Code { get; set; }
 
             public CustomApi2FAContainer()
-            { }
+            {
+            }
 
             public CustomApi2FAContainer(string code)
             {
                 Code = code;
             }
         }
-    }
 
-    [Obfuscation(Exclude = true)]
-    public class CustomApi2FAVerify : CustomApiModel
-    {
-        public CustomApi2FAVerify(VRChatApiClient client) : base(client)
+        [JsonProperty("requiresTwoFactorAuth")]
+        public List<string> Supported2FATypes { get; set; }
+
+        public CustomApi2FA(VRChatApiClient client)
+            : base(client)
         {
         }
 
-        [JsonProperty("verified")]
-        public bool Verified { get; set; }
+        public bool IsOTPSupported()
+        {
+            if (Supported2FATypes != null && Supported2FATypes.Count > 0)
+            {
+                return Supported2FATypes.Contains("otp");
+            }
+            return false;
+        }
+
+        public bool IsTOTPSupported()
+        {
+            if (Supported2FATypes != null && Supported2FATypes.Count > 0)
+            {
+                return Supported2FATypes.Contains("totp");
+            }
+            return false;
+        }
+
+        public bool IsSMSSupported()
+        {
+            if (Supported2FATypes != null && Supported2FATypes.Count > 0)
+            {
+                return Supported2FATypes.Contains("sms");
+            }
+            return false;
+        }
+
+        public bool IsEmailSupported()
+        {
+            if (Supported2FATypes != null && Supported2FATypes.Count > 0)
+            {
+                return Supported2FATypes.Contains("emailotp");
+            }
+            return false;
+        }
+
+        public string GetFirstSupported2FAType()
+        {
+            if (Supported2FATypes == null || Supported2FATypes.Count <= 0)
+            {
+                return string.Empty;
+            }
+            return Supported2FATypes.FirstOrDefault();
+        }
     }
 }
